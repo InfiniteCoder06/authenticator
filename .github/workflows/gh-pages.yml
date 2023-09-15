@@ -3,8 +3,6 @@ name: Github Pages
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
   build:
@@ -28,27 +26,6 @@ jobs:
     
     - name: Build release project ⚙️
       run: flutter build web --base-href "/authy/"
-
-    - name: Upload production-ready build files 🔺
-      uses: actions/upload-artifact@v3
-      with:
-        name: production-files
-        path: ./build/web
-  
-  deploy:
-    name: Deploy 🚀
-    needs: build
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout 🛎️
-      uses: actions/checkout@v3
-
-    - name: Download artifact🔻
-      uses: actions/download-artifact@v3
-      with:
-        name: production-files
-        path: build
 
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4
