@@ -72,7 +72,7 @@ class HomeController extends PureNotifier<HomeState> with ConsoleMixin {
     }
 
     final parseResult =
-        OtpUtils.parseURI(Uri.dataFromString(result.toNullable()!.first.text));
+        OtpUtils.parseURI(Uri.parse(result.toNullable()!.first.text));
     parseResult.fold(
         (text) => AppDialogs.showErrorDialog(context, text),
         (item) => Navigator.of(context).pushReplacementNamed(

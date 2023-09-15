@@ -23,6 +23,7 @@ extension ItemX on Item {
     final String otp = OTP.generateTOTPCodeString(
       getSecret(),
       DateTime.now().millisecondsSinceEpoch,
+      algorithm: Algorithm.SHA1,
       isGoogle: true,
     );
     return otp;
