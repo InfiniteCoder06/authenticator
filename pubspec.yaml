@@ -68,7 +68,7 @@ dependencies:
   syncfusion_flutter_gauges: ^23.1.36
   uri: ^1.0.0
   url_launcher: ^6.1.14
-  uuid: ^3.0.7
+  uuid: ^4.0.0
   zxing_lib: ^1.1.1
   mocktail: ^1.0.0
 
