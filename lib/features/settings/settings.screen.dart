@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
@@ -42,8 +43,16 @@ class SettingsOverviewPage extends StatelessWidget {
                   leading: const Icon(Icons.security_rounded),
                   title: const Text("Security"),
                   subtitle: const Text("Password, Biometric, etc."),
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(AppRouter.security.path),
+                  onTap: () {
+                    if (kIsWeb) {
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                            const SnackBar(content: Text("To Be Implemented")));
+                    } else {
+                      Navigator.of(context).pushNamed(AppRouter.security.path);
+                    }
+                  },
                 ),
                 ListTile(
                   key: const Key("settings.list.time"),
