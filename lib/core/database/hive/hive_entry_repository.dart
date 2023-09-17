@@ -52,6 +52,21 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
       );
 
   @override
+  TaskEither<String, Unit> createAll(List<Item> items) => TaskEither.tryCatch(
+        () async {
+          for (var item in items) {
+            await _box?.put(item.identifier, item);
+          }
+          console.debug("Saved ${items.length}");
+          return unit;
+        },
+        (error, _) {
+          console.error(error.toString());
+          return error.toString();
+        },
+      );
+
+  @override
   TaskEither<String, Unit> delete(Item item) => TaskEither.tryCatch(
         () async {
           await _box?.delete(item.identifier);
