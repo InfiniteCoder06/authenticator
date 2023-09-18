@@ -1,13 +1,10 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 // 🎯 Dart imports:
 import 'dart:convert';
 
 // 📦 Package imports:
-import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';
 
 // 🌎 Project imports:
@@ -16,8 +13,6 @@ import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 
 part 'item.model.g.dart';
 
-@JsonSerializable()
-@CopyWith()
 @HiveType(typeId: 0)
 class Item extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(0)
@@ -97,21 +92,78 @@ class Item extends HiveObject with EquatableMixin, ConsoleMixin {
         ],
       );
 
-  factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);
-
-  Map<String, dynamic> toJson() => _$ItemToJson(this);
-
-  String get toJsonString => jsonEncode(toJson());
+  factory Item.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
+    final data = snapshot.data();
+    return Item.fromMap(data!);
+  }
 
   @override
-  List<Object?> get props => [
-        createdTime,
-        updatedTime,
-        name,
-        iconUrl,
-        fields,
-        deleted,
-      ];
+  List<Object> get props {
+    return [
+      identifier,
+      createdTime,
+      updatedTime,
+      name,
+      iconUrl,
+      fields,
+      deleted,
+    ];
+  }
+
+  Item copyWith({
+    String? identifier,
+    DateTime? createdTime,
+    DateTime? updatedTime,
+    String? name,
+    String? iconUrl,
+    List<Field>? fields,
+    bool? deleted,
+  }) {
+    return Item(
+      identifier: identifier ?? this.identifier,
+      createdTime: createdTime ?? this.createdTime,
+      updatedTime: updatedTime ?? this.updatedTime,
+      name: name ?? this.name,
+      iconUrl: iconUrl ?? this.iconUrl,
+      fields: fields ?? this.fields,
+      deleted: deleted ?? this.deleted,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'identifier': identifier,
+      'createdTime': createdTime.millisecondsSinceEpoch,
+      'updatedTime': updatedTime.millisecondsSinceEpoch,
+      'name': name,
+      'iconUrl': iconUrl,
+      'fields': fields.map((x) => x.toMap()).toList(),
+      'deleted': deleted,
+    };
+  }
+
+  factory Item.fromMap(Map<String, dynamic> map) {
+    return Item(
+      identifier: map['identifier'] as String,
+      createdTime:
+          DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
+      updatedTime:
+          DateTime.fromMillisecondsSinceEpoch(map['updatedTime'] as int),
+      name: map['name'] as String,
+      iconUrl: map['iconUrl'] as String,
+      fields: List<Field>.from(
+        map['fields'].map(
+          (x) => Field.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
+      deleted: map['deleted'] as bool,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Item.fromJson(String source) =>
+      Item.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

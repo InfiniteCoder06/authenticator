@@ -19,6 +19,16 @@ class SettingsOverviewPage extends StatelessWidget {
             delegate: SliverChildListDelegate(
               <Widget>[
                 ListTile(
+                  key: const Key("settings.list.account"),
+                  leading: const Icon(Icons.account_circle_rounded),
+                  title: const Text("Accounts"),
+                  subtitle: const Text(
+                    "Sync App",
+                  ),
+                  onTap: () =>
+                      Navigator.of(context).pushNamed(AppRouter.account.path),
+                ),
+                ListTile(
                   key: const Key("settings.list.theme"),
                   leading: const Icon(Icons.brush_rounded),
                   title: const Text("Appearance"),

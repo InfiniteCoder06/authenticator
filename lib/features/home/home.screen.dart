@@ -107,9 +107,12 @@ class EntryOverviewPage extends StatelessWidget {
                       child: Text("Settings"),
                     )
                   ],
-                  onSelected: (value) {
+                  onSelected: (value) async {
                     if (value == 0) {
-                      Navigator.of(context).pushNamed(AppRouter.settings.path);
+                      await Navigator.of(context)
+                          .pushNamed(AppRouter.settings.path);
+                      if (!context.mounted) return;
+                      context.ref.notifier(homeController).get();
                     }
                   },
                 ),

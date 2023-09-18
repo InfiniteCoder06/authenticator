@@ -40,6 +40,12 @@ enum AppRouter {
     subtitle: '',
     icon: Icons.settings_rounded,
   ),
+  account(
+    path: '/settings/accounts',
+    title: 'Accounts',
+    subtitle: '',
+    icon: Icons.person_rounded,
+  ),
   theme(
     path: '/settings/theme',
     title: 'Theme',

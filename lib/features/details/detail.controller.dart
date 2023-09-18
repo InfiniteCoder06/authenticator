@@ -12,7 +12,6 @@ import 'package:uuid/uuid.dart';
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/models/field.model.dart';
 import 'package:authenticator/core/models/item.model.dart';
-import 'package:authenticator/core/utils/extension/string.extension.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/provider.dart';
@@ -49,18 +48,9 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
   List<Field> get parseField =>
       fieldsGroup.controls.keys.mapWithIndex((key, index) {
         final itemField = fields.elementAt(index);
-        final field = Field(
-          identifier: key,
-          type: key.type(),
-          readOnly: itemField.readOnly,
-          required: itemField.required,
-          data: FieldData(
-            hint: itemField.data.hint,
-            label: itemField.data.label,
-            value: fieldsGroup.value.extract<String>(key).toNullable(),
-          ),
-        );
-
+        final field = itemField.copyWith(
+            data: itemField.data.copyWith(
+                value: fieldsGroup.value.extract<String>(key).toNullable()));
         return field;
       }).toList();
 

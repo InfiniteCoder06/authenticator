@@ -1,5 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-
 // 🎯 Dart imports:
 import 'dart:convert';
 
@@ -7,18 +5,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/parsers/field.parsers.dart';
 
 part 'field.model.g.dart';
 
-@JsonSerializable()
-@CopyWith()
 @HiveType(typeId: 1)
 class Field extends HiveObject with EquatableMixin {
   @HiveField(0)
@@ -45,21 +39,67 @@ class Field extends HiveObject with EquatableMixin {
 
   Widget get widget => FieldParser.parse(this);
 
-  factory Field.fromJson(Map<String, dynamic> json) => _$FieldFromJson(json);
-
-  Map<String, dynamic> toJson() => _$FieldToJson(this);
-
-  String get toJsonString => jsonEncode(toJson());
-
   @override
-  List<Object?> get props => [type, reserved, required, data];
+  List<Object> get props {
+    return [
+      identifier,
+      type,
+      reserved,
+      required,
+      readOnly,
+      data,
+    ];
+  }
+
+  Field copyWith({
+    String? identifier,
+    String? type,
+    bool? reserved,
+    bool? required,
+    bool? readOnly,
+    FieldData? data,
+  }) {
+    return Field(
+      identifier: identifier ?? this.identifier,
+      type: type ?? this.type,
+      reserved: reserved ?? this.reserved,
+      required: required ?? this.required,
+      readOnly: readOnly ?? this.readOnly,
+      data: data ?? this.data,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'identifier': identifier,
+      'type': type,
+      'reserved': reserved,
+      'required': required,
+      'readOnly': readOnly,
+      'data': data.toMap(),
+    };
+  }
+
+  factory Field.fromMap(Map<String, dynamic> map) {
+    return Field(
+      identifier: map['identifier'] as String,
+      type: map['type'] as String,
+      reserved: map['reserved'] as bool,
+      required: map['required'] as bool,
+      readOnly: map['readOnly'] as bool,
+      data: FieldData.fromMap(map['data']),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Field.fromJson(String source) =>
+      Field.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;
 }
 
-@JsonSerializable()
-@CopyWith()
 @HiveType(typeId: 2)
 class FieldData extends HiveObject with EquatableMixin {
   @HiveField(0)
@@ -78,16 +118,50 @@ class FieldData extends HiveObject with EquatableMixin {
     this.extra = const {},
   });
 
-  factory FieldData.fromJson(Map<String, dynamic> json) =>
-      _$FieldDataFromJson(json);
+  FieldData copyWith({
+    String? label,
+    String? hint,
+    String? value,
+    Map<String, dynamic>? extra,
+  }) {
+    return FieldData(
+      label: label ?? this.label,
+      hint: hint ?? this.hint,
+      value: value ?? this.value,
+      extra: extra ?? this.extra,
+    );
+  }
 
-  Map<String, dynamic> toJson() => _$FieldDataToJson(this);
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'label': label,
+      'hint': hint,
+      'value': value,
+      'extra': extra,
+    };
+  }
 
-  @override
-  List<Object?> get props => [value];
+  factory FieldData.fromMap(Map<String, dynamic> map) {
+    return FieldData(
+      label: map['label'] != null ? map['label'] as String : null,
+      hint: map['hint'] != null ? map['hint'] as String : null,
+      value: map['value'] != null ? map['value'] as String : null,
+      extra: map['extra'] != null
+          ? Map<String, dynamic>.from((map['extra'] as Map<String, dynamic>))
+          : null,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory FieldData.fromJson(String source) =>
+      FieldData.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;
+
+  @override
+  List<Object?> get props => [label, hint, value, extra];
 }
 
 enum FieldType {

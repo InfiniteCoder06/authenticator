@@ -16,6 +16,8 @@ const kCodeGroup = "code-group";
 
 const kLockTimeout = "lock-timeout";
 
+const kLocalSync = "last-synced";
+
 const kScheme = "otpauth";
 const kSchemeExport = "otpauth-migration";
 
