@@ -101,16 +101,25 @@ class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
       }
     }
 
-    console.debug(
-        "➕ Local Items Added : ${cloudChangesDiff.length}, ✏️ Local Items Updated : ${localSyncItems.length}");
-    console.debug(
-        "➕ Cloud Items Added : ${localChangesDiff.length}, ✏️ Cloud Items Updated : ${cloudSyncItems.length}, 🗑️ Cloud Items Deleted : ${deletedIds.length}");
-
     try {
+      final localDeleted = await entryRepository.getDeletedEntries();
       await backupRepository.backup([...localChangesDiff, ...cloudSyncItems],
-          userId: state.userId, deleteIds: deletedIds);
+          userId: state.userId,
+          deleteIds: [
+            ...localDeleted.map((item) => item.identifier),
+            ...deletedIds
+          ]);
 
       await entryRepository.createAll([...cloudChangesDiff, ...localSyncItems]);
+      await entryRepository.deleteAll(localDeleted);
+
+      console.debug(
+          "➕ Local Items Added : ${cloudChangesDiff.length}, ✏️ Local Items Updated : ${localSyncItems.length}");
+      console.debug(
+          "➕ Cloud Items Added : ${localChangesDiff.length}, ✏️ Cloud Items Updated : ${cloudSyncItems.length}, 🗑️ Cloud Items Deleted : ${[
+        ...localDeleted.map((item) => item.identifier),
+        ...deletedIds
+      ].length}");
     } catch (e) {
       rethrow;
     }
