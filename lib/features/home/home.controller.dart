@@ -47,7 +47,7 @@ class HomeController extends PureNotifier<HomeState> with ConsoleMixin {
   }
 
   Future<void> get() async {
-    final result = await entryRepository.getAll().run();
+    final result = await entryRepository.getFiltered().run();
     result.fold((errorDB) {
       state = state.copyWith(error: errorDB);
     }, (entriesDB) {

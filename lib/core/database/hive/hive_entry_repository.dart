@@ -39,6 +39,17 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
       );
 
   @override
+  TaskEither<String, List<Item>> getFiltered() => TaskEither.tryCatch(
+        () async {
+          return _box!.values.where((element) => !element.deleted).toList();
+        },
+        (error, _) {
+          console.error(error.toString());
+          return error.toString();
+        },
+      );
+
+  @override
   TaskEither<String, Unit> create(Item item) => TaskEither.tryCatch(
         () async {
           await _box?.put(item.identifier, item);
@@ -58,6 +69,24 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
             await _box?.put(item.identifier, item);
           }
           console.debug("Saved ${items.length}");
+          return unit;
+        },
+        (error, _) {
+          console.error(error.toString());
+          return error.toString();
+        },
+      );
+
+  @override
+  TaskEither<String, Unit> fakeDeleteAll(List<Item> items) =>
+      TaskEither.tryCatch(
+        () async {
+          List<Item> fakeItems = [];
+          for (var item in items) {
+            fakeItems
+                .add(item.copyWith(deleted: true, updatedTime: DateTime.now()));
+          }
+          await createAll(fakeItems).run();
           return unit;
         },
         (error, _) {

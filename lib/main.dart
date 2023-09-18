@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:firebase_core/firebase_core.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:navigation_history_observer/navigation_history_observer.dart';
@@ -15,6 +16,7 @@ import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/router/app_router.config.dart';
 import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
+import 'package:authenticator/firebase_options.dart';
 import 'package:authenticator/provider.dart';
 import 'package:authenticator/widgets/app_builder.widget.dart';
 
@@ -25,6 +27,11 @@ void main() async {
   if (imagePickerImplementation is ImagePickerAndroid) {
     imagePickerImplementation.useAndroidPhotoPicker = true;
   }
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   var container = RiverpieContainer();
   final appPathsOverride = container.read(appPathsProvider);
   final securityServiceOverride = container.read(securityServiceProvider);

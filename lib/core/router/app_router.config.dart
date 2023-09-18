@@ -11,6 +11,7 @@ import 'package:authenticator/features/details/detail.screen.dart';
 import 'package:authenticator/features/home/home.screen.dart';
 import 'package:authenticator/features/not_found.screen.dart';
 import 'package:authenticator/features/scan/scan.screen.dart';
+import 'package:authenticator/features/settings/account/account.screen.dart';
 import 'package:authenticator/features/settings/behaviour/behaviour.screen.dart';
 import 'package:authenticator/features/settings/logger/logger.screen.dart';
 import 'package:authenticator/features/settings/security/security.screen.dart';
@@ -89,6 +90,10 @@ class AppRouteConfig {
       case AppRouter.settings:
         return DefaultRouteSetting(
           route: (context) => const SettingsOverviewPage(),
+        );
+      case AppRouter.account:
+        return DefaultRouteSetting(
+          route: (context) => const AccountSettingsPage(),
         );
       case AppRouter.theme:
         return DefaultRouteSetting(

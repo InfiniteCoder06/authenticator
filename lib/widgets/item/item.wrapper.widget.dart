@@ -10,11 +10,17 @@ class ItemWidgetWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          body,
-          otp ?? const SizedBox.shrink(),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              body,
+              otp ?? const SizedBox.shrink(),
+            ],
+          ),
+          trailing ?? const SizedBox.shrink()
         ],
       ),
     );
