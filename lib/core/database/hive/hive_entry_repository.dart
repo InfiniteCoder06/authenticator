@@ -71,6 +71,16 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   }
 
   @override
+  Future<List<Item>> getDeletedEntries() async {
+    try {
+      return _box!.values.where((element) => element.deleted).toList();
+    } catch (e) {
+      console.error("🔴 $e");
+      return Future.error(e);
+    }
+  }
+
+  @override
   Future<void> update(Item item) async {
     try {
       await _box?.put(item.identifier, item);
