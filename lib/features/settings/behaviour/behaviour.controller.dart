@@ -34,7 +34,7 @@ class BehaviorController extends PureNotifier<BehaviorState> with ConsoleMixin {
       fontSize: fontSize,
     );
 
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
     super.postInit();
   }
 

@@ -33,7 +33,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
       () async => await _loadTemplate(),
       (item) async => _generateTemplate(item),
     );
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
   }
 
   final BaseEntryRepository repository;

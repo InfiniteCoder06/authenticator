@@ -42,7 +42,7 @@ class AppPaths {
     }
 
     final console = Console(name: 'AppPaths');
-    console.info(main!.path);
+    console.info("🚀 ${main!.path}");
   }
 
   Future<void> initTest(String path) async {

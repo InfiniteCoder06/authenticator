@@ -61,7 +61,7 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
         ),
       );
     } on PlatformException catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       if (e.code == auth_error.notAvailable) {
         showDialog(
           context: context,

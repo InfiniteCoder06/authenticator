@@ -17,7 +17,7 @@ class HivePersistanceProvider extends StorageService with ConsoleMixin {
   Future<void> init() async {
     _box = await hive.openBox(kAppPreferences, path: AppPaths.hivePath);
 
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
   }
 
   @override

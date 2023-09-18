@@ -24,7 +24,7 @@ class SecurityController extends PureNotifier<bool> with ConsoleMixin {
   @override
   Future<void> postInit() async {
     state = await securityService.hasLock();
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
   }
 
   Future<void> set(BuildContext context, {required LockType type}) async {

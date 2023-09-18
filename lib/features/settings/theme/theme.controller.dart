@@ -40,7 +40,7 @@ class ThemeController extends PureNotifier<ThemeState> with ConsoleMixin {
       themeAccent: themeAccent,
     );
 
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
     super.postInit();
   }
 
