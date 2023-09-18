@@ -28,8 +28,13 @@ jobs:
       run: flutter build web --base-href "/authy/"
 
     - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4
+      uses: nwtgck/actions-netlify@v2.0
       with:
-        folder: build
-        token: ${{secrets.ACCESS_TOKEN}}
-        repository-name: Hacker437/authy
+        publish-dir: 'build/web/'
+        production-branch: master
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: ${{ github.event.head_commit.message }}
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      timeout-minutes: 1
