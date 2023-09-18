@@ -55,10 +55,7 @@ class AppDialogs {
             TextButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                context.ref
-                    .read(hiveEntryRepoProvider)
-                    .fakeDeleteAll(items)
-                    .run();
+                context.ref.read(hiveEntryRepoProvider).fakeDeleteAll(items);
               },
               child: const Text('Delete'),
             ),

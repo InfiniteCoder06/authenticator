@@ -116,7 +116,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
           fields: parseField,
         );
 
-    await repository.create(newItem).run();
+    await repository.create(newItem);
     if (context.mounted) {
       Navigator.of(context).pop(context);
     }

@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:authenticator/widgets/loader.overlay.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,7 +22,7 @@ class AppBuilder extends StatelessWidget {
       statusBarColor: Colors.transparent,
     );
     if (kReleaseMode) {
-      return buildWrapper(overlay);
+      return buildWrapper(overlay, context);
     } else {
       return buildWrapperWithBanner(overlay, context);
     }
@@ -33,7 +34,7 @@ class AppBuilder extends StatelessWidget {
   ) {
     return Stack(
       children: [
-        buildWrapper(overlay),
+        buildWrapper(overlay, context),
         buildBanner(context),
       ],
     );
@@ -59,23 +60,17 @@ class AppBuilder extends StatelessWidget {
     );
   }
 
-  Widget buildWrapper(SystemUiOverlayStyle overlay) {
-    return kIsWeb
-        ? GestureDetector(
-            onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-            child: AnnotatedRegion<SystemUiOverlayStyle>(
-              value: overlay,
-              child: child ?? const SizedBox.shrink(),
-            ),
-          )
-        : AppLocalAuth(
-            child: GestureDetector(
-              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-              child: AnnotatedRegion<SystemUiOverlayStyle>(
-                value: overlay,
-                child: child ?? const SizedBox.shrink(),
-              ),
-            ),
-          );
+  Widget buildWrapper(SystemUiOverlayStyle overlay, BuildContext context) {
+    final widget = LoadingOverlay(
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: overlay,
+          child: child ?? const SizedBox.shrink(),
+        ),
+      ),
+    );
+    ;
+    return kIsWeb ? widget : AppLocalAuth(child: widget);
   }
 }

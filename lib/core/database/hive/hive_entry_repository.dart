@@ -1,5 +1,4 @@
 // 📦 Package imports:
-import 'package:fpdart/fpdart.dart';
 import 'package:hive/hive.dart';
 
 // 🌎 Project imports:
@@ -28,112 +27,96 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   }
 
   @override
-  TaskEither<String, List<Item>> getAll() => TaskEither.tryCatch(
-        () async {
-          return _box!.values.toList();
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<void> create(Item item) async {
+    try {
+      await _box?.put(item.identifier, item);
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
-  TaskEither<String, List<Item>> getFiltered() => TaskEither.tryCatch(
-        () async {
-          return _box!.values.where((element) => !element.deleted).toList();
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<void> createAll(List<Item> items) async {
+    try {
+      for (var item in items) {
+        await _box?.put(item.identifier, item);
+      }
+      console.debug("Saved ${items.length}");
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
-  TaskEither<String, Unit> create(Item item) => TaskEither.tryCatch(
-        () async {
-          await _box?.put(item.identifier, item);
-          console.debug("Saved");
-          return unit;
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<List<Item>> getAll() async {
+    try {
+      return _box!.values.toList();
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
-  TaskEither<String, Unit> createAll(List<Item> items) => TaskEither.tryCatch(
-        () async {
-          for (var item in items) {
-            await _box?.put(item.identifier, item);
-          }
-          console.debug("Saved ${items.length}");
-          return unit;
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<List<Item>> getFiltered() async {
+    try {
+      return _box!.values.where((element) => !element.deleted).toList();
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
-  TaskEither<String, Unit> fakeDeleteAll(List<Item> items) =>
-      TaskEither.tryCatch(
-        () async {
-          List<Item> fakeItems = [];
-          for (var item in items) {
-            fakeItems
-                .add(item.copyWith(deleted: true, updatedTime: DateTime.now()));
-          }
-          await createAll(fakeItems).run();
-          return unit;
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<void> update(Item item) async {
+    try {
+      await _box?.put(item.identifier, item);
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
-  TaskEither<String, Unit> delete(Item item) => TaskEither.tryCatch(
-        () async {
-          await _box?.delete(item.identifier);
-          return unit;
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<void> delete(Item item) async {
+    try {
+      await _box?.delete(item.identifier);
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
-  TaskEither<String, Unit> deleteAll(List<Item> items) => TaskEither.tryCatch(
-        () async {
-          final keys = items.map((item) => item.identifier);
-          await _box?.deleteAll(keys);
-          return unit;
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<void> deleteAll(List<Item> items) async {
+    try {
+      final keys = items.map((item) => item.identifier);
+      await _box?.deleteAll(keys);
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
-  TaskEither<String, Unit> update(Item item) => TaskEither.tryCatch(
-        () async {
-          await _box?.put(item.identifier, item);
-          return unit;
-        },
-        (error, _) {
-          console.error(error.toString());
-          return error.toString();
-        },
-      );
+  Future<void> fakeDeleteAll(List<Item> items) async {
+    try {
+      List<Item> fakeItems = [];
+      for (var item in items) {
+        fakeItems
+            .add(item.copyWith(deleted: true, updatedTime: DateTime.now()));
+      }
+      await createAll(fakeItems);
+    } catch (e) {
+      console.error(e.toString());
+      return Future.error(e);
+    }
+  }
 
   @override
   Future<void> clear() async {
-    await _box?.deleteFromDisk();
+    await _box?.clear();
   }
 }
