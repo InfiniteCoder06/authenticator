@@ -23,15 +23,16 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     hive.registerAdapter(FieldDataAdapter());
 
     _box = await hive.openBox(kDatabase, path: AppPaths.hivePath);
-    console.info('Initialize');
+    console.info("⚙️ Initialize");
   }
 
   @override
   Future<void> create(Item item) async {
     try {
       await _box?.put(item.identifier, item);
+      console.debug("🛎️ Create: ${item.name}");
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -41,10 +42,10 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       for (var item in items) {
         await _box?.put(item.identifier, item);
+        console.debug("🛎️ Create: ${item.name}");
       }
-      console.debug("Saved ${items.length}");
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -54,7 +55,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       return _box!.values.toList();
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -64,7 +65,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       return _box!.values.where((element) => !element.deleted).toList();
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -73,8 +74,9 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   Future<void> update(Item item) async {
     try {
       await _box?.put(item.identifier, item);
+      console.debug("✏️ Update: ${item.name}");
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -84,7 +86,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       await _box?.delete(item.identifier);
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -95,7 +97,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
       final keys = items.map((item) => item.identifier);
       await _box?.deleteAll(keys);
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -103,14 +105,13 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   @override
   Future<void> fakeDeleteAll(List<Item> items) async {
     try {
-      List<Item> fakeItems = [];
       for (var item in items) {
-        fakeItems
-            .add(item.copyWith(deleted: true, updatedTime: DateTime.now()));
+        item = item.copyWith(deleted: true, updatedTime: DateTime.now());
+        await _box?.put(item.identifier, item);
+        console.debug("🗑️ Delete: ${item.name}");
       }
-      await createAll(fakeItems);
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }

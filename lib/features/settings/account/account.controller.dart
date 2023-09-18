@@ -45,9 +45,9 @@ class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
       final userId = await storageService.get(kUserId);
       final cloudChangesDiff = await backupRepository.lastUpdated();
       state = state.copyWith(lastSync: cloudChangesDiff, userId: userId);
-      console.info("Initialized");
+      console.info("⚙️ Initialize");
     } catch (e) {
-      console.error("Error");
+      console.error("🔴 Error");
     }
   }
 
@@ -102,9 +102,9 @@ class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
     }
 
     console.debug(
-        "Local Items Added : ${cloudChangesDiff.length}, Local Items Updated : ${localSyncItems.length}");
+        "➕ Local Items Added : ${cloudChangesDiff.length}, ✏️ Local Items Updated : ${localSyncItems.length}");
     console.debug(
-        "Cloud Items Added : ${localChangesDiff.length}, Cloud Items Updated : ${cloudSyncItems.length}, Cloud Items Deleted : ${deletedIds.length}");
+        "➕ Cloud Items Added : ${localChangesDiff.length}, ✏️ Cloud Items Updated : ${cloudSyncItems.length}, 🗑️ Cloud Items Deleted : ${deletedIds.length}");
 
     try {
       await backupRepository.backup([...localChangesDiff, ...cloudSyncItems],
@@ -117,19 +117,7 @@ class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
   }
 
   Future<void> syncChanges(String userId, BuildContext context) async {
-    // showDialog(
-    //     context: context,
-    //     builder: (context) {
-    //       return const AlertDialog(
-    //         icon: Icon(Icons.sync_rounded),
-    //         title: Text("Syncing to Cloud"),
-    //         content: Wrap(
-    //           crossAxisAlignment: WrapCrossAlignment.center,
-    //           alignment: WrapAlignment.center,
-    //           children: [CircularProgressIndicator()],
-    //         ),
-    //       );
-    //     });
+    console.debug("⚙️ Start sync");
     state = state.copyWith(isSyncing: true);
 
     try {
@@ -153,12 +141,13 @@ class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
       await storageService.put(kLocalSync, currentDate);
       state = state.copyWith(userId: userId, lastSync: currentDate);
       await storageService.put(kUserId, userId);
+      console.debug("🟢 Successfully Synced");
       state = state.copyWith(isSyncing: false);
     } catch (e) {
       if (!context.mounted) return;
       state = state.copyWith(isSyncing: false);
       await AppDialogs.showErrorDialog(context, e.toString());
-      console.error(e.toString());
+      console.error("🔴 $e");
     }
   }
 

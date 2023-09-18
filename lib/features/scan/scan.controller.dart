@@ -27,7 +27,7 @@ class ScanController extends PureNotifier<MobileScannerController>
 
   @override
   void postInit() async {
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
     super.postInit();
   }
 

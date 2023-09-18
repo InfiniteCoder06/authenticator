@@ -1,11 +1,11 @@
 // 🐦 Flutter imports:
-import 'package:authenticator/widgets/loader.overlay.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/local_auth/app_local_auth.widget.dart';
+import 'package:authenticator/widgets/loader.overlay.dart';
 
 class AppBuilder extends StatelessWidget {
   const AppBuilder({

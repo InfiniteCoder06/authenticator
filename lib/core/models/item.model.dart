@@ -9,12 +9,11 @@ import 'package:uuid/uuid.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/models/field.model.dart';
-import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 
 part 'item.model.g.dart';
 
 @HiveType(typeId: 0)
-class Item extends HiveObject with EquatableMixin, ConsoleMixin {
+class Item extends HiveObject with EquatableMixin {
   @HiveField(0)
   String identifier;
   @HiveField(1)

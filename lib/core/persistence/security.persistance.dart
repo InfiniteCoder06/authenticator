@@ -41,7 +41,7 @@ class SecurityPersistanceProvider extends StorageService with ConsoleMixin {
       path: AppPaths.hivePath,
     );
 
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
   }
 
   Future<void> setLock(LockType type, String secret) async {

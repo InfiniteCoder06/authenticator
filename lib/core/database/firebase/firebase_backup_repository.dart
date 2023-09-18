@@ -40,7 +40,7 @@ class FirebaseBackupRepository extends BaseBackupRepository with ConsoleMixin {
       await storageService.put(kLocalSync, currentTime);
       return currentTime;
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -52,7 +52,7 @@ class FirebaseBackupRepository extends BaseBackupRepository with ConsoleMixin {
           await storageService.get(kLocalSync, defaultValue: 1139941800000);
       return data;
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }
@@ -66,7 +66,7 @@ class FirebaseBackupRepository extends BaseBackupRepository with ConsoleMixin {
       final items = data.docs.map((doc) => Item.fromMap(doc.data())).toList();
       return items;
     } catch (e) {
-      console.error(e.toString());
+      console.error("🔴 $e");
       return Future.error(e);
     }
   }

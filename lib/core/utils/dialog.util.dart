@@ -36,7 +36,7 @@ class AppDialogs {
                       final Item item = items.elementAt(index);
                       final issuer = item.getIssuer();
                       return Text(
-                        "\u2022 ${issuer.isNone() ? item.name : "${issuer.toNullable()} (${item.name})"}",
+                        "\u2022 ${issuer.isNone() ? item.name : "${issuer.toNullable()} ( ${item.name} )"}",
                       );
                     },
                   ),
@@ -54,8 +54,11 @@ class AppDialogs {
             ),
             TextButton(
               onPressed: () async {
+                await context.ref
+                    .read(hiveEntryRepoProvider)
+                    .fakeDeleteAll(items);
+                if (!context.mounted) return;
                 Navigator.of(context).pop();
-                context.ref.read(hiveEntryRepoProvider).fakeDeleteAll(items);
               },
               child: const Text('Delete'),
             ),

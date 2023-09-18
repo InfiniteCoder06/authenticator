@@ -42,7 +42,7 @@ class HomeController extends PureNotifier<HomeState> with ConsoleMixin {
 
   @override
   void postInit() async {
-    console.info("Initialize");
+    console.info("⚙️ Initialize");
     super.postInit();
   }
 

@@ -1,5 +1,4 @@
 // 🐦 Flutter imports:
-import 'package:authenticator/widgets/loader.overlay.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -10,6 +9,7 @@ import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/features/settings/account/account.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 import 'package:authenticator/widgets/dropdown_list_tile.dart';
+import 'package:authenticator/widgets/loader.overlay.dart';
 
 class AccountSettingsPage extends StatelessWidget {
   const AccountSettingsPage({super.key});
