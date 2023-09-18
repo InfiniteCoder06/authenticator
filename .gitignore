@@ -45,6 +45,4 @@ app.*.map.json
 
 *.keystore
 .vscode/
-firebase_options.dart
-google-services.json
 build.yaml

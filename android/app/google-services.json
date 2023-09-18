@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "637431470481",
+    "project_id": "authy-2006",
+    "storage_bucket": "authy-2006.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637431470481:android:2cf93081936403d2566230",
+        "android_client_info": {
+          "package_name": "com.praveen.authenticator"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY5O7oP3O0cfSDYGymIKGl-CIxsjS3Ozg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
