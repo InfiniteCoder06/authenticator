@@ -10,7 +10,7 @@ import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
-import 'package:authenticator/widgets/material_list_tile.widget.dart';
+import 'package:authenticator/widgets/switch_list_tile.dart';
 
 class ThemeSettingsPage extends StatelessWidget {
   const ThemeSettingsPage({super.key});

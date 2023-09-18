@@ -12,31 +12,42 @@ import 'package:riverpie/riverpie.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_backup_repository.dart';
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
+import 'package:authenticator/core/database/adapter/storage_service.dart';
 import 'package:authenticator/core/models/item.model.dart';
+import 'package:authenticator/core/utils/dialog.util.dart';
+import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/provider.dart';
 
 part 'account.state.dart';
 
 final accountController = NotifierProvider<AccountController, AccountState>(
-    (ref) => AccountController(
-        ref.read(firebaseBackupRepoProvider), ref.read(hiveEntryRepoProvider)));
+    (ref) => AccountController(ref.read(firebaseBackupRepoProvider),
+        ref.read(hiveEntryRepoProvider), ref.read(hiveStorageProvider)));
 
 class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
-  AccountController(this.backupRepository, this.entryRepository);
+  AccountController(
+    this.backupRepository,
+    this.entryRepository,
+    this.storageService,
+  );
 
   final BaseBackupRepository backupRepository;
   final BaseEntryRepository entryRepository;
+  final StorageService storageService;
 
   @override
   AccountState init() => AccountState.initial();
 
   @override
   void postInit() async {
-    final cloudChangesDiff = await backupRepository.lastUpdated().run();
-    if (cloudChangesDiff.isRight()) {
-      state = state.copyWith(cloudUpdated: cloudChangesDiff.toNullable()!);
+    try {
+      final userId = await storageService.get(kUserId);
+      final cloudChangesDiff = await backupRepository.lastUpdated();
+      state = state.copyWith(lastSync: cloudChangesDiff, userId: userId);
       console.info("Initialized");
+    } catch (e) {
+      console.error("Error");
     }
   }
 
@@ -95,34 +106,60 @@ class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
     console.debug(
         "Cloud Items Added : ${localChangesDiff.length}, Cloud Items Updated : ${cloudSyncItems.length}, Cloud Items Deleted : ${deletedIds.length}");
 
-    await backupRepository.backup(
-      [...localChangesDiff, ...cloudSyncItems],
-      deleteIds: deletedIds,
-    ).run();
-    await entryRepository
-        .createAll([...cloudChangesDiff, ...localSyncItems]).run();
-  }
+    try {
+      await backupRepository.backup([...localChangesDiff, ...cloudSyncItems],
+          userId: state.userId, deleteIds: deletedIds);
 
-  Future<void> syncChanges() async {
-    final localEntries = await entryRepository.getAll().run();
-    final cloudEntries = await backupRepository.getAll().run();
-    if (localEntries.isRight() && cloudEntries.isRight()) {
-      if (kIsWeb) {
-        syncChangeIsolate(
-            localEntries.toNullable()!, cloudEntries.toNullable()!);
-      } else {
-        await Isolate.run(() => syncChangeIsolate(
-            localEntries.toNullable()!, cloudEntries.toNullable()!));
-      }
+      await entryRepository.createAll([...cloudChangesDiff, ...localSyncItems]);
+    } catch (e) {
+      rethrow;
     }
   }
 
-  Future<void> backup(BuildContext context) async {
-    final result =
-        await entryRepository.getAll().flatMap(backupRepository.backup).run();
+  Future<void> syncChanges(String userId, BuildContext context) async {
+    // showDialog(
+    //     context: context,
+    //     builder: (context) {
+    //       return const AlertDialog(
+    //         icon: Icon(Icons.sync_rounded),
+    //         title: Text("Syncing to Cloud"),
+    //         content: Wrap(
+    //           crossAxisAlignment: WrapCrossAlignment.center,
+    //           alignment: WrapAlignment.center,
+    //           children: [CircularProgressIndicator()],
+    //         ),
+    //       );
+    //     });
+    state = state.copyWith(isSyncing: true);
 
-    result.fold(
-        (l) => state, (time) => state = AccountState.success(time, time));
+    try {
+      final localEntries = await entryRepository.getAll();
+      final cloudEntries = await backupRepository.getAll(state.userId);
+
+      if (kIsWeb) {
+        await syncChangeIsolate(localEntries, cloudEntries);
+      } else {
+        await Isolate.run(() => syncChangeIsolate(localEntries, cloudEntries));
+      }
+
+      if (userId != state.userId) {
+        final cloudData = await backupRepository.getAll(userId);
+
+        await entryRepository.clear();
+        await entryRepository.createAll(cloudData);
+      }
+
+      final currentDate = DateTime.now().millisecondsSinceEpoch;
+      await storageService.put(kLocalSync, currentDate);
+      state = state.copyWith(userId: userId, lastSync: currentDate);
+      await storageService.put(kUserId, userId);
+      state = state.copyWith(isSyncing: false);
+    } catch (e) {
+      if (!context.mounted) return;
+      state = state.copyWith(isSyncing: false);
+      await AppDialogs.showErrorDialog(context, e.toString());
+      console.error(e.toString());
+    }
   }
 
   List<T> differenceWithSet<T>(List<T> a, List<T> b) {

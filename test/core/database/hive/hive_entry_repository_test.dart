@@ -37,35 +37,34 @@ void main() {
   });
 
   test('Basic Test', () async {
-    final data = await entryRepository.getAll().run();
-    expect(data.isRight(), true);
-    expect(data.getRight().toNullable()!, []);
+    final data = await entryRepository.getAll();
+    expect(data, []);
   });
 
   test('Insert Test', () async {
-    await entryRepository.create(item).run();
-    final data = await entryRepository.getAll().run();
+    await entryRepository.create(item);
+    final data = await entryRepository.getAll();
 
-    expect(data.getOrElse((l) => []).length, 1);
-    expect(data.getOrElse((l) => []), [item]);
+    expect(data.length, 1);
+    expect(data, [item]);
   });
 
   test('Insert Many', () async {
     for (var item in items) {
-      await entryRepository.create(item).run();
+      await entryRepository.create(item);
     }
-    final data = await entryRepository.getAll().run();
+    final data = await entryRepository.getAll();
 
-    expect(data.getOrElse((l) => []).length, 10);
+    expect(data.length, 10);
   });
 
   test('Update Item', () async {
-    await entryRepository.deleteAll(items).run();
+    await entryRepository.deleteAll(items);
 
-    await entryRepository.update(item.copyWith(name: 'Gmail')).run();
-    final updatedItems = await entryRepository.getAll().run();
+    await entryRepository.update(item.copyWith(name: 'Gmail'));
+    final updatedItems = await entryRepository.getAll();
 
-    expect(updatedItems.getOrElse((l) => []).first.name, 'Gmail');
+    expect(updatedItems.first.name, 'Gmail');
   });
 
   tearDownAll(() async {

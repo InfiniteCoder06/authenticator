@@ -8,7 +8,7 @@ import 'package:riverpie_flutter/riverpie_flutter.dart';
 import 'package:authenticator/core/types/lock.type.dart';
 import 'package:authenticator/features/settings/security/security.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
-import 'package:authenticator/widgets/material_list_tile.widget.dart';
+import 'package:authenticator/widgets/switch_list_tile.dart';
 
 class SecuritySettingsPage extends StatelessWidget {
   const SecuritySettingsPage({super.key});

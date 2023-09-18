@@ -1,18 +1,15 @@
-// 📦 Package imports:
-import 'package:fpdart/fpdart.dart';
-
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
 
 abstract class BaseEntryRepository {
   Future<void> init();
-  TaskEither<String, List<Item>> getAll();
-  TaskEither<String, List<Item>> getFiltered();
-  TaskEither<String, Unit> create(Item item);
-  TaskEither<String, Unit> createAll(List<Item> items);
-  TaskEither<String, Unit> update(Item item);
-  TaskEither<String, Unit> fakeDeleteAll(List<Item> items);
-  TaskEither<String, Unit> delete(Item item);
-  TaskEither<String, Unit> deleteAll(List<Item> items);
+  Future<List<Item>> getAll();
+  Future<List<Item>> getFiltered();
+  Future<void> create(Item item);
+  Future<void> createAll(List<Item> items);
+  Future<void> update(Item item);
+  Future<void> fakeDeleteAll(List<Item> items);
+  Future<void> delete(Item item);
+  Future<void> deleteAll(List<Item> items);
   Future<void> clear();
 }

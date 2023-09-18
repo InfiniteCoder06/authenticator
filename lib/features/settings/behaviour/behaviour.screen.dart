@@ -10,7 +10,7 @@ import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
-import 'package:authenticator/widgets/material_list_tile.widget.dart';
+import 'package:authenticator/widgets/switch_list_tile.dart';
 
 class BehaviourSettingsPage extends StatelessWidget {
   const BehaviourSettingsPage({super.key});

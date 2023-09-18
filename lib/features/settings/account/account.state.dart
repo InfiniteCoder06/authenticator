@@ -1,30 +1,31 @@
 part of 'account.controller.dart';
 
 class AccountState extends Equatable {
-  final int cloudUpdated;
-  final int localUpdated;
+  final int lastSync;
+  final String userId;
+  final bool isSyncing;
 
   const AccountState(
-    this.cloudUpdated,
-    this.localUpdated,
+    this.lastSync,
+    this.userId,
+    this.isSyncing,
   );
 
   factory AccountState.initial() =>
-      const AccountState(1139941800000, 1139941800000);
-
-  factory AccountState.success(int cloudUpdated, int localUpdated) =>
-      AccountState(cloudUpdated, localUpdated);
+      const AccountState(1139941800000, "Anonymous", false);
 
   @override
-  List<Object?> get props => [cloudUpdated, localUpdated];
+  List<Object> get props => [lastSync, userId, isSyncing];
 
   AccountState copyWith({
-    int? cloudUpdated,
-    int? localUpdated,
+    int? lastSync,
+    String? userId,
+    bool? isSyncing,
   }) {
     return AccountState(
-      cloudUpdated ?? this.cloudUpdated,
-      localUpdated ?? this.localUpdated,
+      lastSync ?? this.lastSync,
+      userId ?? this.userId,
+      isSyncing ?? this.isSyncing,
     );
   }
 
