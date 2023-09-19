@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:basic_utils/basic_utils.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpie_flutter/riverpie_flutter.dart';
 
 // 🌎 Project imports:
@@ -11,7 +12,7 @@ import 'package:authenticator/core/utils/extension/item_x.extension.dart';
 import 'package:authenticator/features/home/widgets/progress.controller.dart';
 import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 
-class ItemOTP extends StatelessWidget {
+class ItemOTP extends HookConsumerWidget {
   const ItemOTP(
     this.item, {
     super.key,
@@ -23,8 +24,8 @@ class ItemOTP extends StatelessWidget {
   final bool copied;
 
   @override
-  Widget build(BuildContext context) {
-    final state = context.ref.watch(behaviorController);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(behaviorControllerProvider);
     context.ref.watch(progressProvider);
     return AnimatedCrossFade(
       firstChild: AnimatedOpacity(

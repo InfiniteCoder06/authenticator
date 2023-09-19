@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:navigation_history_observer/navigation_history_observer.dart';
@@ -32,7 +33,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  var container = RiverpieContainer();
+  var container = ProviderContainer();
   final appPathsOverride = container.read(appPathsProvider);
   final securityServiceOverride = container.read(securityServiceProvider);
   final entryRepositoryOverride = container.read(hiveEntryRepoProvider);
@@ -48,23 +49,19 @@ void main() async {
   await securityStorageOverride.init();
 
   runApp(RiverpieScope(
-    overrides: [
-      appPathsProvider.overrideWithValue(appPathsOverride),
-      hiveEntryRepoProvider.overrideWithValue(entryRepositoryOverride),
-      hiveStorageProvider.overrideWithValue(hiveStorageOverride),
-      securityStorageProvider.overrideWithValue(securityStorageOverride),
-      securityServiceProvider.overrideWithValue(securityServiceOverride),
-    ],
-    child: const MyApp(),
+    child: UncontrolledProviderScope(
+      container: container,
+      child: const MyApp(),
+    ),
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends HookConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = context.ref.watch(themeController);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(themeControllerProvider);
 
     final lightColorScheme = ColorScheme.fromSeed(
       seedColor: Colors.primaries.elementAt(controller.themeAccent),

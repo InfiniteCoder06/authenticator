@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:riverpie_flutter/riverpie_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
@@ -18,26 +18,27 @@ import 'package:authenticator/widgets/app_pop_button.dart';
 import 'package:authenticator/widgets/item/item.card.widget.dart';
 import 'package:authenticator/widgets/svg.loader.dart';
 
-class EntryOverviewPage extends StatelessWidget {
+class EntryOverviewPage extends HookConsumerWidget {
   const EntryOverviewPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    context.ref.notifier(homeController).get();
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(homeControllerProvider.notifier).get();
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Builder(
           builder: (context) {
-            final selected = context.ref
-                .watch(homeController.select((state) => state.selected));
+            final selected = ref.watch(
+                homeControllerProvider.select((state) => state.selected));
             return MorphingAppBar(
               leading: selected.isNotEmpty
                   ? AppPopButton(
                       forceCloseButton: true,
                       tooltip: "Clear",
-                      onPressed: () =>
-                          context.ref.notifier(homeController).clearSelected())
+                      onPressed: () => ref
+                          .read(homeControllerProvider.notifier)
+                          .clearSelected())
                   : null,
               title: const AppBarTitle(fallbackRouter: AppRouter.home),
               actions: [
@@ -45,12 +46,12 @@ class EntryOverviewPage extends StatelessWidget {
                   firstChild: const SizedBox(height: 48),
                   secondChild: IconButton(
                     onPressed: () async {
-                      context.ref.notifier(homeController).clearSelected();
+                      ref.read(homeControllerProvider.notifier).clearSelected();
                       await Navigator.of(context).pushNamed(
                           AppRouter.details.path,
                           arguments: DetailPageArgs(item: selected.first));
                       if (context.mounted) {
-                        context.ref.notifier(homeController).get();
+                        ref.read(homeControllerProvider.notifier).get();
                       }
                     },
                     icon: const Icon(Icons.edit_rounded),
@@ -68,13 +69,13 @@ class EntryOverviewPage extends StatelessWidget {
                               AppRouter.transfer.path,
                               arguments: TransferPageArgs(
                                 items:
-                                    context.ref.read(homeController).selected,
+                                    ref.read(homeControllerProvider).selected,
                               ));
                           if (context.mounted) {
-                            context.ref
-                                .notifier(homeController)
+                            ref
+                                .read(homeControllerProvider.notifier)
                                 .clearSelected();
-                            context.ref.notifier(homeController).get();
+                            ref.read(homeControllerProvider.notifier).get();
                           }
                         },
                         icon: const Icon(Icons.share_rounded),
@@ -83,12 +84,12 @@ class EntryOverviewPage extends StatelessWidget {
                       IconButton(
                         onPressed: () async {
                           await AppDialogs.showDeletionDialog(
-                              context, selected);
+                              context, selected, ref);
                           if (context.mounted) {
-                            context.ref
-                                .notifier(homeController)
+                            ref
+                                .read(homeControllerProvider.notifier)
                                 .clearSelected();
-                            context.ref.notifier(homeController).get();
+                            ref.read(homeControllerProvider.notifier).get();
                           }
                         },
                         icon: const Icon(Icons.delete_rounded),
@@ -111,8 +112,7 @@ class EntryOverviewPage extends StatelessWidget {
                     if (value == 0) {
                       await Navigator.of(context)
                           .pushNamed(AppRouter.settings.path);
-                      if (!context.mounted) return;
-                      context.ref.notifier(homeController).get();
+                      ref.read(homeControllerProvider.notifier).get();
                     }
                   },
                 ),
@@ -123,24 +123,28 @@ class EntryOverviewPage extends StatelessWidget {
       ),
       body: Builder(
         builder: (context) {
-          final entries = context.ref
-              .watch(homeController.select((state) => state.entries));
-          return entries.isEmpty
-              ? SvgLoader(svgPath: Assets.empty.path)
-              : Column(
-                  children: [
-                    const ProgressBar(),
-                    Expanded(
-                      child: ListView.builder(
+          final entries = ref
+              .watch(homeControllerProvider.select((state) => state.entries));
+          return Column(
+            children: [
+              AnimatedOpacity(
+                duration: Durations.short4,
+                opacity: entries.isEmpty ? 0 : 1,
+                child: const ProgressBar(),
+              ),
+              Expanded(
+                child: entries.isEmpty
+                    ? SvgLoader(svgPath: Assets.empty.path)
+                    : ListView.builder(
                         itemCount: entries.length,
                         itemBuilder: (context, index) {
                           final item = entries[index];
                           return ItemCard(index: index, item: item);
                         },
                       ),
-                    )
-                  ],
-                );
+              ),
+            ],
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -168,7 +172,9 @@ class EntryOverviewPage extends StatelessWidget {
                     key: const Key("home.fab.add.image"),
                     onTap: () async {
                       Navigator.of(context).pop();
-                      context.ref.notifier(homeController).pickAndScan(context);
+                      ref
+                          .read(homeControllerProvider.notifier)
+                          .pickAndScan(context);
                     },
                     leading: const Icon(Icons.add_photo_alternate_rounded),
                     title: const Text("Scan Image"),
@@ -181,7 +187,7 @@ class EntryOverviewPage extends StatelessWidget {
                           AppRouter.details.path,
                           arguments: const DetailPageArgs(item: null));
                       if (context.mounted) {
-                        context.ref.notifier(homeController).get();
+                        ref.read(homeControllerProvider.notifier).get();
                       }
                     },
                     leading: const Icon(Icons.edit_rounded),
@@ -192,8 +198,8 @@ class EntryOverviewPage extends StatelessWidget {
                     key: const Key("home.fab.add.url"),
                     onTap: () async {
                       Navigator.of(context).pop();
-                      await context.ref
-                          .notifier(homeController)
+                      await ref
+                          .read(homeControllerProvider.notifier)
                           .showManualUri(context);
                     },
                     leading: const Icon(Icons.edit_rounded),

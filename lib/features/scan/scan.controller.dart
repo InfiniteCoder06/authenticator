@@ -3,21 +3,20 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:riverpie/riverpie.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/otp.util.dart';
 
-final scanController =
-    NotifierProvider<ScanController, MobileScannerController>(
-        (ref) => ScanController());
+part 'scan.controller.g.dart';
 
-class ScanController extends PureNotifier<MobileScannerController>
-    with ConsoleMixin {
+@riverpod
+class ScanController extends _$ScanController with ConsoleMixin {
   @override
-  MobileScannerController init() {
+  MobileScannerController build() {
+    postInit();
     return MobileScannerController(
       detectionSpeed: DetectionSpeed.noDuplicates,
       formats: [BarcodeFormat.qrCode],
@@ -25,10 +24,8 @@ class ScanController extends PureNotifier<MobileScannerController>
     );
   }
 
-  @override
   void postInit() async {
     console.info("⚙️ Initialize");
-    super.postInit();
   }
 
   Future<void> onDetect(BuildContext context, BarcodeCapture capture) async {

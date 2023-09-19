@@ -3,29 +3,26 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:equatable/equatable.dart';
-import 'package:riverpie/riverpie.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/database/adapter/storage_service.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/provider.dart';
 
 part 'theme.state.dart';
+part 'theme.controller.g.dart';
 
-final themeController = NotifierProvider<ThemeController, ThemeState>(
-    (ref) => ThemeController(ref.read(hiveStorageProvider)));
-
-class ThemeController extends PureNotifier<ThemeState> with ConsoleMixin {
-  final StorageService storageService;
-
-  ThemeController(this.storageService);
-
+@riverpod
+class ThemeController extends _$ThemeController with ConsoleMixin {
   @override
-  ThemeState init() => ThemeState.initial();
+  ThemeState build() {
+    postInit();
+    return ThemeState.initial();
+  }
 
-  @override
   void postInit() async {
+    final storageService = ref.read(hiveStorageProvider);
     var dynamicColor =
         await storageService.get<bool>(kdynamicColor, defaultValue: false);
     final themeModeDb =
@@ -41,20 +38,22 @@ class ThemeController extends PureNotifier<ThemeState> with ConsoleMixin {
     );
 
     console.info("⚙️ Initialize");
-    super.postInit();
   }
 
   void toggleThemeMode(ThemeMode themeMode) async {
+    final storageService = ref.read(hiveStorageProvider);
     await storageService.put<int>(kthemeMode, themeMode.index);
     state = state.copyWith(themeMode: themeMode);
   }
 
   void setAccent(int index) async {
+    final storageService = ref.read(hiveStorageProvider);
     await storageService.put<int>(kthemeAccent, index);
     state = state.copyWith(themeAccent: index);
   }
 
   void setDynamicColor(bool useDynamicColor) async {
+    final storageService = ref.read(hiveStorageProvider);
     await storageService.put<bool>(kdynamicColor, useDynamicColor);
     state = state.copyWith(dynamicColor: useDynamicColor);
   }

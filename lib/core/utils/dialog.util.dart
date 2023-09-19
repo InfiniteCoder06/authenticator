@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:riverpie_flutter/riverpie_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
@@ -11,7 +11,7 @@ import 'package:authenticator/provider.dart';
 
 class AppDialogs {
   static Future<void> showDeletionDialog(
-      BuildContext context, List<Item> items) async {
+      BuildContext context, List<Item> items, WidgetRef ref) async {
     await showDialog(
       context: context,
       builder: (context) {
@@ -54,9 +54,7 @@ class AppDialogs {
             ),
             TextButton(
               onPressed: () async {
-                await context.ref
-                    .read(hiveEntryRepoProvider)
-                    .fakeDeleteAll(items);
+                await ref.read(hiveEntryRepoProvider).fakeDeleteAll(items);
                 if (!context.mounted) return;
                 Navigator.of(context).pop();
               },

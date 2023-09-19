@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:fpdart/fpdart.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:riverpie_flutter/riverpie_flutter.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
@@ -18,18 +18,18 @@ import 'package:authenticator/features/details/widgets/icon.widget.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
 
-class DetailPage extends StatelessWidget {
+class DetailPage extends HookConsumerWidget {
   const DetailPage({super.key, required this.item});
 
   final Option<Item> item;
 
   @override
-  Widget build(BuildContext context) {
-    context.ref.notifier(detailController).initialize(item);
-    final controller = context.ref.watch(detailController);
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(detailController.notifier).initialize(item);
+    final controller = ref.watch(detailController);
     return WillPopScope(
       onWillPop: () async =>
-          context.ref.notifier(detailController).canPop(context),
+          ref.read(detailController.notifier).canPop(context),
       child: Scaffold(
         appBar: MorphingAppBar(
           leading: AppPopButton.wrapper(context),
@@ -42,7 +42,7 @@ class DetailPage extends StatelessWidget {
               tooltip: "Save",
               icon: const Icon(Icons.save_rounded),
               onPressed: () =>
-                  context.ref.notifier(detailController).save(context),
+                  ref.read(detailController.notifier).save(context),
             ),
             if (item.isSome())
               PopupMenuButton<int>(
@@ -57,7 +57,7 @@ class DetailPage extends StatelessWidget {
                 onSelected: (value) async {
                   if (value == 0) {
                     await AppDialogs.showDeletionDialog(
-                        context, [item.toNullable()!]);
+                        context, [item.toNullable()!], ref);
                     Future<void>.delayed(const Duration(milliseconds: 300), () {
                       Navigator.of(context).pop();
                     });

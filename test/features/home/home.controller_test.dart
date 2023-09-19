@@ -1,7 +1,7 @@
 // 📦 Package imports:
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/hive_impl.dart';
-import 'package:riverpie/riverpie.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 // 🌎 Project imports:
@@ -21,7 +21,7 @@ void main() {
   }
 
   late AppPaths appPaths;
-  late RiverpieContainer container;
+  late ProviderContainer container;
   late HiveEntryRepository entryRepository;
   final item = Item.initial();
   final items = List.generate(9, (index) {
@@ -36,7 +36,7 @@ void main() {
     appPaths = AppPaths();
     appPaths.initTest(tempDir.path);
 
-    container = RiverpieContainer(overrides: [
+    container = ProviderContainer(overrides: [
       appPathsProvider.overrideWithValue(appPaths),
       hiveProvider.overrideWithValue(hive),
     ]);

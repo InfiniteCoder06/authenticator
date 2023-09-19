@@ -9,11 +9,10 @@ import 'package:buffer_image/buffer_image.dart';
 import 'package:equatable/equatable.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:riverpie/riverpie.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:zxing_lib/zxing.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
@@ -24,31 +23,23 @@ import 'package:authenticator/modules.dart';
 import 'package:authenticator/provider.dart';
 
 part 'home.state.dart';
+part 'home.controller.g.dart';
 
-final homeController = NotifierProvider<HomeController, HomeState>(
-  (ref) => HomeController(
-    entryRepository: ref.read(hiveEntryRepoProvider),
-    imagePicker: ref.read(imagePickerProvider),
-  ),
-);
-
-class HomeController extends PureNotifier<HomeState> with ConsoleMixin {
-  final BaseEntryRepository entryRepository;
-  final ImagePicker imagePicker;
-  HomeController({required this.entryRepository, required this.imagePicker});
-
+@riverpod
+class HomeController extends _$HomeController with ConsoleMixin {
   @override
-  HomeState init() => HomeState.initial();
+  HomeState build() {
+    postInit();
+    return HomeState.initial();
+  }
 
-  @override
   void postInit() async {
     console.info("⚙️ Initialize");
-    super.postInit();
   }
 
   Future<void> get() async {
     try {
-      final entries = await entryRepository.getFiltered();
+      final entries = await ref.read(hiveEntryRepoProvider).getFiltered();
       state = state.copyWith(entries: entries, error: '');
     } catch (errorDB) {
       state = state.copyWith(error: errorDB.toString());
@@ -90,8 +81,9 @@ class HomeController extends PureNotifier<HomeState> with ConsoleMixin {
             arguments: DetailPageArgs(item: item)));
   }
 
-  TaskOption<XFile> pickFile() => TaskOption(() async =>
-      optionOf(await imagePicker.pickImage(source: ImageSource.gallery)));
+  TaskOption<XFile> pickFile() => TaskOption(() async => optionOf(await ref
+      .read(imagePickerProvider)
+      .pickImage(source: ImageSource.gallery)));
 
   TaskOption<BufferImage> getBufferImage(Uint8List data) =>
       TaskOption(() async => optionOf(await BufferImage.fromFile(data)));

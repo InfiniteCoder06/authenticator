@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:equatable/equatable.dart';
-import 'package:riverpie/riverpie.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_backup_repository.dart';
@@ -20,26 +20,23 @@ import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/provider.dart';
 
 part 'account.state.dart';
+part 'account.controller.g.dart';
 
-final accountController = NotifierProvider<AccountController, AccountState>(
-    (ref) => AccountController(ref.read(firebaseBackupRepoProvider),
-        ref.read(hiveEntryRepoProvider), ref.read(hiveStorageProvider)));
-
-class AccountController extends PureNotifier<AccountState> with ConsoleMixin {
-  AccountController(
-    this.backupRepository,
-    this.entryRepository,
-    this.storageService,
-  );
-
-  final BaseBackupRepository backupRepository;
-  final BaseEntryRepository entryRepository;
-  final StorageService storageService;
+@riverpod
+class AccountController extends _$AccountController with ConsoleMixin {
+  late final BaseBackupRepository backupRepository;
+  late final BaseEntryRepository entryRepository;
+  late final StorageService storageService;
 
   @override
-  AccountState init() => AccountState.initial();
+  AccountState build() {
+    backupRepository = ref.read(firebaseBackupRepoProvider);
+    entryRepository = ref.read(hiveEntryRepoProvider);
+    storageService = ref.read(hiveStorageProvider);
+    postInit();
+    return AccountState.initial();
+  }
 
-  @override
   void postInit() async {
     try {
       final userId = await storageService.get(kUserId);

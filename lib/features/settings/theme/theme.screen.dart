@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:fpdart/fpdart.dart';
-import 'package:riverpie_flutter/riverpie_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
@@ -12,11 +12,11 @@ import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 import 'package:authenticator/widgets/switch_list_tile.dart';
 
-class ThemeSettingsPage extends StatelessWidget {
+class ThemeSettingsPage extends HookConsumerWidget {
   const ThemeSettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -63,8 +63,9 @@ class ThemeSettingsPage extends StatelessWidget {
                                       width: 80,
                                       child: InkWell(
                                         borderRadius: Shape.large,
-                                        onTap: () => context.ref
-                                            .notifier(themeController)
+                                        onTap: () => ref
+                                            .read(themeControllerProvider
+                                                .notifier)
                                             .setAccent(index),
                                         child: Padding(
                                           padding: const EdgeInsets.all(13),
@@ -82,7 +83,7 @@ class ThemeSettingsPage extends StatelessWidget {
                       ),
                       Builder(
                         builder: (context) {
-                          final themeMode = context.ref.watch(themeController
+                          final themeMode = ref.watch(themeControllerProvider
                               .select((state) => state.themeMode));
                           return Column(
                             children: [
@@ -104,8 +105,8 @@ class ThemeSettingsPage extends StatelessWidget {
                                     label: Text("Dark"),
                                   ),
                                 ],
-                                onSelectionChanged: (themeMode) => context.ref
-                                    .notifier(themeController)
+                                onSelectionChanged: (themeMode) => ref
+                                    .read(themeControllerProvider.notifier)
                                     .toggleThemeMode(themeMode.first),
                                 selected: {themeMode},
                               ),
@@ -118,15 +119,15 @@ class ThemeSettingsPage extends StatelessWidget {
                 ),
                 Builder(
                   builder: (context) {
-                    final dynamicColor = context.ref.watch(
-                        themeController.select((state) => state.dynamicColor));
+                    final dynamicColor = ref.watch(themeControllerProvider
+                        .select((state) => state.dynamicColor));
                     return MaterialSwitchListTile(
                       title: const Text("Dynamic Color"),
                       subtitle:
                           const Text("Use Accent Color from System/ Wallpaper"),
                       value: dynamicColor,
-                      onToggle: (bool value) => context.ref
-                          .notifier(themeController)
+                      onToggle: (bool value) => ref
+                          .read(themeControllerProvider.notifier)
                           .setDynamicColor(value),
                     );
                   },
