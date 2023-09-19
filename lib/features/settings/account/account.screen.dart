@@ -23,6 +23,21 @@ class AccountSettingsPage extends StatelessWidget {
       }
       if (prev.isSyncing && !next.isSyncing) {
         LoadingOverlay.of(context).hide();
+        ScaffoldMessenger.of(context)
+          ..hideCurrentMaterialBanner()
+          ..showMaterialBanner(
+            MaterialBanner(
+              content: const Text("Successfully Synced"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  },
+                  child: const Text("Dismiss"),
+                )
+              ],
+            ),
+          );
       }
     });
     return Scaffold(
