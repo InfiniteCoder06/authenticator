@@ -134,15 +134,16 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
                 width: 450, child: Text('You have unsaved changes')),
             actions: [
               TextButton(
-                  onPressed: Navigator.of(context).pop,
-                  child: const Text('Cancel')),
-              TextButton(
                 onPressed: () {
                   hasChanges = false;
                   Navigator.of(context).pop();
                 },
                 child: const Text('Discard'),
               ),
+              TextButton(
+                onPressed: Navigator.of(context).pop,
+                child: const Text('Cancel'),
+              )
             ],
           );
         },
