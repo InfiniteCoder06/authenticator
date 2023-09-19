@@ -1,4 +1,8 @@
+// 🎯 Dart imports:
+import 'dart:convert';
+
 // 📦 Package imports:
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 
 // 🌎 Project imports:
@@ -22,7 +26,22 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     hive.registerAdapter(FieldAdapter());
     hive.registerAdapter(FieldDataAdapter());
 
-    _box = await hive.openBox(kDatabase, path: AppPaths.hivePath);
+    const secureStorage = FlutterSecureStorage();
+    final encryptionKeyString = await secureStorage.read(key: 'key');
+    if (encryptionKeyString == null) {
+      final key = hive.generateSecureKey();
+      await secureStorage.write(
+        key: 'key',
+        value: base64Url.encode(key),
+      );
+    }
+    final key = await secureStorage.read(key: 'key');
+    final encryptionKeyUint8List = base64Url.decode(key!);
+    _box = await hive.openBox(
+      kDatabase,
+      encryptionCipher: HiveAesCipher(encryptionKeyUint8List),
+      path: AppPaths.hivePath,
+    );
     console.info("⚙️ Initialize");
   }
 
