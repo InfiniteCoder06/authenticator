@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 // 📦 Package imports:
 import 'package:basic_utils/basic_utils.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:riverpie_flutter/riverpie_flutter.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
@@ -26,7 +25,7 @@ class ItemOTP extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(behaviorControllerProvider);
-    context.ref.watch(progressProvider);
+    ref.watch(progressProvider);
     return AnimatedCrossFade(
       firstChild: AnimatedOpacity(
         duration: const Duration(milliseconds: 1),

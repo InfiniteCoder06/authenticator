@@ -2,23 +2,20 @@
 import 'dart:async';
 
 // 📦 Package imports:
-import 'package:riverpie/riverpie.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final progressProvider =
-    NotifierProvider<ProgressProvider, double>((ref) => ProgressProvider());
+part 'progress.controller.g.dart';
 
-class ProgressProvider extends PureNotifier<double> {
-  ProgressProvider();
-
+@Riverpod(keepAlive: true)
+class Progress extends Notifier<double> {
   @override
-  double init() => 0.0;
+  double build() {
+    postInit();
+    return 0.0;
+  }
 
-  late StreamSubscription? _tickerSubscription;
-
-  @override
   void postInit() {
-    _tickerSubscription = Stream.periodic(const Duration(milliseconds: 300))
-        .listen((_) => ticked());
+    Stream.periodic(const Duration(milliseconds: 300)).listen((_) => ticked());
   }
 
   void ticked() {
@@ -27,11 +24,5 @@ class ProgressProvider extends PureNotifier<double> {
     } else {
       state = DateTime.now().second.toDouble();
     }
-  }
-
-  @override
-  void dispose() {
-    _tickerSubscription?.cancel();
-    super.dispose();
   }
 }

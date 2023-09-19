@@ -1096,22 +1096,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "16.1.0"
-  riverpie:
-    dependency: "direct main"
-    description:
-      name: riverpie
-      sha256: "917d6ad8504f42085cec9aeaa5b9bbb3cf411a34f965e5f86c686735e99687f9"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.26.0"
-  riverpie_flutter:
-    dependency: "direct main"
-    description:
-      name: riverpie_flutter
-      sha256: "26c292bbefadd32001e5058c6345d6e4cb73d3d0a272519a19792fbdab1611e3"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.26.0"
   riverpod:
     dependency: transitive
     description:
@@ -1277,22 +1261,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.4.0"
-  syncfusion_flutter_core:
-    dependency: transitive
-    description:
-      name: syncfusion_flutter_core
-      sha256: aea119c8117953fa5decf4a313b431e556b0959cd35ff88f8fbdc0eda9bedb06
-      url: "https://pub.dev"
-    source: hosted
-    version: "23.1.36"
-  syncfusion_flutter_gauges:
-    dependency: "direct main"
-    description:
-      name: syncfusion_flutter_gauges
-      sha256: ae46df959f60f0fed6a8c86c8c971883ed790450f8d32f546dc8a02cb4500cbd
-      url: "https://pub.dev"
-    source: hosted
-    version: "23.1.36"
   term_glyph:
     dependency: transitive
     description:
