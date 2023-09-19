@@ -10,7 +10,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:navigation_history_observer/navigation_history_observer.dart';
-import 'package:riverpie_flutter/riverpie_flutter.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
@@ -48,11 +47,9 @@ void main() async {
   await hiveStorageOverride.init();
   await securityStorageOverride.init();
 
-  runApp(RiverpieScope(
-    child: UncontrolledProviderScope(
-      container: container,
-      child: const MyApp(),
-    ),
+  runApp(UncontrolledProviderScope(
+    container: container,
+    child: const MyApp(),
   ));
 }
 

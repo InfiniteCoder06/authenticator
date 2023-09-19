@@ -2,37 +2,162 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:riverpie_flutter/riverpie_flutter.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/features/home/widgets/progress.controller.dart';
 
-class ProgressBar extends StatelessWidget {
+class ProgressBar extends ConsumerWidget {
   const ProgressBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final progress = context.ref.watch(progressProvider);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progress = ref.watch(progressProvider);
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      child: SfLinearGauge(
-        maximum: 29,
-        showLabels: false,
-        showTicks: false,
-        animateRange: true,
-        axisTrackStyle: LinearAxisTrackStyle(
-          thickness: 3.0,
-          color: Theme.of(context).colorScheme.background,
-        ),
-        barPointers: [
-          LinearBarPointer(
-            thickness: 4.0,
-            value: progress,
-            animationType: LinearAnimationType.ease,
-          )
-        ],
+      child: CustomProgressBar(
+        value: progress / 30,
+        animationDuration: const Duration(milliseconds: 850),
+        animationCurve: Curves.slowMiddle,
+        backgroundColor: Theme.of(context).colorScheme.background,
+        goingBackAnimationDuration: Durations.short4,
       ),
     );
+  }
+}
+
+class CustomProgressBar extends ProgressIndicator {
+  const CustomProgressBar({
+    super.key,
+    double? value,
+    Color? backgroundColor,
+    Color? color,
+    Animation<Color?>? valueColor,
+    this.minHeight,
+    String? semanticsLabel,
+    String? semanticsValue,
+    this.animationDuration = const Duration(milliseconds: 500),
+    this.goingBackAnimationDuration = const Duration(milliseconds: 500),
+    this.animationCurve = Curves.linear,
+  })  : assert(minHeight == null || minHeight > 0),
+        super(
+          value: value,
+          backgroundColor: backgroundColor,
+          color: color,
+          valueColor: valueColor,
+          semanticsLabel: semanticsLabel,
+          semanticsValue: semanticsValue,
+        );
+
+  /// {@template flutter.material.LinearProgressIndicator.trackColor}
+  /// Color of the track being filled by the linear indicator.
+  ///
+  /// If [AnimatedLinearProgressIndicator.backgroundColor] is null then the
+  /// ambient [AnimatedLinearProgressIndicator.linearTrackColor] will be used.
+  /// If that is null, then the ambient theme's [ColorScheme.background]
+  /// will be used to draw the track.
+  /// {@endtemplate}
+  @override
+  Color? get backgroundColor => super.backgroundColor;
+  final double? minHeight;
+  final Duration? animationDuration;
+  final Duration? goingBackAnimationDuration;
+  final Curve animationCurve;
+  @override
+  State<CustomProgressBar> createState() => CustomProgressBarState();
+}
+
+class CustomProgressBarState extends State<CustomProgressBar>
+    with TickerProviderStateMixin {
+  AnimationController? _controller;
+  AnimationController? _goingBackController;
+  Tween<double>? _tween;
+  Animation<double>? _animation;
+  Animation<double>? _goingBackAnimation;
+  bool _goingBack = false;
+  void _setControllers() {
+    _controller = AnimationController(
+      duration: widget.animationDuration,
+      vsync: this,
+    );
+    _goingBackController = AnimationController(
+      duration: widget.goingBackAnimationDuration,
+      vsync: this,
+    );
+    _tween = Tween(begin: widget.value, end: widget.value);
+    _animation = _tween?.animate(
+      CurvedAnimation(
+        curve: widget.animationCurve,
+        parent: _controller!,
+      ),
+    );
+    _goingBackAnimation = _tween?.animate(
+      CurvedAnimation(
+        curve: widget.animationCurve,
+        parent: _goingBackController!,
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setControllers();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+        animation: _goingBack ? _goingBackAnimation! : _animation!,
+        builder: (context, child) {
+          return LinearProgressIndicator(
+            key: widget.key,
+            value: _goingBack ? _goingBackAnimation!.value : _animation!.value,
+            backgroundColor: widget.backgroundColor,
+            color: widget.color,
+            valueColor: widget.valueColor,
+            minHeight: widget.minHeight,
+            semanticsLabel: widget.semanticsLabel,
+            semanticsValue: widget.semanticsValue,
+          );
+        });
+  }
+
+  @override
+  void didUpdateWidget(CustomProgressBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if ((oldWidget.animationDuration != widget.animationDuration) ||
+        (oldWidget.goingBackAnimationDuration !=
+            widget.goingBackAnimationDuration) ||
+        (oldWidget.animationCurve != widget.animationCurve)) {
+      _setControllers();
+    }
+    double animationOldValue = 0;
+    if (_goingBack) {
+      animationOldValue = _goingBackAnimation!.value;
+    } else {
+      animationOldValue = _animation!.value;
+    }
+    if (_animation!.value > widget.value!) {
+      _goingBack = true;
+      _tween?.begin = animationOldValue;
+      _controller?.reset();
+      _goingBackController?.reset();
+      _tween?.end = widget.value;
+      _goingBackController?.forward();
+    } else {
+      _goingBack = false;
+      _tween?.begin = animationOldValue;
+      _controller?.reset();
+      _goingBackController?.reset();
+      _tween?.end = widget.value;
+      _controller?.forward();
+    }
+  }
+
+  @override
+  dispose() {
+    _controller?.dispose(); // you need this
+    super.dispose();
   }
 }

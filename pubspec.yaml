@@ -64,11 +64,8 @@ dependencies:
   popover: ^0.2.8+2
   qr_flutter: ^4.1.0
   reactive_forms: ^16.1.0
-  riverpie: ^0.26.0
-  riverpie_flutter: ^0.26.0
   riverpod_annotation: ^2.1.5
   swipeable_page_route: ^0.4.0
-  syncfusion_flutter_gauges: ^23.1.36
   uri: ^1.0.0
   url_launcher: ^6.1.14
   uuid: ^3.0.7
