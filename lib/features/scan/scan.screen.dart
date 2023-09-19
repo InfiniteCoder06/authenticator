@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:riverpie_flutter/riverpie_flutter.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
@@ -12,12 +12,12 @@ import 'package:authenticator/features/scan/qr_overlay/material_preview.overlay.
 import 'package:authenticator/features/scan/scan.controller.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 
-class ScanPage extends StatelessWidget {
+class ScanPage extends HookConsumerWidget {
   const ScanPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = context.ref.watch(scanController);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(scanControllerProvider);
     return Scaffold(
       appBar: MorphingAppBar(
         title: const AppBarTitle(fallbackRouter: AppRouter.scan),
@@ -63,8 +63,9 @@ class ScanPage extends StatelessWidget {
         children: [
           MobileScanner(
             controller: controller,
-            onDetect: (data) =>
-                context.ref.notifier(scanController).onDetect(context, data),
+            onDetect: (data) => ref
+                .read(scanControllerProvider.notifier)
+                .onDetect(context, data),
           ),
           const Padding(
             padding: EdgeInsets.zero,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:basic_utils/basic_utils.dart';
-import 'package:riverpie_flutter/riverpie_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
@@ -12,11 +12,11 @@ import 'package:authenticator/features/settings/behaviour/behaviour.controller.d
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 import 'package:authenticator/widgets/switch_list_tile.dart';
 
-class BehaviourSettingsPage extends StatelessWidget {
+class BehaviourSettingsPage extends HookConsumerWidget {
   const BehaviourSettingsPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -25,16 +25,16 @@ class BehaviourSettingsPage extends StatelessWidget {
             delegate: SliverChildListDelegate(
               <Widget>[
                 Builder(builder: (context) {
-                  final copyOnTap = context.ref.watch(
-                      behaviorController.select((state) => state.copyOnTap));
+                  final copyOnTap = ref.watch(behaviorControllerProvider
+                      .select((state) => state.copyOnTap));
                   return MaterialSwitchListTile(
                     title: const Text("Copy tokens when tapped"),
                     subtitle: const Text(
                       "Copy tokens to the clipboard by tapping them",
                     ),
                     value: copyOnTap,
-                    onToggle: (value) async => context.ref
-                        .notifier(behaviorController)
+                    onToggle: (value) async => ref
+                        .read(behaviorControllerProvider.notifier)
                         .toggleCopyOnTap(value),
                   );
                 }),
@@ -45,16 +45,16 @@ class BehaviourSettingsPage extends StatelessWidget {
                   ),
                 ),
                 Builder(builder: (context) {
-                  final fontSize = context.ref.watch(
-                      behaviorController.select((state) => state.fontSize));
+                  final fontSize = ref.watch(behaviorControllerProvider
+                      .select((state) => state.fontSize));
                   return Slider(
                     min: 20,
                     max: 30,
                     divisions: 10,
                     value: fontSize.toDouble(),
                     label: fontSize.toString(),
-                    onChanged: (value) => context.ref
-                        .notifier(behaviorController)
+                    onChanged: (value) => ref
+                        .read(behaviorControllerProvider.notifier)
                         .setFontSize(value.toInt()),
                   );
                 }),
@@ -65,16 +65,16 @@ class BehaviourSettingsPage extends StatelessWidget {
                   ),
                 ),
                 Builder(builder: (context) {
-                  final codeGroup = context.ref.watch(
-                      behaviorController.select((state) => state.codeGroup));
+                  final codeGroup = ref.watch(behaviorControllerProvider
+                      .select((state) => state.codeGroup));
                   return Slider(
                     min: 2,
                     max: 6,
                     divisions: 4,
                     value: codeGroup.toDouble(),
                     label: codeGroup.toString(),
-                    onChanged: (value) => context.ref
-                        .notifier(behaviorController)
+                    onChanged: (value) => ref
+                        .read(behaviorControllerProvider.notifier)
                         .setCodeGroup(value.toInt()),
                   );
                 }),
@@ -91,12 +91,12 @@ class BehaviourSettingsPage extends StatelessWidget {
   }
 }
 
-class FakeEntry extends StatelessWidget {
+class FakeEntry extends HookConsumerWidget {
   const FakeEntry({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final state = context.ref.watch(behaviorController);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(behaviorControllerProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: 8,

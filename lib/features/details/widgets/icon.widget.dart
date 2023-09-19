@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:dotted_border/dotted_border.dart';
-import 'package:riverpie_flutter/riverpie_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/extension/color_scheme.extension.dart';
@@ -11,12 +11,12 @@ import 'package:authenticator/core/utils/extension/item_x.extension.dart';
 import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/features/details/detail.controller.dart';
 
-class ItemIcon extends StatelessWidget {
+class ItemIcon extends HookConsumerWidget {
   const ItemIcon({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final controller = context.ref.watch(detailController);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.watch(detailController);
     final icon = controller.originalItem.toNullable()!.getIcon();
     return Padding(
       padding: const EdgeInsets.all(8),

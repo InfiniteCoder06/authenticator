@@ -1,5 +1,5 @@
 // 📦 Package imports:
-import 'package:riverpie/riverpie.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/database/firebase/firebase_backup_repository.dart';
@@ -10,28 +10,36 @@ import 'package:authenticator/core/security/security_service.dart';
 import 'package:authenticator/core/utils/paths.util.dart';
 import 'package:authenticator/modules.dart';
 
-final appPathsProvider = Provider((ref) => AppPaths());
+part 'provider.g.dart';
 
-final hiveStorageProvider =
-    Provider((ref) => HivePersistanceProvider(ref.read(hiveProvider)));
+@Riverpod(keepAlive: true)
+AppPaths appPaths(AppPathsRef ref) => AppPaths();
 
-final securityStorageProvider = Provider(
-  (ref) => SecurityPersistanceProvider(ref.read(hiveProvider)),
-);
+@Riverpod(keepAlive: true)
+HivePersistanceProvider hiveStorage(HiveStorageRef ref) =>
+    HivePersistanceProvider(ref.read(hiveProvider));
 
-final hiveEntryRepoProvider = Provider((ref) =>
-    HiveEntryRepository(ref.read(hiveProvider), ref.read(appPathsProvider)));
+@Riverpod(keepAlive: true)
+SecurityPersistanceProvider securityStorage(SecurityStorageRef ref) =>
+    SecurityPersistanceProvider(ref.read(hiveProvider));
 
-final firebaseBackupRepoProvider = Provider((ref) => FirebaseBackupRepository(
-    firestore: ref.read(firestoreProvider),
-    storageService: ref.read(hiveStorageProvider)));
+@Riverpod(keepAlive: true)
+HiveEntryRepository hiveEntryRepo(HiveEntryRepoRef ref) =>
+    HiveEntryRepository(ref.read(hiveProvider), ref.read(appPathsProvider));
 
-final securityInformationsProvider = Provider(
-  (ref) => SecurityInformations(
-    localAuth: ref.read(localAuthProvider),
-    storage: ref.read(securityStorageProvider),
-  ),
-);
+@Riverpod(keepAlive: true)
+FirebaseBackupRepository firebaseBackupRepo(FirebaseBackupRepoRef ref) =>
+    FirebaseBackupRepository(
+        firestore: ref.read(firestoreProvider),
+        storageService: ref.read(hiveStorageProvider));
 
-final securityServiceProvider = Provider(
-    (ref) => SecurityService(lockInfo: ref.read(securityInformationsProvider)));
+@Riverpod(keepAlive: true)
+SecurityInformations securityInformations(SecurityInformationsRef ref) =>
+    SecurityInformations(
+      localAuth: ref.read(localAuthProvider),
+      storage: ref.read(securityStorageProvider),
+    );
+
+@Riverpod(keepAlive: true)
+SecurityService securityService(SecurityServiceRef ref) =>
+    SecurityService(lockInfo: ref.read(securityInformationsProvider));

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
-import 'package:riverpie_flutter/riverpie_flutter.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/security/security_service.dart';
@@ -10,7 +10,7 @@ import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/schedule.mixin.dart';
 import 'package:authenticator/provider.dart';
 
-class AppLocalAuth extends StatefulWidget {
+class AppLocalAuth extends StatefulHookConsumerWidget {
   const AppLocalAuth({
     super.key,
     required this.child,
@@ -22,11 +22,11 @@ class AppLocalAuth extends StatefulWidget {
   }
 
   @override
-  State<AppLocalAuth> createState() => AppLocalAuthState();
+  ConsumerState<AppLocalAuth> createState() => AppLocalAuthState();
 }
 
-class AppLocalAuthState extends State<AppLocalAuth>
-    with WidgetsBindingObserver, ScheduleMixin, Riverpie {
+class AppLocalAuthState extends ConsumerState<AppLocalAuth>
+    with WidgetsBindingObserver, ScheduleMixin {
   late SecurityService service;
   bool hasPinLockScreenOnState = false;
 

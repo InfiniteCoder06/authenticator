@@ -70,7 +70,6 @@ class AppBuilder extends StatelessWidget {
         ),
       ),
     );
-    ;
     return kIsWeb ? widget : AppLocalAuth(child: widget);
   }
 }
