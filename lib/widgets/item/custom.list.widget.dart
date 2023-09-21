@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 // 🌎 Project imports:
@@ -13,11 +14,15 @@ class CustomList extends StatelessWidget {
     required this.child,
     super.key,
     this.onPress,
+    this.onDelete,
+    this.onEdit,
     this.onLongPress,
   });
   final int index;
   final Widget child;
   final void Function()? onPress;
+  final void Function(BuildContext context)? onDelete;
+  final void Function(BuildContext context)? onEdit;
   final void Function()? onLongPress;
 
   @override
@@ -37,6 +42,7 @@ class CustomList extends StatelessWidget {
               vertical: 8,
             ),
             child: Card(
+              clipBehavior: Clip.antiAliasWithSaveLayer,
               shadowColor: Colors.transparent,
               shape: RoundedRectangleBorder(
                 borderRadius: Shape.extraLarge,
@@ -50,12 +56,45 @@ class CustomList extends StatelessWidget {
                 borderRadius: Shape.extraLarge,
                 onTap: onPress,
                 onLongPress: onLongPress,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 5,
+                child: Slidable(
+                  key: ValueKey(index),
+                  startActionPane: ActionPane(
+                    extentRatio: 0.2,
+                    motion: const StretchMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: onEdit,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.tertiaryContainer,
+                        foregroundColor: Theme.of(context).colorScheme.tertiary,
+                        icon: Icons.edit_rounded,
+                        borderRadius: Shape.extraLargeRight,
+                        label: 'Edit',
+                      ),
+                    ],
                   ),
-                  child: child,
+                  endActionPane: ActionPane(
+                    extentRatio: 0.2,
+                    motion: const StretchMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: onDelete,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.errorContainer,
+                        foregroundColor: Theme.of(context).colorScheme.error,
+                        icon: Icons.delete_rounded,
+                        borderRadius: Shape.extraLargeLeft,
+                        label: 'Delete',
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 5,
+                    ),
+                    child: child,
+                  ),
                 ),
               ),
             ),

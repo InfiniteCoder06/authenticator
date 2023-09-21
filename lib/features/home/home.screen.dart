@@ -7,6 +7,7 @@ import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
+import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/features/home/home.controller.dart';
@@ -15,7 +16,11 @@ import 'package:authenticator/gen/assets.gen.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_cross_fade.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
+import 'package:authenticator/widgets/item/item.body.widget.dart';
 import 'package:authenticator/widgets/item/item.card.widget.dart';
+import 'package:authenticator/widgets/item/item.header.widget.dart';
+import 'package:authenticator/widgets/item/item.otp.widget.dart';
+import 'package:authenticator/widgets/item/item.wrapper.widget.dart';
 import 'package:authenticator/widgets/svg.loader.dart';
 
 class EntryOverviewPage extends HookConsumerWidget {
@@ -139,7 +144,64 @@ class EntryOverviewPage extends HookConsumerWidget {
                         itemCount: entries.length,
                         itemBuilder: (context, index) {
                           final item = entries[index];
-                          return ItemCard(index: index, item: item);
+                          final selected = ref.watch(homeControllerProvider
+                              .select((state) => state.selected));
+                          return ItemCard(
+                            index: index,
+                            item: item,
+                            onDelete: (_) async {
+                              await AppDialogs.showDeletionDialog(
+                                  context, [item], ref);
+                              ref.read(homeControllerProvider.notifier).get();
+                            },
+                            onEdit: (_) async {
+                              await Navigator.of(context).pushNamed(
+                                  AppRouter.details.path,
+                                  arguments: DetailPageArgs(item: item));
+                              if (context.mounted) {
+                                ref.read(homeControllerProvider.notifier).get();
+                              }
+                            },
+                            onLongPress: () {
+                              if (selected.isEmpty) {
+                                ref
+                                    .read(homeControllerProvider.notifier)
+                                    .addSelected(item);
+                              }
+                            },
+                            builder: (tap) {
+                              return Row(
+                                children: [
+                                  ItemAvatar(
+                                    item: item,
+                                    selected: selected.contains(item),
+                                    onAvatarPress: () {
+                                      final bool inList =
+                                          selected.contains(item);
+                                      inList
+                                          ? ref
+                                              .read(homeControllerProvider
+                                                  .notifier)
+                                              .removeSelected(item)
+                                          : ref
+                                              .read(homeControllerProvider
+                                                  .notifier)
+                                              .addSelected(item);
+                                    },
+                                  ),
+                                  ConfigConstant.sizedBoxW2,
+                                  ItemWidgetWrapper(
+                                    ItemBody(item),
+                                    otp: ItemOTP(
+                                      item,
+                                      selected: selected.contains(item),
+                                      copied: tap,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         },
                       ),
               ),

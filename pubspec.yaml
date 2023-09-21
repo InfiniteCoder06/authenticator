@@ -47,6 +47,7 @@ dependencies:
   flutter_hooks: ^0.20.1
   flutter_screen_lock: ^9.0.1
   flutter_secure_storage: ^9.0.0
+  flutter_slidable: ^3.0.0
   flutter_staggered_animations: ^1.1.1
   flutter_svg: ^2.0.7
   fpdart: ^1.1.0
