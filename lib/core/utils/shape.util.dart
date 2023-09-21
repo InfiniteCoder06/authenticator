@@ -24,5 +24,13 @@ class Shape {
     topLeft: Radius.circular(28),
     topRight: Radius.circular(28),
   );
+  static BorderRadius extraLargeRight = const BorderRadius.only(
+    topRight: Radius.circular(28),
+    bottomRight: Radius.circular(28),
+  );
+  static BorderRadius extraLargeLeft = const BorderRadius.only(
+    topLeft: Radius.circular(28),
+    bottomLeft: Radius.circular(28),
+  );
   static BorderRadius full = const BorderRadius.all(Radius.circular(50));
 }
