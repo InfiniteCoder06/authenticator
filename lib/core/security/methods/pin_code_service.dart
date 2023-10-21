@@ -1,4 +1,4 @@
-part of security_service;
+part of '../security_service.dart';
 
 class PinCodeService extends _BaseLockService<PinCodeOptions> {
   final SecurityInformations info;

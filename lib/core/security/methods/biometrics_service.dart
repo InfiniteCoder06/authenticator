@@ -1,4 +1,4 @@
-part of security_service;
+part of '../security_service.dart';
 
 class BiometricsService extends _BaseLockService<BiometricsOptions>
     with ConsoleMixin {

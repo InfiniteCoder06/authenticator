@@ -259,8 +259,8 @@ class LogBar extends StatelessWidget {
   const LogBar({
     required this.dark,
     required this.child,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

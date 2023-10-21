@@ -29,25 +29,17 @@ class ProgressBar extends ConsumerWidget {
 class CustomProgressBar extends ProgressIndicator {
   const CustomProgressBar({
     super.key,
-    double? value,
-    Color? backgroundColor,
-    Color? color,
-    Animation<Color?>? valueColor,
+    super.value,
+    super.backgroundColor,
+    super.color,
+    super.valueColor,
     this.minHeight,
-    String? semanticsLabel,
-    String? semanticsValue,
+    super.semanticsLabel,
+    super.semanticsValue,
     this.animationDuration = const Duration(milliseconds: 500),
     this.goingBackAnimationDuration = const Duration(milliseconds: 500),
     this.animationCurve = Curves.linear,
-  })  : assert(minHeight == null || minHeight > 0),
-        super(
-          value: value,
-          backgroundColor: backgroundColor,
-          color: color,
-          valueColor: valueColor,
-          semanticsLabel: semanticsLabel,
-          semanticsValue: semanticsValue,
-        );
+  })  : assert(minHeight == null || minHeight > 0);
 
   /// {@template flutter.material.LinearProgressIndicator.trackColor}
   /// Color of the track being filled by the linear indicator.
