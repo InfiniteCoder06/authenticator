@@ -1,4 +1,4 @@
-part of security_service;
+part of '../security_service.dart';
 
 class SecurityInformations {
   final LocalAuthentication localAuth;

@@ -51,7 +51,7 @@ class AppPopButton extends StatelessWidget {
             forceCloseButton;
     final routeHistory = NavigationHistoryObserver().history;
 
-    List<Route<dynamic>> history = [...routeHistory.toList()].where((element) {
+    List<Route<dynamic>> history = [...routeHistory].where((element) {
       bool notCurrentRoute =
           ModalRoute.of(context)?.hashCode != element.hashCode;
       bool hasRouteName = element.settings.name != null;
