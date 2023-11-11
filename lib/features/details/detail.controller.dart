@@ -29,6 +29,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
   bool isLoading = true;
 
   Future<void> initialize(Option<Item> item) async {
+    await Future.delayed(Durations.medium1);
     item.fold(
       () async => await _loadTemplate(),
       (item) async => _generateTemplate(item),
