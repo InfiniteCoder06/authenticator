@@ -1,5 +1,6 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 // 📦 Package imports:
 import 'package:fpdart/fpdart.dart';
@@ -25,8 +26,10 @@ class DetailPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(detailController.notifier).initialize(item);
-    final controller = ref.watch(detailController);
+    useEffect(() {
+      ref.read(detailController.notifier).initialize(item);
+      return null;
+    }, [item]);
     return WillPopScope(
       onWillPop: () async =>
           ref.read(detailController.notifier).canPop(context),
@@ -66,57 +69,61 @@ class DetailPage extends HookConsumerWidget {
               ),
           ],
         ),
-        body: controller.isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : ReactiveFormConfig(
-                validationMessages: {
-                  ValidationMessage.required: (_) => 'Required',
-                  ValidationMessage.pattern: (_) => 'Enter a valid Secret'
-                },
-                child: ReactiveForm(
-                  formGroup: controller.form,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        const ItemIcon(),
-                        ConfigConstant.sizedBoxH2,
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 5),
-                          child: ReactiveTextField<String>(
-                            formControlName: 'name',
-                            textCapitalization: TextCapitalization.words,
-                            decoration: const InputDecoration(
-                              isDense: true,
-                              labelText: 'Name',
-                              hintText: 'John.doe@email.com',
-                              border: OutlineInputBorder(),
+        body: Builder(builder: (context) {
+          final controller = ref.watch(detailController);
+          return controller.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : ReactiveFormConfig(
+                  validationMessages: {
+                    ValidationMessage.required: (_) => 'Required',
+                    ValidationMessage.pattern: (_) => 'Enter a valid Secret'
+                  },
+                  child: ReactiveForm(
+                    formGroup: controller.form,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          const ItemIcon(),
+                          ConfigConstant.sizedBoxH2,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 5),
+                            child: ReactiveTextField<String>(
+                              formControlName: 'name',
+                              textCapitalization: TextCapitalization.words,
+                              decoration: const InputDecoration(
+                                isDense: true,
+                                labelText: 'Name',
+                                hintText: 'John.doe@email.com',
+                                border: OutlineInputBorder(),
+                              ),
                             ),
                           ),
-                        ),
-                        ReactiveForm(
-                          formGroup: controller.fieldsGroup,
-                          child: ListView.builder(
-                            itemCount: controller.fields.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              final field = controller.fields.elementAt(index);
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5),
-                                child: field.widget,
-                              );
-                            },
+                          ReactiveForm(
+                            formGroup: controller.fieldsGroup,
+                            child: ListView.builder(
+                              itemCount: controller.fields.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                final field =
+                                    controller.fields.elementAt(index);
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5),
+                                  child: field.widget,
+                                );
+                              },
+                            ),
                           ),
-                        ),
-                        ConfigConstant.sizedBoxH1,
-                        const AddField(),
-                      ],
+                          ConfigConstant.sizedBoxH1,
+                          const AddField(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ),
+                );
+        }),
       ),
     );
   }
