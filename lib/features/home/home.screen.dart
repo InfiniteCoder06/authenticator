@@ -1,3 +1,6 @@
+// 🎯 Dart imports:
+import 'dart:io';
+
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
@@ -9,8 +12,8 @@ import 'package:swipeable_page_route/swipeable_page_route.dart';
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/features/home/home.controller.dart';
+import 'package:authenticator/features/home/widgets/home.bottom_sheet.dart';
 import 'package:authenticator/features/home/widgets/progress.widget.dart';
 import 'package:authenticator/gen/assets.gen.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
@@ -45,6 +48,7 @@ class EntryOverviewPage extends HookConsumerWidget {
                           .read(homeControllerProvider.notifier)
                           .clearSelected())
                   : null,
+              centerTitle: true,
               title: const AppBarTitle(fallbackRouter: AppRouter.home),
               actions: [
                 AppCrossFade(
@@ -215,61 +219,30 @@ class EntryOverviewPage extends HookConsumerWidget {
           context: context,
           showDragHandle: true,
           builder: (_) {
-            return Padding(
-              padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  ListTile(
-                    key: const Key("home.fab.add.qr"),
-                    onTap: () {
-                      Navigator.of(context)
-                          .popAndPushNamed(AppRouter.scan.path);
-                    },
-                    leading: const Icon(Icons.qr_code_scanner_rounded),
-                    title: const Text("Scan QR Code"),
-                    shape: RoundedRectangleBorder(borderRadius: Shape.full),
-                  ),
-                  ListTile(
-                    key: const Key("home.fab.add.image"),
-                    onTap: () async {
-                      Navigator.of(context).pop();
-                      ref
-                          .read(homeControllerProvider.notifier)
-                          .pickAndScan(context);
-                    },
-                    leading: const Icon(Icons.add_photo_alternate_rounded),
-                    title: const Text("Scan Image"),
-                    shape: RoundedRectangleBorder(borderRadius: Shape.full),
-                  ),
-                  ListTile(
-                    key: const Key("home.fab.add.manual"),
-                    onTap: () async {
-                      await Navigator.of(context).popAndPushNamed(
-                          AppRouter.details.path,
-                          arguments: const DetailPageArgs(item: null));
-                      if (context.mounted) {
-                        ref.read(homeControllerProvider.notifier).get();
-                      }
-                    },
-                    leading: const Icon(Icons.edit_rounded),
-                    title: const Text("Enter Manually"),
-                    shape: RoundedRectangleBorder(borderRadius: Shape.full),
-                  ),
-                  ListTile(
-                    key: const Key("home.fab.add.url"),
-                    onTap: () async {
-                      Navigator.of(context).pop();
-                      await ref
-                          .read(homeControllerProvider.notifier)
-                          .showManualUri(context);
-                    },
-                    leading: const Icon(Icons.edit_rounded),
-                    title: const Text("Using URL (Advanced)"),
-                    shape: RoundedRectangleBorder(borderRadius: Shape.full),
-                  ),
-                ],
-              ),
+            return HomeBottomSheet(
+              onAddQrPressed: () {
+                if (!Platform.isAndroid) {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context)
+                    ..hideCurrentSnackBar()
+                    ..showSnackBar(
+                        const SnackBar(content: Text("To Be Implemented")));
+                } else {
+                  Navigator.of(context).popAndPushNamed(AppRouter.scan.path);
+                }
+              },
+              onAddImagePressed: () {
+                Navigator.of(context).pop();
+                ref.read(homeControllerProvider.notifier).pickAndScan(context);
+              },
+              onAddManualPressed: () async {
+                await Navigator.of(context).popAndPushNamed(
+                    AppRouter.details.path,
+                    arguments: const DetailPageArgs(item: null));
+                if (context.mounted) {
+                  ref.read(homeControllerProvider.notifier).get();
+                }
+              },
             );
           },
         ),
