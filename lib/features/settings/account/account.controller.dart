@@ -3,7 +3,6 @@ import 'dart:isolate';
 
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 // 📦 Package imports:
 import 'package:equatable/equatable.dart';
@@ -14,7 +13,6 @@ import 'package:authenticator/core/database/adapter/base_backup_repository.dart'
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/database/adapter/storage_service.dart';
 import 'package:authenticator/core/models/item.model.dart';
-import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/provider.dart';
@@ -122,9 +120,9 @@ class AccountController extends _$AccountController with ConsoleMixin {
     }
   }
 
-  Future<void> syncChanges(String userId, BuildContext context) async {
+  Future<void> syncChanges(String userId) async {
     console.debug("⚙️ Start sync");
-    state = state.copyWith(isSyncing: true);
+    state = state.copyWith(isSyncing: true, syncingState: SyncingState.syncing);
 
     try {
       final localEntries = await entryRepository.getAll();
@@ -148,11 +146,11 @@ class AccountController extends _$AccountController with ConsoleMixin {
       state = state.copyWith(userId: userId, lastSync: currentDate);
       await storageService.put(kUserId, userId);
       console.debug("🟢 Successfully Synced");
-      state = state.copyWith(isSyncing: false);
+      state =
+          state.copyWith(isSyncing: false, syncingState: SyncingState.success);
     } catch (e) {
-      if (!context.mounted) return;
-      state = state.copyWith(isSyncing: false);
-      await AppDialogs.showErrorDialog(context, e.toString());
+      state =
+          state.copyWith(isSyncing: false, syncingState: SyncingState.error);
       console.error("🔴 $e");
     }
   }
