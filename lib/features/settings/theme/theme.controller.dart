@@ -29,7 +29,7 @@ class ThemeController extends _$ThemeController with ConsoleMixin {
         await storageService.get<int>(kthemeMode, defaultValue: 0);
     var themeMode = ThemeMode.values.elementAt(themeModeDb);
     var themeAccent =
-        await storageService.get<int>(kthemeAccent, defaultValue: 3);
+        await storageService.get<int>(kthemeAccent, defaultValue: 5);
 
     state = state.copyWith(
       dynamicColor: dynamicColor,
