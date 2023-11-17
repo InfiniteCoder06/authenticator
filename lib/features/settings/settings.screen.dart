@@ -1,4 +1,6 @@
 // 🐦 Flutter imports:
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -25,8 +27,16 @@ class SettingsOverviewPage extends StatelessWidget {
                   subtitle: const Text(
                     "Sync App",
                   ),
-                  onTap: () =>
-                      Navigator.of(context).pushNamed(AppRouter.account.path),
+                  onTap: () {
+                    if (!Platform.isAndroid && !kIsWeb) {
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(
+                            const SnackBar(content: Text("To Be Implemented")));
+                    } else {
+                      Navigator.of(context).pushNamed(AppRouter.account.path);
+                    }
+                  },
                 ),
                 ListTile(
                   key: const Key("settings.list.theme"),
@@ -54,7 +64,7 @@ class SettingsOverviewPage extends StatelessWidget {
                   title: const Text("Security"),
                   subtitle: const Text("Password, Biometric, etc."),
                   onTap: () {
-                    if (kIsWeb) {
+                    if (!Platform.isAndroid) {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
