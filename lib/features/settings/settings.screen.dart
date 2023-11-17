@@ -29,7 +29,7 @@ class SettingsOverviewPage extends StatelessWidget {
                     "Sync App",
                   ),
                   onTap: () {
-                    if (!Platform.isAndroid && !kIsWeb) {
+                    if (!Platform.isAndroid || !kIsWeb) {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
