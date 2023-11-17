@@ -29,13 +29,13 @@ class SettingsOverviewPage extends StatelessWidget {
                     "Sync App",
                   ),
                   onTap: () {
-                    if (!Platform.isAndroid || !kIsWeb) {
+                    if (Platform.isAndroid || kIsWeb) {
+                      Navigator.of(context).pushNamed(AppRouter.account.path);
+                    } else {
                       ScaffoldMessenger.of(context)
                         ..hideCurrentSnackBar()
                         ..showSnackBar(
                             const SnackBar(content: Text("To Be Implemented")));
-                    } else {
-                      Navigator.of(context).pushNamed(AppRouter.account.path);
                     }
                   },
                 ),
