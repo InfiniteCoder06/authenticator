@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -16,12 +17,14 @@ class AccountSettingsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.listen(accountControllerProvider.select((state) => state.isSyncing),
-        (prev, next) {
-      if (!(prev ?? false) && next) {
+    ref.listen(
+        accountControllerProvider
+            .select((state) => (state.syncingState, state.errorMessage)),
+        (prev, next) async {
+      if (next.$1 == SyncingState.syncing) {
         LoadingOverlay.of(context).show();
       }
-      if ((prev ?? false) && !next) {
+      if (next.$1 == SyncingState.success) {
         LoadingOverlay.of(context).hide();
         ScaffoldMessenger.of(context)
           ..hideCurrentMaterialBanner()
@@ -38,6 +41,10 @@ class AccountSettingsPage extends HookConsumerWidget {
               ],
             ),
           );
+      }
+      if (next.$1 == SyncingState.error) {
+        LoadingOverlay.of(context).hide();
+        await AppDialogs.showErrorDialog(context, next.$2);
       }
     });
     return WillPopScope(
@@ -77,7 +84,7 @@ class AccountSettingsPage extends HookConsumerWidget {
                               if (changedUser == null) return;
                               await ref
                                   .read(accountControllerProvider.notifier)
-                                  .syncChanges(changedUser, context);
+                                  .syncChanges(changedUser);
                             },
                           ),
                           ListTile(
@@ -87,7 +94,7 @@ class AccountSettingsPage extends HookConsumerWidget {
                             onTap: () async {
                               await ref
                                   .read(accountControllerProvider.notifier)
-                                  .syncChanges(userId, context);
+                                  .syncChanges(userId);
                             },
                           )
                         ],
