@@ -19,7 +19,7 @@ class Progress extends Notifier<double> {
   }
 
   void ticked() {
-    if (DateTime.now().second > 29) {
+    if (DateTime.now().second > 30) {
       state = DateTime.now().second - 30.0;
     } else {
       state = DateTime.now().second.toDouble();
