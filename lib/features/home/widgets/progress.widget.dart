@@ -16,8 +16,8 @@ class ProgressBar extends ConsumerWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: CustomProgressBar(
-        value: progress / 30,
-        backgroundColor: Theme.of(context).colorScheme.background,
+        value: progress / 29,
+        backgroundColor: Theme.of(context).colorScheme.surface,
       ),
     );
   }
@@ -33,9 +33,9 @@ class CustomProgressBar extends ProgressIndicator {
     this.minHeight,
     super.semanticsLabel,
     super.semanticsValue,
-    this.animationDuration = Durations.extralong2,
+    this.animationDuration = const Duration(milliseconds: 850),
     this.goingBackAnimationDuration = Durations.short4,
-    this.animationCurve = Curves.slowMiddle,
+    this.animationCurve = Curves.easeIn,
   }) : assert(minHeight == null || minHeight > 0);
 
   /// {@template flutter.material.LinearProgressIndicator.trackColor}
