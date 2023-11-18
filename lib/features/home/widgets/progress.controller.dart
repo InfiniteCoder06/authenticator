@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'progress.controller.g.dart';
 
 @Riverpod(keepAlive: true)
-class Progress extends Notifier<double> {
+class Progress extends _$Progress {
   @override
   double build() {
     postInit();
