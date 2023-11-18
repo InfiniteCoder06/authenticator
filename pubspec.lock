@@ -221,26 +221,26 @@ packages:
     dependency: "direct main"
     description:
       name: cloud_firestore
-      sha256: "49c0e34a0de7150f6b46390263edd7a940776713bf188891f7fd07c7d750389c"
+      sha256: fabfa9b20e752ea55841b0177620a817baf3c7cd12854f339f7daadb6969ee5a
       url: "https://pub.dev"
     source: hosted
-    version: "4.13.0"
+    version: "4.13.1"
   cloud_firestore_platform_interface:
     dependency: transitive
     description:
       name: cloud_firestore_platform_interface
-      sha256: beb8a599bd619d5081469b7af43bf4e9bb0e778f3b005c1b45e21b97e836d1a5
+      sha256: "32cfa6cebf3408e541f074083fa429505af855896425eeab1c4f13edc3f68450"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.4"
+    version: "6.0.5"
   cloud_firestore_web:
     dependency: transitive
     description:
       name: cloud_firestore_web
-      sha256: "7a21039c98e8b5e2e0c3f5c764b185fe18b353312613074e81262a246fb58ba4"
+      sha256: d8e36c1a60c69eb6d5bc239e497a1f284627ef8eb42258776bbfc98ce615e869
       url: "https://pub.dev"
     source: hosted
-    version: "3.8.4"
+    version: "3.8.5"
   code_builder:
     dependency: transitive
     description:
@@ -482,10 +482,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_riverpod
-      sha256: "305203d1578f6857675f9730568548b03900ce53afd319f4aa9d2fa943334dbe"
+      sha256: "49b55e8a467229eedb801bd0864baa7f891c39cc00f790189ba8479e9ad0fa06"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.5"
+    version: "2.4.6"
   flutter_screen_lock:
     dependency: "direct main"
     description:
@@ -636,10 +636,10 @@ packages:
     dependency: "direct main"
     description:
       name: hooks_riverpod
-      sha256: "2827136ecc0c2abffc3a58e575db6d5b84d159977fa1edc223c97bf566aa8c73"
+      sha256: "4fee3c75360e353128149df23ed93414477082bb130f9e23723b1a79a54bc6d0"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.5"
+    version: "2.4.6"
   http:
     dependency: transitive
     description:
@@ -1028,10 +1028,10 @@ packages:
     dependency: transitive
     description:
       name: plugin_platform_interface
-      sha256: da3fdfeccc4d4ff2da8f8c556704c08f912542c5fb3cf2233ed75372384a034d
+      sha256: f4f88d4a900933e7267e2b353594774fc0d07fb072b47eedcd5b54e1ea3269f8
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   pointycastle:
     dependency: transitive
     description:
@@ -1108,10 +1108,10 @@ packages:
     dependency: transitive
     description:
       name: riverpod
-      sha256: "2e84315036e64c59affaff7443dea51247bc2fe704461a32f26a27986fb63d55"
+      sha256: "01fa385aa5d6db42fd602d8c400c28ae1c83d1fd6fbae1cbf0f4c78bac58d4b2"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.5"
+    version: "2.4.6"
   riverpod_analyzer_utils:
     dependency: transitive
     description:
@@ -1124,18 +1124,18 @@ packages:
     dependency: "direct main"
     description:
       name: riverpod_annotation
-      sha256: "9330309e4400f40e39a2a1d1c340e775d0fd23451cf2dd2286e03c7896fd2bd5"
+      sha256: "670dc172c835a1638fe942552449f99adb40ea3faa2d4988081db3c2bd1a4891"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.1"
   riverpod_generator:
     dependency: "direct dev"
     description:
       name: riverpod_generator
-      sha256: "0a1c8eeb3dba2ce704eb1a4c3b8043716d52bedaaaa5b2725e0bde67ca38a46e"
+      sha256: f7c897ffac15f8b845b99ef88a1c8923df74ac8a2a96cd53eb9ecd5459baac27
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.5"
+    version: "2.3.6"
   rxdart:
     dependency: transitive
     description:
@@ -1329,10 +1329,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_ios
-      sha256: "4ac97281cf60e2e8c5cc703b2b28528f9b50c8f7cebc71df6bdf0845f647268a"
+      sha256: bba3373219b7abb6b5e0d071b0fe66dfbe005d07517a68e38d4fc3638f35c6d3
       url: "https://pub.dev"
     source: hosted
-    version: "6.2.0"
+    version: "6.2.1"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -1449,10 +1449,10 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "350a11abd2d1d97e0cc7a28a81b781c08002aa2864d9e3f192ca0ffa18b06ed3"
+      sha256: "7c99c0e1e2fa190b48d25c81ca5e42036d5cac81430ef249027d97b0935c553f"
       url: "https://pub.dev"
     source: hosted
-    version: "5.0.9"
+    version: "5.1.0"
   xdg_directories:
     dependency: transitive
     description:
