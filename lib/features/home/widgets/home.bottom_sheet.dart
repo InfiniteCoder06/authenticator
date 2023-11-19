@@ -29,43 +29,34 @@ class HomeBottomSheet extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           ConfigConstant.sizedBoxH2,
+          ListTile(
+            key: const Key("home.fab.add.qr"),
+            onTap: onAddQrPressed,
+            leading: const Icon(Icons.qr_code_scanner_rounded),
+            title: const Text("Scan QR Code"),
+            tileColor: Theme.of(context).colorScheme.primaryContainer,
+          ),
+          const SizedBox(height: 2.0),
+          ListTile(
+            key: const Key("home.fab.add.image"),
+            onTap: onAddImagePressed,
+            leading: const Icon(Icons.add_photo_alternate_rounded),
+            title: const Text("Scan Image"),
+            tileColor: Theme.of(context).colorScheme.tertiaryContainer,
+          ),
+          const SizedBox(height: 2.0),
+          ListTile(
+            key: const Key("home.fab.add.manual"),
+            onTap: onAddManualPressed,
+            leading: const Icon(Icons.edit_rounded),
+            title: const Text("Enter Manually"),
+            tileColor: Theme.of(context).colorScheme.secondaryContainer,
+          ),
           Container(
-            decoration: BoxDecoration(borderRadius: Shape.large),
+            decoration: BoxDecoration(borderRadius: Shape.extraLarge),
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Column(
               children: [
-                ColoredBox(
-                  color: Theme.of(context).colorScheme.primaryContainer,
-                  child: ListTile(
-                    key: const Key("home.fab.add.qr"),
-                    onTap: onAddQrPressed,
-                    leading: const Icon(Icons.qr_code_scanner_rounded),
-                    title: const Text("Scan QR Code"),
-                    shape: RoundedRectangleBorder(borderRadius: Shape.full),
-                  ),
-                ),
-                const SizedBox(height: 2.0),
-                ColoredBox(
-                  color: Theme.of(context).colorScheme.tertiaryContainer,
-                  child: ListTile(
-                    key: const Key("home.fab.add.image"),
-                    onTap: onAddImagePressed,
-                    leading: const Icon(Icons.add_photo_alternate_rounded),
-                    title: const Text("Scan Image"),
-                    shape: RoundedRectangleBorder(borderRadius: Shape.full),
-                  ),
-                ),
-                const SizedBox(height: 2.0),
-                ColoredBox(
-                  color: Theme.of(context).colorScheme.secondaryContainer,
-                  child: ListTile(
-                    key: const Key("home.fab.add.manual"),
-                    onTap: onAddManualPressed,
-                    leading: const Icon(Icons.edit_rounded),
-                    title: const Text("Enter Manually"),
-                    shape: RoundedRectangleBorder(borderRadius: Shape.full),
-                  ),
-                ),
                 // const SizedBox(height: 2.0),
                 // ColoredBox(
                 //   color:
