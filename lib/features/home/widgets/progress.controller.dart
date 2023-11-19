@@ -11,7 +11,13 @@ class Progress extends _$Progress {
   @override
   double build() {
     postInit();
-    return 0.0;
+    var seconds = 0.0;
+    if (DateTime.now().second > 29) {
+      seconds = DateTime.now().second - 30.0;
+    } else {
+      seconds = DateTime.now().second.toDouble();
+    }
+    return seconds;
   }
 
   void postInit() {
@@ -19,7 +25,7 @@ class Progress extends _$Progress {
   }
 
   void ticked() {
-    if (DateTime.now().second > 30) {
+    if (DateTime.now().second > 29) {
       state = DateTime.now().second - 30.0;
     } else {
       state = DateTime.now().second.toDouble();
