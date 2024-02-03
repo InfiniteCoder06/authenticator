@@ -26,95 +26,101 @@ class ThemeSettingsPage extends HookConsumerWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        "App Color Theme",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      ConfigConstant.sizedBoxH0,
-                      Text(
-                        "Try another look",
-                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                              color:
-                                  Theme.of(context).textTheme.bodySmall!.color,
-                            ),
-                      ),
-                      ConfigConstant.sizedBoxH0,
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: Colors.primaries
-                              .mapWithIndex(
-                                (color, index) => Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 5,
-                                    horizontal: 2.5,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "App Color Theme",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        ConfigConstant.sizedBoxH0,
+                        Text(
+                          "Try another look",
+                          style:
+                              Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall!
+                                        .color,
                                   ),
-                                  child: Card(
-                                    elevation: 3,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: Shape.large,
+                        ),
+                        ConfigConstant.sizedBoxH0,
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: Colors.primaries
+                                .mapWithIndex(
+                                  (color, index) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 5,
+                                      horizontal: 2.5,
                                     ),
-                                    shadowColor: Colors.transparent,
-                                    child: SizedBox(
-                                      height: 80,
-                                      width: 80,
-                                      child: InkWell(
+                                    child: Card(
+                                      elevation: 3,
+                                      shape: RoundedRectangleBorder(
                                         borderRadius: Shape.large,
-                                        onTap: () => ref
-                                            .read(themeControllerProvider
-                                                .notifier)
-                                            .setAccent(index),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(13),
-                                          child: CircleAvatar(
-                                            backgroundColor: color,
+                                      ),
+                                      shadowColor: Colors.transparent,
+                                      child: SizedBox(
+                                        height: 80,
+                                        width: 80,
+                                        child: InkWell(
+                                          borderRadius: Shape.large,
+                                          onTap: () => ref
+                                              .read(themeControllerProvider
+                                                  .notifier)
+                                              .setAccent(index),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(13),
+                                            child: CircleAvatar(
+                                              backgroundColor: color,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              )
-                              .toList(),
+                                )
+                                .toList(),
+                          ),
                         ),
-                      ),
-                      Builder(
-                        builder: (context) {
-                          final themeMode = ref.watch(themeControllerProvider
-                              .select((state) => state.themeMode));
-                          return Column(
-                            children: [
-                              SegmentedButton<ThemeMode>(
-                                segments: const [
-                                  ButtonSegment(
-                                    icon: Icon(Icons.laptop_rounded),
-                                    value: ThemeMode.system,
-                                    label: Text("System"),
-                                  ),
-                                  ButtonSegment(
-                                    icon: Icon(Icons.light_mode_rounded),
-                                    value: ThemeMode.light,
-                                    label: Text("Light"),
-                                  ),
-                                  ButtonSegment(
-                                    icon: Icon(Icons.dark_mode_rounded),
-                                    value: ThemeMode.dark,
-                                    label: Text("Dark"),
-                                  ),
-                                ],
-                                onSelectionChanged: (themeMode) => ref
-                                    .read(themeControllerProvider.notifier)
-                                    .toggleThemeMode(themeMode.first),
-                                selected: {themeMode},
-                              ),
-                            ],
-                          );
-                        },
-                      ),
-                    ],
+                        Builder(
+                          builder: (context) {
+                            final themeMode = ref.watch(themeControllerProvider
+                                .select((state) => state.themeMode));
+                            return Column(
+                              children: [
+                                SegmentedButton<ThemeMode>(
+                                  segments: const [
+                                    ButtonSegment(
+                                      icon: Icon(Icons.laptop_rounded),
+                                      value: ThemeMode.system,
+                                      label: Text("System"),
+                                    ),
+                                    ButtonSegment(
+                                      icon: Icon(Icons.light_mode_rounded),
+                                      value: ThemeMode.light,
+                                      label: Text("Light"),
+                                    ),
+                                    ButtonSegment(
+                                      icon: Icon(Icons.dark_mode_rounded),
+                                      value: ThemeMode.dark,
+                                      label: Text("Dark"),
+                                    ),
+                                  ],
+                                  onSelectionChanged: (themeMode) => ref
+                                      .read(themeControllerProvider.notifier)
+                                      .toggleThemeMode(themeMode.first),
+                                  selected: {themeMode},
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                   Builder(
                     builder: (context) {
