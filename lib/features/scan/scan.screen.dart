@@ -11,6 +11,7 @@ import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/features/scan/qr_overlay/material_preview.overlay.dart';
 import 'package:authenticator/features/scan/scan.controller.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
+import 'package:authenticator/widgets/app_cross_fade.dart';
 
 class ScanPage extends HookConsumerWidget {
   const ScanPage({super.key});
@@ -27,17 +28,16 @@ class ScanPage extends HookConsumerWidget {
             icon: ValueListenableBuilder(
               valueListenable: controller.torchState,
               builder: (context, state, _) {
-                switch (state) {
-                  case TorchState.off:
-                    return const Icon(
-                      Icons.flash_off_rounded,
-                    );
-                  case TorchState.on:
-                    return const Icon(
-                      Icons.flash_on_rounded,
-                      color: Colors.yellow,
-                    );
-                }
+                return AppCrossFade(
+                  showFirst: state == TorchState.off,
+                  firstChild: const Icon(
+                    Icons.flash_off_rounded,
+                  ),
+                  secondChild: const Icon(
+                    Icons.flash_on_rounded,
+                    color: Colors.yellow,
+                  ),
+                );
               },
             ),
             onPressed: () => controller.toggleTorch(),
@@ -47,12 +47,11 @@ class ScanPage extends HookConsumerWidget {
             icon: ValueListenableBuilder(
               valueListenable: controller.cameraFacingState,
               builder: (context, state, _) {
-                switch (state) {
-                  case CameraFacing.front:
-                    return const Icon(Icons.camera_front_rounded);
-                  case CameraFacing.back:
-                    return const Icon(Icons.camera_rear_rounded);
-                }
+                return AppCrossFade(
+                  showFirst: state == CameraFacing.front,
+                  firstChild: const Icon(Icons.camera_front_rounded),
+                  secondChild: const Icon(Icons.camera_rear_rounded),
+                );
               },
             ),
             onPressed: () => controller.switchCamera(),

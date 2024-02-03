@@ -97,11 +97,17 @@ class TransferPage extends HookWidget {
                                 ? size.width * 0.5
                                 : size.height * 0.5,
                             backgroundColor: Colors.white,
+                            dataModuleStyle: const QrDataModuleStyle(
+                              dataModuleShape: QrDataModuleShape.circle,
+                              color: Colors.black,
+                            ),
+                            eyeStyle: const QrEyeStyle(
+                              eyeShape: QrEyeShape.circle,
+                              color: Colors.black,
+                            ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        const SizedBox(height: 10),
                         Text(item.name)
                       ],
                     ),

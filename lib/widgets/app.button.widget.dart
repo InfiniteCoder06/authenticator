@@ -41,7 +41,7 @@ class AppButton extends StatelessWidget {
             Opacity(opacity: 0, child: button),
             const Positioned.fill(
               child: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(strokeCap: StrokeCap.round),
               ),
             ),
           ],

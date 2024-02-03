@@ -72,7 +72,8 @@ class DetailPage extends HookConsumerWidget {
         body: Builder(builder: (context) {
           final controller = ref.watch(detailController);
           return controller.isLoading
-              ? const Center(child: CircularProgressIndicator())
+              ? const Center(
+                  child: CircularProgressIndicator(strokeCap: StrokeCap.round))
               : ReactiveFormConfig(
                   validationMessages: {
                     ValidationMessage.required: (_) => 'Required',

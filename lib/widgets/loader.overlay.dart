@@ -35,12 +35,16 @@ class LoadingOverlay extends StatelessWidget {
             if (isLoading)
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 4.0, sigmaY: 4.0),
-                child: const Opacity(
-                  opacity: 0.8,
-                  child: ModalBarrier(dismissible: false, color: Colors.black),
+                child: const ModalBarrier(
+                    dismissible: false, color: Colors.black54),
+              ),
+            if (isLoading)
+              Center(
+                child: CircularProgressIndicator(
+                  strokeCap: StrokeCap.round,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-            if (isLoading) const Center(child: CircularProgressIndicator()),
           ],
         );
       },

@@ -18,25 +18,31 @@ class AccountSettingsPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(
-        accountControllerProvider
-            .select((state) => (state.syncingState, state.errorMessage)),
-        (prev, next) async {
-      if (next.$1 == SyncingState.syncing) {
-        LoadingOverlay.of(context).show();
-      }
-      if (next.$1 == SyncingState.success) {
-        LoadingOverlay.of(context).hide();
-        ScaffoldMessenger.of(context)
-          ..hideCurrentSnackBar()
-          ..showSnackBar(
-            const SnackBar(content: Text("Successfully Synced")),
-          );
-      }
-      if (next.$1 == SyncingState.error) {
-        LoadingOverlay.of(context).hide();
-        await AppDialogs.showErrorDialog(context, next.$2);
-      }
-    });
+      accountControllerProvider.select(
+        (state) => (state.syncingState, state.errorMessage),
+      ),
+      (prev, next) async {
+        switch (next.$1) {
+          case SyncingState.syncing:
+            LoadingOverlay.of(context).show();
+            break;
+          case SyncingState.success:
+            // LoadingOverlay.of(context).hide();
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text("Successfully Synced")),
+              );
+            break;
+          case SyncingState.error:
+            LoadingOverlay.of(context).hide();
+            await AppDialogs.showErrorDialog(context, next.$2);
+            break;
+          case SyncingState.idle:
+            break;
+        }
+      },
+    );
     return WillPopScope(
       onWillPop: () async {
         ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
@@ -67,6 +73,7 @@ class AccountSettingsPage extends HookConsumerWidget {
                       return Column(
                         children: [
                           MaterialDropDownListTile(
+                            leading: const Icon(Icons.account_circle_rounded),
                             title: const Text("Account"),
                             subtitle: const Text("Select Account to sync"),
                             value: userId,

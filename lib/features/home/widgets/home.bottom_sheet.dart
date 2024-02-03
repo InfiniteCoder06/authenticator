@@ -55,7 +55,7 @@ class HomeBottomSheet extends StatelessWidget {
           Container(
             decoration: BoxDecoration(borderRadius: Shape.extraLarge),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Column(
+            child: const Column(
               children: [
                 // const SizedBox(height: 2.0),
                 // ColoredBox(
