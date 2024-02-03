@@ -19,7 +19,8 @@ class SvgLoader extends StatelessWidget {
           Theme.of(context).colorScheme.primary, svgPath),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.hasError) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+              child: CircularProgressIndicator(strokeCap: StrokeCap.round));
         }
         final size = MediaQuery.of(context).size;
         return Center(

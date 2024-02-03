@@ -52,6 +52,7 @@ class EntryOverviewPage extends HookConsumerWidget {
               title: const AppBarTitle(fallbackRouter: AppRouter.home),
               actions: [
                 AppCrossFade(
+                  showFirst: selected.isEmpty || selected.length != 1,
                   firstChild: const SizedBox(height: 48),
                   secondChild: IconButton(
                     onPressed: () async {
@@ -66,9 +67,9 @@ class EntryOverviewPage extends HookConsumerWidget {
                     icon: const Icon(Icons.edit_rounded),
                     tooltip: "Edit",
                   ),
-                  showFirst: selected.isEmpty || selected.length != 1,
                 ),
                 AppCrossFade(
+                  showFirst: selected.isEmpty,
                   firstChild: const SizedBox(height: 48),
                   secondChild: Row(
                     children: [
@@ -106,7 +107,6 @@ class EntryOverviewPage extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                  showFirst: selected.isEmpty,
                 ),
                 PopupMenuButton<int>(
                   tooltip: "More",

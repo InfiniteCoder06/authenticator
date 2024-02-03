@@ -6,6 +6,7 @@ import 'package:authenticator/core/utils/shape.util.dart';
 
 class MaterialDropDownListTile extends StatelessWidget {
   const MaterialDropDownListTile({
+    required this.leading,
     required this.title,
     required this.subtitle,
     required this.value,
@@ -13,6 +14,7 @@ class MaterialDropDownListTile extends StatelessWidget {
     super.key,
     this.isThreeLine = false,
   });
+  final Widget leading;
   final Widget title;
   final Widget subtitle;
   final void Function(String?)? onChanged;
@@ -24,6 +26,7 @@ class MaterialDropDownListTile extends StatelessWidget {
     return ListTile(
       isThreeLine: isThreeLine,
       shape: Theme.of(context).listTileTheme.shape,
+      leading: leading,
       title: title,
       subtitle: subtitle,
       trailing: DropdownButton<String>(

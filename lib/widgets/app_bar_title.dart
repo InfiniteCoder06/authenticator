@@ -8,7 +8,7 @@ import 'package:authenticator/core/utils/constants/config.constant.dart';
 class AppBarTitle extends StatelessWidget {
   const AppBarTitle({
     super.key,
-    required this.fallbackRouter,
+    this.fallbackRouter,
     this.overridedTitle,
     this.icon,
   });

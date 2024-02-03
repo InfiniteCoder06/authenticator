@@ -21,12 +21,12 @@ class ThemeSettingsPage extends HookConsumerWidget {
       body: CustomScrollView(
         slivers: <Widget>[
           const AppExpandedAppBar(),
-          SliverList(
-            delegate: SliverChildListDelegate(
-              <Widget>[
-                Container(
-                  padding: ConfigConstant.layoutPadding,
-                  child: Column(
+          SliverPadding(
+            padding: ConfigConstant.layoutPadding,
+            sliver: SliverList(
+              delegate: SliverChildListDelegate(
+                <Widget>[
+                  Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
@@ -116,23 +116,23 @@ class ThemeSettingsPage extends HookConsumerWidget {
                       ),
                     ],
                   ),
-                ),
-                Builder(
-                  builder: (context) {
-                    final dynamicColor = ref.watch(themeControllerProvider
-                        .select((state) => state.dynamicColor));
-                    return MaterialSwitchListTile(
-                      title: const Text("Dynamic Color"),
-                      subtitle:
-                          const Text("Use Accent Color from System/ Wallpaper"),
-                      value: dynamicColor,
-                      onToggle: (bool value) => ref
-                          .read(themeControllerProvider.notifier)
-                          .setDynamicColor(value),
-                    );
-                  },
-                )
-              ],
+                  Builder(
+                    builder: (context) {
+                      final dynamicColor = ref.watch(themeControllerProvider
+                          .select((state) => state.dynamicColor));
+                      return MaterialSwitchListTile(
+                        title: const Text("Dynamic Color"),
+                        subtitle: const Text(
+                            "Use Accent Color from System/ Wallpaper"),
+                        value: dynamicColor,
+                        onToggle: (bool value) => ref
+                            .read(themeControllerProvider.notifier)
+                            .setDynamicColor(value),
+                      );
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ],
