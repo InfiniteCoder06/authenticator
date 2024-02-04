@@ -43,10 +43,11 @@ class AccountSettingsPage extends HookConsumerWidget {
         }
       },
     );
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: true,
+      onPopInvoked: (bool didPop) async {
+        if (didPop) return;
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        return true;
       },
       child: Scaffold(
         body: CustomScrollView(

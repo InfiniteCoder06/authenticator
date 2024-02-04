@@ -30,9 +30,16 @@ class DetailPage extends HookConsumerWidget {
       ref.read(detailController.notifier).initialize(item);
       return null;
     }, [item]);
-    return WillPopScope(
-      onWillPop: () async =>
-          ref.read(detailController.notifier).canPop(context),
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (didPop) return;
+        final bool shouldPop =
+            await ref.read(detailController.notifier).canPop(context);
+        if (context.mounted && shouldPop) {
+          Navigator.pop(context);
+        }
+      },
       child: Scaffold(
         appBar: MorphingAppBar(
           leading: AppPopButton.wrapper(context),
