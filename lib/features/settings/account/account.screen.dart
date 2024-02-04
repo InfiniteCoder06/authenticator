@@ -27,7 +27,7 @@ class AccountSettingsPage extends HookConsumerWidget {
             LoadingOverlay.of(context).show();
             break;
           case SyncingState.success:
-            // LoadingOverlay.of(context).hide();
+            LoadingOverlay.of(context).hide();
             ScaffoldMessenger.of(context)
               ..hideCurrentSnackBar()
               ..showSnackBar(
@@ -45,7 +45,7 @@ class AccountSettingsPage extends HookConsumerWidget {
     );
     return WillPopScope(
       onWillPop: () async {
-        ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         return true;
       },
       child: Scaffold(
