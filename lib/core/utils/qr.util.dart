@@ -10,9 +10,6 @@ import 'package:zxing_lib/common.dart';
 import 'package:zxing_lib/multi.dart';
 import 'package:zxing_lib/zxing.dart';
 
-// 🌎 Project imports:
-import 'package:authenticator/core/utils/mixin/console.mixin.dart';
-
 class IsoMessage {
   final Uint8List byteData;
   final int width;
@@ -21,7 +18,7 @@ class IsoMessage {
   IsoMessage(this.byteData, this.width, this.height);
 }
 
-class QrUtils with ConsoleMixin {
+class QrUtils {
   Future<Option<List<Result>>> decodeImageInIsolate(
     Uint8List image,
     int width,
