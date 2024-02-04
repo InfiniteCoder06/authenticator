@@ -18,7 +18,7 @@ import 'package:authenticator/provider.dart';
 
 part 'detail.state.dart';
 
-final detailController = ChangeNotifierProvider(
+final detailController = ChangeNotifierProvider.autoDispose(
     (ref) => DetailController(ref.read(hiveEntryRepoProvider)));
 
 class DetailController extends ChangeNotifier with ConsoleMixin {
@@ -29,7 +29,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
   bool isLoading = true;
 
   Future<void> initialize(Option<Item> item) async {
-    await Future.delayed(Durations.medium1);
+    await Future.delayed(Durations.short1);
     item.fold(
       () async => await _loadTemplate(),
       (item) async => _generateTemplate(item),
@@ -152,5 +152,13 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     }
 
     return !hasChanges;
+  }
+
+  @override
+  void dispose() {
+    originalItem = none();
+    fields.clear();
+    form.dispose();
+    super.dispose();
   }
 }
