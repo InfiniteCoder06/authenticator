@@ -62,11 +62,14 @@ class FirebaseBackupRepository extends BaseBackupRepository with ConsoleMixin {
     try {
       final userDb = firestore.collection(userId);
       final dbModel = userDb.doc("app").collection("items");
-      final data = await dbModel.get();
+      final data = await dbModel.get(const GetOptions(source: Source.server));
       final items = data.docs.map((doc) => Item.fromMap(doc.data())).toList();
       return items;
     } catch (e) {
       console.error("🔴 $e");
+      if (e.toString().contains("Failed to get documents from server")) {
+        return Future.error("Error does not have Internet Connection");
+      }
       return Future.error(e);
     }
   }

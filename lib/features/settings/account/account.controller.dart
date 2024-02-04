@@ -149,8 +149,10 @@ class AccountController extends _$AccountController with ConsoleMixin {
       state =
           state.copyWith(isSyncing: false, syncingState: SyncingState.success);
     } catch (e) {
-      state =
-          state.copyWith(isSyncing: false, syncingState: SyncingState.error);
+      state = state.copyWith(
+          isSyncing: false,
+          syncingState: SyncingState.error,
+          errorMessage: e.toString());
       console.error("🔴 $e");
     }
   }
