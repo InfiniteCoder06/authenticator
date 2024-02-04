@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/core/utils/extension/item_x.extension.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
 
 class ItemAvatar extends StatelessWidget {
   const ItemAvatar({
@@ -21,7 +21,7 @@ class ItemAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onAvatarPress,
-      borderRadius: Shape.full,
+      borderRadius: ShapeConstant.full,
       child: SizedBox(
         height: 40,
         width: 40,

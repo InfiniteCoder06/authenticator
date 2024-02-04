@@ -6,9 +6,9 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/core/utils/extension/color_scheme.extension.dart';
 import 'package:authenticator/core/utils/extension/item_x.extension.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/features/details/detail.controller.dart';
 
 class ItemIcon extends HookConsumerWidget {
@@ -21,7 +21,7 @@ class ItemIcon extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: InkWell(
-        borderRadius: Shape.medium,
+        borderRadius: ShapeConstant.medium,
         child: icon.fold(() {
           return DottedBorder(
             radius: const Radius.circular(12),
@@ -32,12 +32,12 @@ class ItemIcon extends HookConsumerWidget {
             child: Container(
               height: 200,
               width: double.infinity,
-              decoration: BoxDecoration(borderRadius: Shape.medium),
+              decoration: BoxDecoration(borderRadius: ShapeConstant.medium),
               child: Material(
-                borderRadius: Shape.medium,
+                borderRadius: ShapeConstant.medium,
                 color: Theme.of(context).colorScheme.elevation.surface3,
                 child: InkWell(
-                  borderRadius: Shape.medium,
+                  borderRadius: ShapeConstant.medium,
                   onTap: () {
                     //TODO: Implement Icon
                     ScaffoldMessenger.of(context)
@@ -63,7 +63,7 @@ class ItemIcon extends HookConsumerWidget {
           );
         }, (icon) {
           return ClipRRect(
-            borderRadius: Shape.medium,
+            borderRadius: ShapeConstant.medium,
             child: Image.memory(
               icon,
               width: 200,

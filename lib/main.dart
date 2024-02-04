@@ -14,7 +14,7 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/router/app_router.config.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/firebase_options.dart';
 import 'package:authenticator/provider.dart';
@@ -79,11 +79,11 @@ class MyApp extends HookConsumerWidget {
           elevation: 0,
         ),
         listTileTheme: ListTileThemeData(
-          shape: RoundedRectangleBorder(borderRadius: Shape.small),
+          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.small),
         ),
         popupMenuTheme: PopupMenuThemeData(
           elevation: 1,
-          shape: RoundedRectangleBorder(borderRadius: Shape.medium),
+          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.medium),
         ),
         snackBarTheme: SnackBarThemeData(
           backgroundColor: lightColorScheme.inverseSurface,
@@ -101,11 +101,11 @@ class MyApp extends HookConsumerWidget {
           elevation: 0,
         ),
         listTileTheme: ListTileThemeData(
-          shape: RoundedRectangleBorder(borderRadius: Shape.small),
+          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.small),
         ),
         popupMenuTheme: PopupMenuThemeData(
           elevation: 1,
-          shape: RoundedRectangleBorder(borderRadius: Shape.medium),
+          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.medium),
         ),
         snackBarTheme: SnackBarThemeData(
           backgroundColor: darkColorScheme.onPrimaryContainer,

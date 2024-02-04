@@ -8,7 +8,7 @@ import 'package:popover/popover.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_fade_in.dart';
 import 'package:authenticator/widgets/app_icon_button.dart';
@@ -123,7 +123,7 @@ class AppPopButton extends StatelessWidget {
           margin: const EdgeInsets.only(left: 12.0),
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
-            borderRadius: Shape.small,
+            borderRadius: ShapeConstant.small,
             color: Theme.of(context).colorScheme.background,
           ),
           child: Material(
