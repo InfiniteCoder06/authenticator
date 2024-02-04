@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 import 'package:authenticator/widgets/switch_list_tile.dart';
@@ -60,14 +60,14 @@ class ThemeSettingsPage extends HookConsumerWidget {
                                     child: Card(
                                       elevation: 3,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: Shape.large,
+                                        borderRadius: ShapeConstant.large,
                                       ),
                                       shadowColor: Colors.transparent,
                                       child: SizedBox(
                                         height: 80,
                                         width: 80,
                                         child: InkWell(
-                                          borderRadius: Shape.large,
+                                          borderRadius: ShapeConstant.large,
                                           onTap: () => ref
                                               .read(themeControllerProvider
                                                   .notifier)

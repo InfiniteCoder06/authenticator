@@ -10,7 +10,7 @@ import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/settings/logger/ansi.parser.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
@@ -164,7 +164,7 @@ class _LogConsolePageState extends State<LogConsolePage> {
               builder: (context, level, _) {
                 return DropdownButton<Level>(
                   value: level,
-                  borderRadius: Shape.small,
+                  borderRadius: ShapeConstant.small,
                   padding: const EdgeInsets.all(8.0),
                   items: const [
                     DropdownMenuItem(

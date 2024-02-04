@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/home/widgets/progress.controller.dart';
 
 class ProgressBar extends ConsumerWidget {
@@ -104,7 +104,7 @@ class CustomProgressBarState extends State<CustomProgressBar>
             key: widget.key,
             value: _goingBack ? _goingBackAnimation!.value : _animation!.value,
             backgroundColor: widget.backgroundColor,
-            borderRadius: Shape.full,
+            borderRadius: ShapeConstant.full,
             color: widget.color,
             valueColor: widget.valueColor,
             minHeight: widget.minHeight,

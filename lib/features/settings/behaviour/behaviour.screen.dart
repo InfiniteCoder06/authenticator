@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 import 'package:authenticator/widgets/switch_list_tile.dart';
@@ -108,7 +108,7 @@ class FakeEntry extends HookConsumerWidget {
       child: Card(
         shadowColor: Colors.transparent,
         shape: RoundedRectangleBorder(
-          borderRadius: Shape.extraLarge,
+          borderRadius: ShapeConstant.extraLarge,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(

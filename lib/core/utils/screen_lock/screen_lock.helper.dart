@@ -6,7 +6,7 @@ import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 
 class ScreenLockHelper {
   static Widget dotBuilder(bool enabled, SecretConfig config) {
@@ -46,7 +46,7 @@ class ScreenLockHelper {
             padding: const EdgeInsets.all(0),
             side: BorderSide.none,
             backgroundColor: colorScheme.secondaryContainer,
-            shape: RoundedRectangleBorder(borderRadius: Shape.large),
+            shape: RoundedRectangleBorder(borderRadius: ShapeConstant.large),
           ).copyWith(
               overlayColor: MaterialStateProperty.all(Colors.transparent)),
         ),

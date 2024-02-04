@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 
 class MaterialDropDownListTile extends StatelessWidget {
   const MaterialDropDownListTile({
@@ -31,7 +31,7 @@ class MaterialDropDownListTile extends StatelessWidget {
       subtitle: subtitle,
       trailing: DropdownButton<String>(
         value: value,
-        borderRadius: Shape.small,
+        borderRadius: ShapeConstant.small,
         padding: const EdgeInsets.all(8.0),
         underline: Container(),
         items: const [

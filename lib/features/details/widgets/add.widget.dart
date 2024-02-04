@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 
 class AddField extends StatelessWidget {
   const AddField({super.key});
@@ -11,7 +11,7 @@ class AddField extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       shape: RoundedRectangleBorder(
-        borderRadius: Shape.small,
+        borderRadius: ShapeConstant.small,
       ),
       title: const Text('Add new field'),
       leading: const Padding(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 
 class HomeBottomSheet extends StatelessWidget {
   const HomeBottomSheet({
@@ -53,7 +53,7 @@ class HomeBottomSheet extends StatelessWidget {
             tileColor: Theme.of(context).colorScheme.secondaryContainer,
           ),
           Container(
-            decoration: BoxDecoration(borderRadius: Shape.extraLarge),
+            decoration: BoxDecoration(borderRadius: ShapeConstant.extraLarge),
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: const Column(
               children: [
@@ -72,7 +72,7 @@ class HomeBottomSheet extends StatelessWidget {
                 //     leading: const Icon(Icons.edit_rounded),
                 //     title: const Text("Using URL (Advanced)"),
                 //     shape: RoundedRectangleBorder(
-                //         borderRadius: Shape.full),
+                //         borderRadius: ShapeConstant.full),
                 //   ),
                 // ),
               ],

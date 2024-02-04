@@ -6,7 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/utils/shape.util.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 
 class CustomList extends StatelessWidget {
   const CustomList(
@@ -45,7 +45,7 @@ class CustomList extends StatelessWidget {
               clipBehavior: Clip.antiAliasWithSaveLayer,
               shadowColor: Colors.transparent,
               shape: RoundedRectangleBorder(
-                borderRadius: Shape.extraLarge,
+                borderRadius: ShapeConstant.extraLarge,
               ),
               child: InkWell(
                 highlightColor: Colors.transparent,
@@ -53,7 +53,7 @@ class CustomList extends StatelessWidget {
                     .colorScheme
                     .onSurfaceVariant
                     .withOpacity(0.2),
-                borderRadius: Shape.extraLarge,
+                borderRadius: ShapeConstant.extraLarge,
                 onTap: onPress,
                 onLongPress: onLongPress,
                 child: Slidable(
@@ -68,7 +68,7 @@ class CustomList extends StatelessWidget {
                             Theme.of(context).colorScheme.tertiaryContainer,
                         foregroundColor: Theme.of(context).colorScheme.tertiary,
                         icon: Icons.edit_rounded,
-                        borderRadius: Shape.extraLargeRight,
+                        borderRadius: ShapeConstant.extraLargeRight,
                         label: 'Edit',
                       ),
                     ],
@@ -83,7 +83,7 @@ class CustomList extends StatelessWidget {
                             Theme.of(context).colorScheme.errorContainer,
                         foregroundColor: Theme.of(context).colorScheme.error,
                         icon: Icons.delete_rounded,
-                        borderRadius: Shape.extraLargeLeft,
+                        borderRadius: ShapeConstant.extraLargeLeft,
                         label: 'Delete',
                       ),
                     ],

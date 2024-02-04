@@ -1,7 +1,7 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
-class Shape {
+class ShapeConstant {
   static BorderRadius none = const BorderRadius.all(Radius.circular(0));
   static BorderRadius extraSmall = const BorderRadius.all(Radius.circular(4));
   static BorderRadius extraSmallTop = const BorderRadius.only(

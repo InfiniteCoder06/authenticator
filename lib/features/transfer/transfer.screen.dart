@@ -10,8 +10,8 @@ import 'package:url_launcher/url_launcher.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/router/app.router.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/core/utils/extension/item_x.extension.dart';
-import 'package:authenticator/core/utils/shape.util.dart';
 import 'package:authenticator/core/utils/utils.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
@@ -89,7 +89,7 @@ class TransferPage extends HookWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         ClipRRect(
-                          borderRadius: Shape.large,
+                          borderRadius: ShapeConstant.large,
                           clipBehavior: Clip.antiAliasWithSaveLayer,
                           child: QrImageView(
                             data: item.uri.toString(),
