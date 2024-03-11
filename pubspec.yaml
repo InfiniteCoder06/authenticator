@@ -43,7 +43,7 @@ dependencies:
   cupertino_icons: ^1.0.6
   dotted_border: ^2.1.0
   equatable: ^2.0.5
-  firebase_core: ^2.25.3
+  firebase_core: ^2.27.0
   flutter_hooks: ^0.20.4
   flutter_screen_lock: ^9.0.2
   flutter_secure_storage: ^9.0.0
