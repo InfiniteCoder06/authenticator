@@ -39,7 +39,7 @@ dependencies:
   archive: ^3.4.10
   basic_utils: ^5.7.0
   buffer_image: ^0.3.12
-  cloud_firestore: ^4.15.10
+  cloud_firestore: ^4.16.0
   cupertino_icons: ^1.0.6
   dotted_border: ^2.1.0
   equatable: ^2.0.5
