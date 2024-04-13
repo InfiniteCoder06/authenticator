@@ -75,7 +75,7 @@ class MyApp extends HookConsumerWidget {
         useMaterial3: true,
         colorScheme: lightColorScheme,
         appBarTheme: AppBarTheme(
-          backgroundColor: lightColorScheme.background,
+          backgroundColor: lightColorScheme.surface,
           elevation: 0,
         ),
         listTileTheme: ListTileThemeData(
@@ -89,7 +89,7 @@ class MyApp extends HookConsumerWidget {
           backgroundColor: lightColorScheme.inverseSurface,
           behavior: SnackBarBehavior.floating,
         ),
-        scaffoldBackgroundColor: lightColorScheme.background,
+        scaffoldBackgroundColor: lightColorScheme.surface,
         splashColor: lightColorScheme.onSurface.withOpacity(0.18),
       ),
       darkTheme: ThemeData(
@@ -97,7 +97,7 @@ class MyApp extends HookConsumerWidget {
         brightness: Brightness.dark,
         colorScheme: darkColorScheme,
         appBarTheme: AppBarTheme(
-          backgroundColor: darkColorScheme.background,
+          backgroundColor: darkColorScheme.surface,
           elevation: 0,
         ),
         listTileTheme: ListTileThemeData(
@@ -111,7 +111,7 @@ class MyApp extends HookConsumerWidget {
           backgroundColor: darkColorScheme.onPrimaryContainer,
           behavior: SnackBarBehavior.floating,
         ),
-        scaffoldBackgroundColor: darkColorScheme.background,
+        scaffoldBackgroundColor: darkColorScheme.surface,
         splashColor: darkColorScheme.onSurface.withOpacity(0.18),
       ),
       themeMode: controller.themeMode,

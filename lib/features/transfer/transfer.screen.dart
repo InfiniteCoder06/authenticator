@@ -132,7 +132,7 @@ class TransferPage extends HookWidget {
                         "Showing ${page + 1} / ${items.length} Items",
                       ),
                     ),
-                    ButtonBar(
+                    OverflowBar(
                       alignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         AnimatedSwitcher(

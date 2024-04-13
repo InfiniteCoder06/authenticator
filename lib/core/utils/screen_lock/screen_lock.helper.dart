@@ -26,8 +26,8 @@ class ScreenLockHelper {
       padding:
           const EdgeInsets.only(top: 24, bottom: ConfigConstant.objectHeight2),
       secretConfig: SecretConfig(
-        borderColor: colorScheme.onBackground,
-        enabledColor: colorScheme.onBackground,
+        borderColor: colorScheme.onSurface,
+        enabledColor: colorScheme.onSurface,
         disabledColor: const Color.fromARGB(0, 8, 6, 6),
         size: 12,
         builder: (context, config, enabled) =>
@@ -39,7 +39,7 @@ class ScreenLockHelper {
   static ScreenLockConfig screenLockConfig(
       ColorScheme colorScheme, BuildContext context, TextTheme textTheme) {
     return ScreenLockConfig(
-      backgroundColor: colorScheme.background.withOpacity(0.75),
+      backgroundColor: colorScheme.surface.withOpacity(0.75),
       themeData: Theme.of(context).copyWith(
         outlinedButtonTheme: OutlinedButtonThemeData(
           style: TextButton.styleFrom(
@@ -48,13 +48,13 @@ class ScreenLockHelper {
             backgroundColor: colorScheme.secondaryContainer,
             shape: RoundedRectangleBorder(borderRadius: ShapeConstant.large),
           ).copyWith(
-              overlayColor: MaterialStateProperty.all(Colors.transparent)),
+              overlayColor: const WidgetStatePropertyAll(Colors.transparent)),
         ),
         textTheme: TextTheme(
           displayLarge:
-              textTheme.titleLarge?.copyWith(color: colorScheme.onBackground),
-          bodyMedium: textTheme.headlineSmall
-              ?.copyWith(color: colorScheme.onBackground),
+              textTheme.titleLarge?.copyWith(color: colorScheme.onSurface),
+          bodyMedium:
+              textTheme.headlineSmall?.copyWith(color: colorScheme.onSurface),
         ),
       ),
     );

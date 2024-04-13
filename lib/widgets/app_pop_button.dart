@@ -124,7 +124,7 @@ class AppPopButton extends StatelessWidget {
           clipBehavior: Clip.hardEdge,
           decoration: BoxDecoration(
             borderRadius: ShapeConstant.small,
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
           ),
           child: Material(
             color: Theme.of(context).popupMenuTheme.color,

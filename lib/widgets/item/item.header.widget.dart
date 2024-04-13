@@ -42,8 +42,7 @@ class ItemAvatar extends StatelessWidget {
                 }, (icon) {
                   return CircleAvatar(
                     backgroundImage: Image.memory(icon).image,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.surfaceVariant,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                   );
                 });
               },

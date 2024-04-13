@@ -44,7 +44,7 @@ class CustomProgressBar extends ProgressIndicator {
   ///
   /// If [AnimatedLinearProgressIndicator.backgroundColor] is null then the
   /// ambient [AnimatedLinearProgressIndicator.linearTrackColor] will be used.
-  /// If that is null, then the ambient theme's [ColorScheme.background]
+  /// If that is null, then the ambient theme's [ColorScheme.surface]
   /// will be used to draw the track.
   /// {@endtemplate}
   @override
