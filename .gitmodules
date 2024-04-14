@@ -1,3 +1,6 @@
 [submodule "packages/flutter_screen_lock"]
 	path = packages/flutter_screen_lock
 	url = https://github.com/InfiniteCoder06/flutter_screen_lock.git
+[submodule "packages/swipeable_page_route"]
+	path = packages/swipeable_page_route
+	url = https://github.com/InfiniteCoder06/swipeable_page_route.git

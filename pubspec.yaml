@@ -45,7 +45,10 @@ dependencies:
   equatable: ^2.0.5
   firebase_core: ^2.29.0
   flutter_hooks: ^0.20.5
-  flutter_screen_lock: ^9.0.2
+  flutter_screen_lock:
+    git:
+      url: https://github.com/InfiniteCoder06/flutter_screen_lock.git
+      ref: master
   flutter_secure_storage: ^9.0.0
   flutter_slidable: ^3.1.0
   flutter_staggered_animations: ^1.1.1
@@ -57,7 +60,6 @@ dependencies:
   json_annotation: ^4.8.1
   local_auth: ^2.2.0
   logger: ^2.2.0
-  material_color_utilities: ^0.11.1
   mobile_scanner: ^4.0.1
   navigation_history_observer: ^1.1.0
   otp: ^3.1.4
@@ -67,7 +69,10 @@ dependencies:
   qr_flutter: ^4.1.0
   reactive_forms: ^17.0.0
   riverpod_annotation: ^2.3.5
-  swipeable_page_route: ^0.4.2
+  swipeable_page_route:
+    git:
+      url: https://github.com/InfiniteCoder06/swipeable_page_route.git
+      ref: 66775ac1524018b8fad10b811bc6b3132ca1d3f2
   uri: ^1.0.0
   url_launcher: ^6.2.6
   uuid: ^4.4.0
