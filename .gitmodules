@@ -1,0 +1,3 @@
+[submodule "packages/flutter_screen_lock"]
+	path = packages/flutter_screen_lock
+	url = https://github.com/InfiniteCoder06/flutter_screen_lock.git
