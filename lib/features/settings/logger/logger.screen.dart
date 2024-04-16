@@ -10,7 +10,6 @@ import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
-import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/settings/logger/ansi.parser.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
@@ -162,37 +161,35 @@ class _LogConsolePageState extends State<LogConsolePage> {
             ValueListenableBuilder(
               valueListenable: filterLevel,
               builder: (context, level, _) {
-                return DropdownButton<Level>(
-                  value: level,
-                  borderRadius: ShapeConstant.small,
-                  padding: const EdgeInsets.all(8.0),
-                  items: const [
-                    DropdownMenuItem(
+                return DropdownMenu<Level>(
+                  initialSelection: level,
+                  dropdownMenuEntries: const [
+                    DropdownMenuEntry(
                       value: Level.trace,
-                      child: Text("Trace"),
+                      label: "Trace",
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: Level.debug,
-                      child: Text("Debug"),
+                      label: "Debug",
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: Level.info,
-                      child: Text("Info"),
+                      label: "Info",
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: Level.warning,
-                      child: Text("Warning"),
+                      label: "Warning",
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: Level.error,
-                      child: Text("Error"),
+                      label: "Error",
                     ),
-                    DropdownMenuItem(
+                    DropdownMenuEntry(
                       value: Level.fatal,
-                      child: Text("Fatal"),
+                      label: "Fatal",
                     )
                   ],
-                  onChanged: (value) {
+                  onSelected: (value) {
                     if (value == null) return;
                     filterLevel.value = value;
                     _refreshFilter();
