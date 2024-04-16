@@ -42,7 +42,7 @@ class AccountController extends _$AccountController with ConsoleMixin {
       state = state.copyWith(lastSync: cloudChangesDiff, userId: userId);
       console.info("⚙️ Initialize");
     } catch (e) {
-      console.error("🔴 Error");
+      console.error("Error");
     }
   }
 
@@ -153,7 +153,7 @@ class AccountController extends _$AccountController with ConsoleMixin {
           isSyncing: false,
           syncingState: SyncingState.error,
           errorMessage: e.toString());
-      console.error("🔴 $e");
+      console.error("$e");
     }
   }
 

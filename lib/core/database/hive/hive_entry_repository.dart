@@ -51,7 +51,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
       await _box?.put(item.identifier, item);
       console.debug("🛎️ Create: ${item.name}");
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -64,7 +64,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
         console.debug("🛎️ Create: ${item.name}");
       }
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -74,7 +74,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       return _box!.values.toList();
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -84,7 +84,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       return _box!.values.where((element) => !element.deleted).toList();
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -94,7 +94,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       return _box!.values.where((element) => element.deleted).toList();
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -105,7 +105,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
       await _box?.put(item.identifier, item);
       console.debug("✏️ Update: ${item.name}");
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -115,7 +115,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     try {
       await _box?.delete(item.identifier);
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -126,7 +126,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
       final keys = items.map((item) => item.identifier);
       await _box?.deleteAll(keys);
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }
@@ -140,7 +140,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
         console.debug("🗑️ Delete: ${item.name}");
       }
     } catch (e) {
-      console.error("🔴 $e");
+      console.error("$e");
       return Future.error(e);
     }
   }

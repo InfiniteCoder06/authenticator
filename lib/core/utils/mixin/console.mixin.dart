@@ -39,7 +39,7 @@ class Console {
   void info(String message) => _log(Level.info, message);
   void debug(String message) => _log(Level.debug, message);
   void warning(String message) => _log(Level.warning, message);
-  void error(String message) => _log(Level.error, message);
+  void error(String message) => _log(Level.error, "🔴 $message");
   void fatal(String message) => _log(Level.fatal, message);
   void trace(String message) => _log(Level.trace, message);
 
