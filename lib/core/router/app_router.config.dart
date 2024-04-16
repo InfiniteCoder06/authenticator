@@ -118,14 +118,9 @@ class AppRouteConfig {
             Object? arguments = settings?.arguments;
             if (arguments is SecurityPageArgs) {
               return PopScope(
-                canPop: false,
+                canPop: arguments.canCancel && arguments.onCancelled == null,
                 onPopInvoked: (didPop) async {
                   if (didPop) return;
-                  final bool shouldPop =
-                      arguments.canCancel && arguments.onCancelled == null;
-                  if (context.mounted && shouldPop) {
-                    Navigator.pop(context);
-                  }
                 },
                 child: ScreenLock(
                   correctString: arguments.correctString,
@@ -155,14 +150,9 @@ class AppRouteConfig {
               );
             } else if (arguments is SecurityCreatePageArgs) {
               return PopScope(
-                canPop: false,
+                canPop: arguments.canCancel && arguments.onCancelled == null,
                 onPopInvoked: (didPop) async {
                   if (didPop) return;
-                  final bool shouldPop =
-                      arguments.canCancel && arguments.onCancelled == null;
-                  if (context.mounted && shouldPop) {
-                    Navigator.pop(context);
-                  }
                 },
                 child: ScreenLock.create(
                   onConfirmed: arguments.onConfirmed,
