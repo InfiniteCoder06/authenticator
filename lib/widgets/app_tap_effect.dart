@@ -26,7 +26,7 @@ class AppTapEffect extends StatefulWidget {
     super.key,
     required this.child,
     required this.onTap,
-    this.duration = const Duration(milliseconds: 100),
+    this.duration = Durations.short2,
     this.vibrate = false,
     this.behavior = HitTestBehavior.opaque,
     this.effects = const [

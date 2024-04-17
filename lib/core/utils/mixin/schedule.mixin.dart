@@ -15,7 +15,7 @@ mixin ScheduleMixin {
 
   void scheduleAction(
     VoidCallback callback, {
-    Duration duration = const Duration(milliseconds: 300),
+    Duration duration = Durations.medium2,
     Key? key,
   }) {
     cancelTimer(key);

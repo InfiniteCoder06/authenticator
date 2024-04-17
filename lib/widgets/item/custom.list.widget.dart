@@ -29,7 +29,7 @@ class CustomList extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimationConfiguration.staggeredList(
       position: index,
-      delay: const Duration(milliseconds: 100),
+      delay: Durations.short2,
       child: SlideAnimation(
         duration: const Duration(milliseconds: 2500),
         curve: Curves.fastLinearToSlowEaseIn,

@@ -49,7 +49,7 @@ class ItemAvatar extends StatelessWidget {
             ),
             AnimatedScale(
               scale: selected ? 1.01 : 0.0,
-              duration: const Duration(milliseconds: 300),
+              duration: Durations.medium2,
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
                 child: Icon(

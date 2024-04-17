@@ -59,7 +59,7 @@ class ItemOTP extends HookConsumerWidget {
       ),
       crossFadeState:
           copied ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-      duration: const Duration(milliseconds: 500),
+      duration: Durations.long2,
     );
   }
 }

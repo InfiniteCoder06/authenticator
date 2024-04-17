@@ -35,7 +35,7 @@ class CustomProgressBar extends ProgressIndicator {
     super.semanticsLabel,
     super.semanticsValue,
     this.animationDuration = const Duration(milliseconds: 850),
-    this.goingBackAnimationDuration = Durations.short4,
+    this.goingBackAnimationDuration = Duration.zero,
     this.animationCurve = Curves.easeIn,
   }) : assert(minHeight == null || minHeight > 0);
 

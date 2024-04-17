@@ -70,7 +70,7 @@ class DetailPage extends HookConsumerWidget {
                   if (value == 0) {
                     await AppDialogs.showDeletionDialog(
                         context, [item.toNullable()!], ref);
-                    Future<void>.delayed(const Duration(milliseconds: 300), () {
+                    Future<void>.delayed(Durations.medium2, () {
                       Navigator.of(context).pop();
                     });
                   }
@@ -112,17 +112,17 @@ class DetailPage extends HookConsumerWidget {
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: AppTotpField(
-                                formName: 'secret',
-                                label: 'Secret',
-                                hint: 'JBSWY3DPEHPK3PXP',
+                              formName: 'secret',
+                              label: 'Secret',
+                              hint: 'JBSWY3DPEHPK3PXP',
                             ),
                           ),
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: AppTextField(
-                                formName: 'issuer',
-                                label: 'Issuer',
-                                hint: 'Acme Co',
+                              formName: 'issuer',
+                              label: 'Issuer',
+                              hint: 'Acme Co',
                             ),
                           ),
                           ConfigConstant.sizedBoxH1,

@@ -1,6 +1,9 @@
 // 🎯 Dart imports:
 import 'dart:async';
 
+// 🐦 Flutter imports:
+import 'package:flutter/material.dart';
+
 // 📦 Package imports:
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -21,7 +24,7 @@ class Progress extends _$Progress {
   }
 
   void postInit() {
-    Stream.periodic(const Duration(milliseconds: 300)).listen((_) => ticked());
+    Stream.periodic(Durations.medium2).listen((_) => ticked());
   }
 
   void ticked() {

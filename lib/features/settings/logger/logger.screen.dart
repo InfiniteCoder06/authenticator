@@ -202,7 +202,7 @@ class _LogConsolePageState extends State<LogConsolePage> {
       ),
       floatingActionButton: AnimatedOpacity(
         opacity: followBottom.value ? 0 : 1,
-        duration: const Duration(milliseconds: 150),
+        duration: Durations.short3,
         child: Padding(
           padding: const EdgeInsets.only(bottom: 60),
           child: FloatingActionButton(
@@ -229,7 +229,7 @@ class _LogConsolePageState extends State<LogConsolePage> {
     var scrollPosition = _scrollController.position;
     await _scrollController.animateTo(
       scrollPosition.maxScrollExtent,
-      duration: const Duration(milliseconds: 400),
+      duration: Durations.medium4,
       curve: Curves.easeOut,
     );
 

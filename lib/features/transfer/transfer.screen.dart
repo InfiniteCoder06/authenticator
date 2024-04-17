@@ -136,13 +136,12 @@ class TransferPage extends HookWidget {
                       alignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
+                          duration: Durations.short4,
                           child: page != 0
                               ? TextButton(
                                   onPressed: () async {
                                     await pageController.previousPage(
-                                      duration:
-                                          const Duration(milliseconds: 300),
+                                      duration: Durations.medium2,
                                       curve: Curves.ease,
                                     );
                                   },
@@ -155,7 +154,7 @@ class TransferPage extends HookWidget {
                             page == items.length - 1
                                 ? Navigator.of(context).pop()
                                 : await pageController.nextPage(
-                                    duration: const Duration(milliseconds: 300),
+                                    duration: Durations.medium2,
                                     curve: Curves.ease,
                                   );
                           },

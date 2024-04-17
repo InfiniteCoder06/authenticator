@@ -98,7 +98,7 @@ class AppPopButton extends StatelessWidget {
       shadow: [],
       radius: 0,
       contentDyOffset: 2.0,
-      transitionDuration: const Duration(milliseconds: 0),
+      transitionDuration: Duration.zero,
       bodyBuilder: (context) => buildRouteHistory(context, history, pop),
       direction: PopoverDirection.bottom,
       width: 200,
