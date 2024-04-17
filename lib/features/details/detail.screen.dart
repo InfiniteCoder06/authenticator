@@ -9,6 +9,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
+import 'package:authenticator/core/fields/textfield.field.dart';
+import 'package:authenticator/core/fields/totp.field.dart';
 import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
@@ -101,27 +103,26 @@ class DetailPage extends HookConsumerWidget {
                               formControlName: 'name',
                               textCapitalization: TextCapitalization.words,
                               decoration: const InputDecoration(
-                                isDense: true,
                                 labelText: 'Name',
                                 hintText: 'John.doe@email.com',
                                 border: OutlineInputBorder(),
                               ),
                             ),
                           ),
-                          ReactiveForm(
-                            formGroup: controller.fieldsGroup,
-                            child: ListView.builder(
-                              itemCount: controller.fields.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                final field =
-                                    controller.fields.elementAt(index);
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5),
-                                  child: field.widget,
-                                );
-                              },
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: AppTotpField(
+                                formName: 'secret',
+                                label: 'Secret',
+                                hint: 'JBSWY3DPEHPK3PXP',
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5),
+                            child: AppTextField(
+                                formName: 'issuer',
+                                label: 'Issuer',
+                                hint: 'Acme Co',
                             ),
                           ),
                           ConfigConstant.sizedBoxH1,

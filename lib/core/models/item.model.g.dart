@@ -22,15 +22,16 @@ class ItemAdapter extends TypeAdapter<Item> {
       updatedTime: fields[2] as DateTime,
       name: fields[3] as String,
       iconUrl: fields[4] as String,
-      fields: (fields[5] as List).cast<Field>(),
-      deleted: fields[6] as bool,
+      secret: fields[5] as String,
+      issuer: fields[6] as String,
+      deleted: fields[7] as bool,
     );
   }
 
   @override
   void write(BinaryWriter writer, Item obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.identifier)
       ..writeByte(1)
@@ -42,8 +43,10 @@ class ItemAdapter extends TypeAdapter<Item> {
       ..writeByte(4)
       ..write(obj.iconUrl)
       ..writeByte(5)
-      ..write(obj.fields)
+      ..write(obj.secret)
       ..writeByte(6)
+      ..write(obj.issuer)
+      ..writeByte(7)
       ..write(obj.deleted);
   }
 

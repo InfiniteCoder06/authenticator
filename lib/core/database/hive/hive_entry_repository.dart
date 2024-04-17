@@ -7,7 +7,6 @@ import 'package:hive/hive.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
-import 'package:authenticator/core/models/field.model.dart';
 import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
@@ -23,8 +22,6 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   @override
   Future<void> init() async {
     hive.registerAdapter(ItemAdapter());
-    hive.registerAdapter(FieldAdapter());
-    hive.registerAdapter(FieldDataAdapter());
 
     const secureStorage = FlutterSecureStorage();
     final encryptionKeyString = await secureStorage.read(key: 'key');

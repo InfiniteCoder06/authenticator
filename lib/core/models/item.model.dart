@@ -7,9 +7,6 @@ import 'package:equatable/equatable.dart';
 import 'package:hive/hive.dart';
 import 'package:uuid/uuid.dart';
 
-// 🌎 Project imports:
-import 'package:authenticator/core/models/field.model.dart';
-
 part 'item.model.g.dart';
 
 @HiveType(typeId: 0)
@@ -25,8 +22,10 @@ class Item extends HiveObject with EquatableMixin {
   @HiveField(4)
   String iconUrl;
   @HiveField(5)
-  List<Field> fields;
+  String secret;
   @HiveField(6)
+  String issuer;
+  @HiveField(7)
   bool deleted;
 
   Item({
@@ -35,7 +34,8 @@ class Item extends HiveObject with EquatableMixin {
     required this.updatedTime,
     required this.name,
     this.iconUrl = '',
-    required this.fields,
+    required this.secret,
+    this.issuer = '',
     this.deleted = false,
   });
 
@@ -44,24 +44,8 @@ class Item extends HiveObject with EquatableMixin {
         createdTime: DateTime.now(),
         updatedTime: DateTime.now(),
         name: '',
-        fields: [
-          Field(
-            identifier: 'secret',
-            type: FieldType.totp.name,
-            data: FieldData(
-              label: 'Secret',
-              hint: 'JBSWY3DPEHPK3PXP',
-            ),
-          ),
-          Field(
-            identifier: 'issuer',
-            type: FieldType.textField.name,
-            data: FieldData(
-              label: 'Issuer',
-              hint: 'Google',
-            ),
-          )
-        ],
+        secret: '',
+        issuer: '',
       );
 
   factory Item.fromUri(String name, String secret, String? issuer) => Item(
@@ -69,26 +53,8 @@ class Item extends HiveObject with EquatableMixin {
         createdTime: DateTime.now(),
         updatedTime: DateTime.now(),
         name: name,
-        fields: [
-          Field(
-            identifier: 'secret',
-            type: FieldType.totp.name,
-            data: FieldData(
-              label: 'Secret',
-              hint: 'JBSWY3DPEHPK3PXP',
-              value: secret,
-            ),
-          ),
-          Field(
-            identifier: 'issuer',
-            type: FieldType.textField.name,
-            data: FieldData(
-              label: 'Issuer',
-              hint: 'Google',
-              value: issuer,
-            ),
-          ),
-        ],
+        secret: secret,
+        issuer: issuer ?? '',
       );
 
   factory Item.fromFirestore(DocumentSnapshot<Map<String, dynamic>> snapshot) {
@@ -104,7 +70,8 @@ class Item extends HiveObject with EquatableMixin {
       updatedTime,
       name,
       iconUrl,
-      fields,
+      secret,
+      issuer,
       deleted,
     ];
   }
@@ -115,7 +82,8 @@ class Item extends HiveObject with EquatableMixin {
     DateTime? updatedTime,
     String? name,
     String? iconUrl,
-    List<Field>? fields,
+    String? secret,
+    String? issuer,
     bool? deleted,
   }) {
     return Item(
@@ -124,7 +92,8 @@ class Item extends HiveObject with EquatableMixin {
       updatedTime: updatedTime ?? this.updatedTime,
       name: name ?? this.name,
       iconUrl: iconUrl ?? this.iconUrl,
-      fields: fields ?? this.fields,
+      secret: secret ?? this.secret,
+      issuer: issuer ?? this.issuer,
       deleted: deleted ?? this.deleted,
     );
   }
@@ -136,7 +105,8 @@ class Item extends HiveObject with EquatableMixin {
       'updatedTime': updatedTime.millisecondsSinceEpoch,
       'name': name,
       'iconUrl': iconUrl,
-      'fields': fields.map((x) => x.toMap()).toList(),
+      'secret': secret,
+      'issuer': issuer,
       'deleted': deleted,
     };
   }
@@ -144,17 +114,12 @@ class Item extends HiveObject with EquatableMixin {
   factory Item.fromMap(Map<String, dynamic> map) {
     return Item(
       identifier: map['identifier'] as String,
-      createdTime:
-          DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
-      updatedTime:
-          DateTime.fromMillisecondsSinceEpoch(map['updatedTime'] as int),
+      createdTime: DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
+      updatedTime: DateTime.fromMillisecondsSinceEpoch(map['updatedTime'] as int),
       name: map['name'] as String,
       iconUrl: map['iconUrl'] as String,
-      fields: List<Field>.from(
-        map['fields'].map(
-          (x) => Field.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
+      secret: map['secret'] as String,
+      issuer: map['issuer'] as String,
       deleted: map['deleted'] as bool,
     );
   }

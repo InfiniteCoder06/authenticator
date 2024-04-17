@@ -26,18 +26,10 @@ void main() {
 
     expect(item.name, 'alice@google.com');
     expect(
-        item.fields
-            .where((element) => element.identifier == 'secret')
-            .first
-            .data
-            .value,
+        item.secret,
         'JBSWY3DPEHPK3PXP');
     expect(
-        item.fields
-            .where((element) => element.identifier == 'issuer')
-            .first
-            .data
-            .value,
+        item.issuer,
         'Example');
   });
 }

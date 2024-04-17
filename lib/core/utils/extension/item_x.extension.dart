@@ -13,10 +13,7 @@ import 'package:authenticator/core/utils/otp.util.dart';
 
 extension ItemX on Item {
   String getSecret() {
-    return fields
-        .firstWhere((field) => field.identifier == 'secret')
-        .data
-        .value!;
+    return secret;
   }
 
   String getOTP() {
@@ -42,12 +39,8 @@ extension ItemX on Item {
   }
 
   Option<String> getIssuer() {
-    final issuer = fields.where((field) => field.identifier == 'issuer');
-    if (issuer.isEmpty || issuer.first.data.value!.isEmpty) {
-      return none();
-    } else {
-      return some(issuer.first.data.value!);
-    }
+    final issuer = this.issuer;
+    return issuer.isEmpty ? none() : some(issuer);
   }
 
   Uri get uri => OtpUtils.getURI(this);

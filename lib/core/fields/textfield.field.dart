@@ -4,27 +4,26 @@ import 'package:flutter/material.dart';
 // 📦 Package imports:
 import 'package:reactive_forms/reactive_forms.dart';
 
-// 🌎 Project imports:
-import 'package:authenticator/core/models/field.model.dart';
-
 class AppTextField extends StatelessWidget {
-  const AppTextField(
-    this.field, {
+  const AppTextField({
     super.key,
+    required this.formName,
+    required this.label,
+    required this.hint,
   });
 
-  final Field field;
+  final String formName;
+  final String label;
+  final String hint;
 
   @override
   Widget build(BuildContext context) {
     return ReactiveTextField(
-      readOnly: field.readOnly,
-      formControlName: field.identifier,
+      formControlName: formName,
       textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
-        isDense: true,
-        labelText: field.data.label,
-        hintText: field.data.hint,
+        labelText: label,
+        hintText: hint,
         border: const OutlineInputBorder(),
         suffixIcon: IconButton(
           icon: const Icon(Icons.more_vert),
