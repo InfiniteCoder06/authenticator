@@ -3,6 +3,7 @@
 // 🐦 Flutter imports:
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 // 📦 Package imports:
 import 'package:firebase_core/firebase_core.dart';
@@ -46,6 +47,13 @@ void main() async {
   await entryRepositoryOverride.init();
   await hiveStorageOverride.init();
   await securityStorageOverride.init();
+
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
 
   runApp(UncontrolledProviderScope(
     container: container,
