@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
-import 'package:authenticator/core/utils/extension/item_x.extension.dart';
 
 class ItemBody extends StatelessWidget {
   const ItemBody(this.item, {super.key});
@@ -11,33 +10,22 @@ class ItemBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      clipBehavior: Clip.antiAlias,
-      scrollDirection: Axis.horizontal,
-      child: Builder(
-        builder: (context) {
-          final issuer = item.getIssuer();
-          return Row(
-            children: [
-              Text(
-                item.name,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+    return RichText(
+      overflow: TextOverflow.ellipsis,
+      text: TextSpan(
+        text: item.name,
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          fontWeight: FontWeight.bold,
+        ),
+        children: [
+          if (item.issuer.isNotEmpty)
+            TextSpan(
+              text: " ( ${item.issuer} )",
+              style: DefaultTextStyle.of(context).style.copyWith(
+                color: Theme.of(context).colorScheme.outline,
               ),
-              if (issuer.isSome())
-                Text(
-                  " (${issuer.toNullable()})",
-                  overflow: TextOverflow.ellipsis,
-                  style: DefaultTextStyle.of(context).style.copyWith(
-                        color: Theme.of(context).colorScheme.outline,
-                      ),
-                )
-            ],
-          );
-        },
+            )
+        ],
       ),
     );
   }

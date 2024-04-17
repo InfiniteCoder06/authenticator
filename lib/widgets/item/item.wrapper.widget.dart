@@ -2,25 +2,19 @@
 import 'package:flutter/material.dart';
 
 class ItemWidgetWrapper extends StatelessWidget {
-  const ItemWidgetWrapper(this.body, {super.key, this.otp, this.trailing});
+  const ItemWidgetWrapper(this.body, {super.key, this.otp});
   final Widget body;
   final Widget? otp;
-  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              body,
-              otp ?? const SizedBox.shrink(),
-            ],
-          ),
-          trailing ?? const SizedBox.shrink()
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          body,
+          otp ?? const SizedBox.shrink(),
         ],
       ),
     );
