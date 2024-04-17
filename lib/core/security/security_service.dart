@@ -15,7 +15,6 @@ import 'package:authenticator/core/persistence/security.persistance.dart';
 import 'package:authenticator/core/security/security_object.dart';
 import 'package:authenticator/core/types/lock.type.dart';
 import 'package:authenticator/core/types/lock_flow.type.dart';
-import 'package:authenticator/core/utils/extension/color_scheme.extension.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/screen_lock/screen_lock.util.dart';
 import 'package:authenticator/widgets/app.button.widget.dart';

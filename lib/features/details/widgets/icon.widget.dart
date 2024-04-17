@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/shape.constant.dart';
-import 'package:authenticator/core/utils/extension/color_scheme.extension.dart';
 import 'package:authenticator/core/utils/extension/item_x.extension.dart';
 import 'package:authenticator/features/details/detail.controller.dart';
 
@@ -35,7 +34,7 @@ class ItemIcon extends HookConsumerWidget {
               decoration: BoxDecoration(borderRadius: ShapeConstant.medium),
               child: Material(
                 borderRadius: ShapeConstant.medium,
-                color: Theme.of(context).colorScheme.elevation.surface3,
+                color: Theme.of(context).colorScheme.surfaceContainerHigh,
                 child: InkWell(
                   borderRadius: ShapeConstant.medium,
                   onTap: () {

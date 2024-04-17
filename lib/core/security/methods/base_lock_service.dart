@@ -9,7 +9,7 @@ abstract class _BaseLockService<T extends _BaseLockOptions> {
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: AppButton(
-        backgroundColor: Theme.of(context).colorScheme.elevation.surface1,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         label: "No Access?",
         onTap: () => {},
