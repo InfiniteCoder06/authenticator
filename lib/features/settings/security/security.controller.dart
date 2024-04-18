@@ -21,19 +21,20 @@ class SecurityController extends _$SecurityController with ConsoleMixin {
 
   Future<void> postInit() async {
     final securityService = ref.read(securityServiceProvider);
-    state = await securityService.hasLock();
+    bool hasLock = await securityService.hasLock();
+    state = hasLock;
     console.info("⚙️ Initialize");
   }
 
   Future<void> set(BuildContext context, {required LockType type}) async {
     final securityService = ref.read(securityServiceProvider);
-    await securityService.set(context: context, type: type);
-    state = await securityService.hasLock();
+    bool hasLock = await securityService.set(context: context, type: type);
+    state = hasLock;
   }
 
   Future<void> remove(BuildContext context, {required LockType type}) async {
     final securityService = ref.read(securityServiceProvider);
-    await securityService.remove(context: context, type: type);
-    state = await securityService.hasLock();
+    bool isRemoved = await securityService.remove(context: context, type: type);
+    state = !isRemoved;
   }
 }

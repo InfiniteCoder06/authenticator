@@ -81,7 +81,7 @@ class SecurityService {
     }
   }
 
-  Future<void> set({
+  Future<bool> set({
     required BuildContext context,
     required LockType type,
   }) async {
@@ -92,16 +92,15 @@ class SecurityService {
 
     switch (type) {
       case LockType.pin:
-        await pinCodeService.set(PinCodeOptions(
+        return await pinCodeService.set(PinCodeOptions(
           context: context,
           object: null,
           lockType: LockType.pin,
           flowType: LockFlowType.set,
           next: (authenticated) async => authenticated,
         ));
-        break;
       case LockType.biometrics:
-        await biometricService.set(BiometricsOptions(
+        return await biometricService.set(BiometricsOptions(
           context: context,
           object: null,
           lockType: LockType.biometrics,
@@ -121,30 +120,26 @@ class SecurityService {
           },
         ));
       default:
-        break;
+        return false;
     }
   }
 
   /// NOTE: no need to update for biometric
   // to update: unlock -> remove -> set
-  Future<void> update({
+  Future<bool> update({
     required BuildContext context,
     required LockType type,
   }) async {
     SecurityObject object = await lockInfo.getLock();
-    if (object.type == LockType.none) return;
+    if (object.type == LockType.none) return false;
     await remove(context: context, type: object.type);
 
     // make sure object = null before call set
     SecurityObject removedObject = await lockInfo.getLock();
     if (removedObject.type == LockType.none) {
-      await set(context: context, type: type);
-
-      // in case it fail, we set lock
-      SecurityObject setObject = await lockInfo.getLock();
-      if (setObject.type == LockType.none) {
-        lockInfo.storage.setLock(object.type, object.secret);
-      }
+      return await set(context: context, type: type);
+    } else {
+      return false;
     }
   }
 

@@ -13,9 +13,11 @@ import 'package:authenticator/provider.dart';
 class AppLocalAuth extends StatefulHookConsumerWidget {
   const AppLocalAuth({
     super.key,
+    required this.navKey,
     required this.child,
   });
 
+  final GlobalKey<NavigatorState> navKey;
   final Widget child;
   static AppLocalAuthState? of(BuildContext context) {
     return context.findAncestorStateOfType<AppLocalAuthState>();
@@ -41,7 +43,7 @@ class AppLocalAuthState extends ConsumerState<AppLocalAuth>
   Future<void> showLock() async {
     if (hasPinLockScreenOnState) return;
     hasPinLockScreenOnState = true;
-    await service.showLockIfHas(context);
+    await service.showLockIfHas(widget.navKey.currentContext!);
     hasPinLockScreenOnState = false;
   }
 

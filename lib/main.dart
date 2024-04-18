@@ -57,12 +57,14 @@ void main() async {
 
   runApp(UncontrolledProviderScope(
     container: container,
-    child: const MyApp(),
+    child: MyApp(),
   ));
 }
 
 class MyApp extends HookConsumerWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final GlobalKey<NavigatorState> _navigator = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -79,6 +81,7 @@ class MyApp extends HookConsumerWidget {
     return MaterialApp(
       title: 'Authenticator',
       debugShowCheckedModeBanner: false,
+      navigatorKey: _navigator,
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: lightColorScheme,
@@ -124,7 +127,8 @@ class MyApp extends HookConsumerWidget {
       ),
       themeMode: controller.themeMode,
       initialRoute: AppRouter.home.path,
-      builder: (context, child) => AppBuilder(child: child!),
+      builder: (context, child) =>
+          AppBuilder(navKey: _navigator, child: child!),
       onGenerateRoute: (settings) =>
           AppRouteConfig(context: context, settings: settings).generate(),
       navigatorObservers: [NavigationHistoryObserver()],

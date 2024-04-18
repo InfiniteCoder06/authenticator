@@ -11,9 +11,11 @@ class AppBuilder extends StatelessWidget {
   const AppBuilder({
     super.key,
     this.child,
+    this.navKey,
   });
 
   final Widget? child;
+  final GlobalKey<NavigatorState>? navKey;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,7 @@ class AppBuilder extends StatelessWidget {
       statusBarColor: Colors.transparent,
     );
     if (kReleaseMode) {
-      return buildWrapper(overlay, context);
+      return buildWrapper(overlay);
     } else {
       return buildWrapperWithBanner(overlay, context);
     }
@@ -34,7 +36,7 @@ class AppBuilder extends StatelessWidget {
   ) {
     return Stack(
       children: [
-        buildWrapper(overlay, context),
+        buildWrapper(overlay),
         buildBanner(context),
       ],
     );
@@ -60,7 +62,7 @@ class AppBuilder extends StatelessWidget {
     );
   }
 
-  Widget buildWrapper(SystemUiOverlayStyle overlay, BuildContext context) {
+  Widget buildWrapper(SystemUiOverlayStyle overlay) {
     final widget = LoadingOverlay(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -70,6 +72,10 @@ class AppBuilder extends StatelessWidget {
         ),
       ),
     );
-    return kIsWeb ? widget : AppLocalAuth(child: widget);
+    return kIsWeb
+        ? widget
+        : Builder(builder: (context) {
+            return AppLocalAuth(navKey: navKey!, child: widget);
+          });
   }
 }

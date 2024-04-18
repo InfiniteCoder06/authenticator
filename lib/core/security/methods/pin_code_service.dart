@@ -19,12 +19,13 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
 
   @override
   Future<bool> set(PinCodeOptions option) async {
-    final matchedSecret = await showEnhancedCreateScreenLock<String>(
+    final matchedSecret = await showEnhancedCreateScreenLock(
       context: option.context,
-      title: const Text("Set Pin Code"),
-      onConfirmed: (matchedSecret) =>
-          Navigator.of(option.context).pop(matchedSecret),
-    );
+      onConfirmed: (matchedSecret) {
+        Navigator.of(option.context).pop(matchedSecret);
+      },
+      canCancel: option.canCancel,
+    ) as String?;
     if (matchedSecret != null) {
       info.storage.setLock(option.lockType, matchedSecret);
       return true;
@@ -56,7 +57,7 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       canCancel: canCancel,
       footer: buildFooter(context),
       onUnlocked: () => Navigator.of(context).pop(true),
-    );
+    ) as bool;
     return authenticated == true;
   }
 }

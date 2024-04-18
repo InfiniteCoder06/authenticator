@@ -10,24 +10,26 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
     assert(option.object != null);
     if (!info.hasLocalAuth) return true;
 
-    bool authenticated = await showEnhancedScreenLock<bool>(
+    bool authenticated = await showEnhancedScreenLock(
           context: option.context,
           correctString: option.object!.secret,
           customizedButtonChild: const Icon(Icons.fingerprint),
           footer: buildFooter(option.context),
           onUnlocked: () => Navigator.of(option.context).pop(true),
           customizedButtonTap: () async {
-            await _authentication(option.context).then((authenticated) {
+            await _authentication(option.context, "Unlock")
+                .then((authenticated) {
               if (authenticated) Navigator.of(option.context).pop(true);
             });
           },
           canCancel: option.canCancel,
           onOpened: () async {
-            await _authentication(option.context).then((authenticated) {
+            await _authentication(option.context, "Unlock")
+                .then((authenticated) {
               if (authenticated) Navigator.of(option.context).pop(true);
             });
           },
-        ) ??
+        ) as bool? ??
         false;
 
     return option.next(authenticated);
@@ -35,22 +37,23 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
 
   @override
   Future<bool> set(BiometricsOptions option) async {
-    bool authenticated = await _authentication(option.context);
+    bool authenticated =
+        await _authentication(option.context, "Set up biometic unlock");
     return option.next(authenticated);
   }
 
   @override
   Future<bool> remove(BiometricsOptions option) async {
-    bool authenticated = await _authentication(option.context);
+    bool authenticated =
+        await _authentication(option.context, "Remove biometric");
     if (authenticated) await info.clear();
     return option.next(authenticated);
   }
 
   Future<bool> _authentication(
-    BuildContext context, [
-    String? localizedReason,
-  ]) async {
-    localizedReason ??= "Unlock to view Codes";
+    BuildContext context,
+    String localizedReason,
+  ) async {
     try {
       return info.localAuth.authenticate(
         localizedReason: localizedReason,
