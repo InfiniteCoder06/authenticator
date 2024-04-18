@@ -198,7 +198,6 @@ class EntryOverviewPage extends HookConsumerWidget {
                                     ItemBody(item),
                                     otp: ItemOTP(
                                       item,
-                                      selected: selected.contains(item),
                                       copied: tap,
                                     ),
                                   ),

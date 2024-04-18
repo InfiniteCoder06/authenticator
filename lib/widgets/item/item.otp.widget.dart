@@ -15,11 +15,9 @@ class ItemOTP extends HookConsumerWidget {
   const ItemOTP(
     this.item, {
     super.key,
-    this.selected = false,
     this.copied = false,
   });
   final Item item;
-  final bool selected;
   final bool copied;
 
   @override
