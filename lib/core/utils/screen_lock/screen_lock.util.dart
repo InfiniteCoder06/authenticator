@@ -19,7 +19,7 @@ Future<T?> showEnhancedScreenLock<T>({
   ValueChanged<int>? onMaxRetries,
   int maxRetries = 5,
   Duration retryDelay = const Duration(seconds: 30),
-  Widget title = const Text("Enter Passcode"),
+  Widget? title,
   DelayBuilderCallback? delayBuilder,
   Widget? customizedButtonChild,
   VoidCallback? customizedButtonTap,
@@ -35,8 +35,16 @@ Future<T?> showEnhancedScreenLock<T>({
   ColorScheme colorScheme = Theme.of(context).colorScheme;
   TextTheme textTheme = Theme.of(context).textTheme;
 
+  title = title ??
+      Text(
+        "Enter Passcode",
+        style: textTheme.titleLarge?.copyWith(
+          color: colorScheme.onSurface,
+        ),
+      );
+
   KeyPadConfig keyPadConfig =
-      ScreenLockHelper.keyPadConfig(textTheme, context, colorScheme);
+      ScreenLockHelper.keyPadConfig(textTheme, colorScheme);
   SecretsConfig secretsConfig = ScreenLockHelper.secretsConfig(colorScheme);
   ScreenLockConfig screenLockConfig =
       ScreenLockHelper.screenLockConfig(colorScheme, context, textTheme);
@@ -82,8 +90,8 @@ Future<T?> showEnhancedCreateScreenLock<T>({
   int maxRetries = 5,
   int digits = 4,
   Duration retryDelay = Duration.zero,
-  Widget title = const Text("Enter Passcode"),
-  Widget confirmTitle = const Text("Confirm Passcode"),
+  Widget? title,
+  Widget? confirmTitle,
   DelayBuilderCallback? delayBuilder,
   Widget? customizedButtonChild,
   VoidCallback? customizedButtonTap,
@@ -99,8 +107,24 @@ Future<T?> showEnhancedCreateScreenLock<T>({
   ColorScheme colorScheme = Theme.of(context).colorScheme;
   TextTheme textTheme = Theme.of(context).textTheme;
 
+  title = title ??
+      Text(
+        "Set Pin Code",
+        style: textTheme.titleLarge?.copyWith(
+          color: colorScheme.onSurface,
+        ),
+      );
+
+  confirmTitle = confirmTitle ??
+      Text(
+        "Confirm Passcode",
+        style: textTheme.titleLarge?.copyWith(
+          color: colorScheme.onSurface,
+        ),
+      );
+
   KeyPadConfig keyPadConfig =
-      ScreenLockHelper.keyPadConfig(textTheme, context, colorScheme);
+      ScreenLockHelper.keyPadConfig(textTheme, colorScheme);
   SecretsConfig secretsConfig = ScreenLockHelper.secretsConfig(colorScheme);
   ScreenLockConfig screenLockConfig =
       ScreenLockHelper.screenLockConfig(colorScheme, context, textTheme);
