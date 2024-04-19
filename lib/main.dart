@@ -48,6 +48,7 @@ void main() async {
   await hiveStorageOverride.init();
   await securityStorageOverride.init();
 
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
