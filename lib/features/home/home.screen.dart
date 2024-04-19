@@ -12,9 +12,11 @@ import 'package:swipeable_page_route/swipeable_page_route.dart';
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
+import 'package:authenticator/core/utils/local_auth/app_local_auth.widget.dart';
 import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/features/home/widgets/home.bottom_sheet.dart';
 import 'package:authenticator/features/home/widgets/progress.widget.dart';
+import 'package:authenticator/features/settings/security/security.controller.dart';
 import 'package:authenticator/gen/assets.gen.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_cross_fade.dart';
@@ -39,6 +41,7 @@ class EntryOverviewPage extends HookConsumerWidget {
           builder: (context) {
             final selected = ref.watch(
                 homeControllerProvider.select((state) => state.selected));
+            final hasLock = ref.watch(securityControllerProvider);
             return MorphingAppBar(
               leading: selected.isNotEmpty
                   ? AppPopButton(
@@ -48,7 +51,6 @@ class EntryOverviewPage extends HookConsumerWidget {
                           .read(homeControllerProvider.notifier)
                           .clearSelected())
                   : null,
-              centerTitle: true,
               title: const AppBarTitle(fallbackRouter: AppRouter.home),
               actions: [
                 AppCrossFade(
@@ -115,13 +117,22 @@ class EntryOverviewPage extends HookConsumerWidget {
                     const PopupMenuItem(
                       value: 0,
                       child: Text("Settings"),
-                    )
+                    ),
+                    if (hasLock)
+                      const PopupMenuItem(
+                        value: 1,
+                        child: Text("Lock"),
+                      )
                   ],
                   onSelected: (value) async {
                     if (value == 0) {
                       await Navigator.of(context)
                           .pushNamed(AppRouter.settings.path);
                       ref.read(homeControllerProvider.notifier).get();
+                    }
+                    if (value == 1) {
+                      if (!context.mounted) return;
+                      AppLocalAuth.of(context)?.showLock();
                     }
                   },
                 ),
