@@ -42,21 +42,21 @@ class SecurityService {
     return object.type != LockType.none;
   }
 
-  Future<bool> showLockIfHas(
-    BuildContext context, {
-    LockFlowType flowType = LockFlowType.unlock,
-  }) async {
+  Future<LockType> getLock() async {
+    SecurityObject object = await lockInfo.getLock();
+    return object.type;
+  }
+
+  Future<bool> showLockIfHas(BuildContext context) async {
     SecurityObject object = await lockInfo.getLock();
     if (object.type == LockType.none) return true;
     return unlock(
       context: context,
-      flowType: flowType,
     );
   }
 
   Future<bool> unlock({
     required BuildContext context,
-    LockFlowType flowType = LockFlowType.unlock,
   }) async {
     SecurityObject object = await lockInfo.getLock();
     switch (object.type) {
@@ -65,7 +65,7 @@ class SecurityService {
           context: context,
           object: object,
           lockType: LockType.pin,
-          flowType: flowType,
+          flowType: LockFlowType.unlock,
           next: (authenticated) async => authenticated,
         ));
       case LockType.biometrics:
@@ -73,7 +73,7 @@ class SecurityService {
           context: context,
           object: object,
           lockType: LockType.biometrics,
-          flowType: flowType,
+          flowType: LockFlowType.unlock,
           next: (bool authenticated) async => authenticated,
         ));
       default:
@@ -85,11 +85,6 @@ class SecurityService {
     required BuildContext context,
     required LockType type,
   }) async {
-    SecurityObject object = await lockInfo.getLock();
-    if (object.type != LockType.none) {
-      return update(context: context, type: type);
-    }
-
     switch (type) {
       case LockType.pin:
         return await pinCodeService.set(PinCodeOptions(
@@ -105,41 +100,10 @@ class SecurityService {
           object: null,
           lockType: LockType.biometrics,
           flowType: LockFlowType.set,
-          next: (authenticated) async {
-            if (authenticated) {
-              return pinCodeService.set(PinCodeOptions(
-                context: context,
-                object: null,
-                lockType: LockType.biometrics,
-                flowType: LockFlowType.set,
-                next: (bool authenticated) async => authenticated,
-              ));
-            } else {
-              return authenticated;
-            }
-          },
+          next: (authenticated) async => authenticated,
         ));
       default:
         return false;
-    }
-  }
-
-  /// NOTE: no need to update for biometric
-  // to update: unlock -> remove -> set
-  Future<bool> update({
-    required BuildContext context,
-    required LockType type,
-  }) async {
-    SecurityObject object = await lockInfo.getLock();
-    if (object.type == LockType.none) return false;
-    await remove(context: context, type: object.type);
-
-    // make sure object = null before call set
-    SecurityObject removedObject = await lockInfo.getLock();
-    if (removedObject.type == LockType.none) {
-      return await set(context: context, type: type);
-    } else {
-      return false;
     }
   }
 
@@ -154,7 +118,7 @@ class SecurityService {
         return pinCodeService.remove(PinCodeOptions(
           context: context,
           object: object,
-          lockType: LockType.pin,
+          lockType: LockType.none,
           flowType: LockFlowType.remove,
           next: (bool authenticated) async => authenticated,
         ));
@@ -162,24 +126,9 @@ class SecurityService {
         return biometricService.remove(BiometricsOptions(
           context: context,
           object: object,
-          lockType: LockType.biometrics,
+          lockType: LockType.pin,
           flowType: LockFlowType.remove,
-          next: (bool authenticated) async {
-            if (!authenticated) {
-              bool authenticatedFromPin =
-                  await pinCodeService.unlock(PinCodeOptions(
-                context: context,
-                object: null,
-                lockType: LockType.biometrics,
-                flowType: LockFlowType.remove,
-                next: (bool authenticated) async => authenticated,
-              ));
-              if (authenticatedFromPin) await lockInfo.clear();
-              return authenticatedFromPin;
-            } else {
-              return authenticated;
-            }
-          },
+          next: (bool authenticated) async => authenticated,
         ));
       default:
         return true;

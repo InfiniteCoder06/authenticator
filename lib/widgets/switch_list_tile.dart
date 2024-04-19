@@ -9,11 +9,13 @@ class MaterialSwitchListTile extends StatelessWidget {
     required this.onToggle,
     super.key,
     this.shape,
+    this.enabled = true,
     this.isThreeLine = false,
   });
   final Widget title;
   final Widget subtitle;
   final ValueChanged<bool> onToggle;
+  final bool enabled;
   final bool value;
   final ShapeBorder? shape;
   final bool isThreeLine;
@@ -26,6 +28,7 @@ class MaterialSwitchListTile extends StatelessWidget {
       shape: Theme.of(context).listTileTheme.shape,
       title: title,
       subtitle: subtitle,
+      enabled: enabled,
       trailing: Switch(
         value: value,
         onChanged: onToggle,

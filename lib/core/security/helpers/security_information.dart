@@ -1,6 +1,6 @@
 part of '../security_service.dart';
 
-class SecurityInformations {
+class SecurityInformations with ConsoleMixin {
   final LocalAuthentication localAuth;
   final SecurityPersistanceProvider storage;
 
@@ -25,16 +25,21 @@ class SecurityInformations {
       hasFaceID || hasFingerprint || hasIris || hasStrong || hasWeak;
 
   Future<void> initialize() async {
-    bool canCheckBiometrics = await localAuth.canCheckBiometrics &&
-        await localAuth.isDeviceSupported();
-    if (canCheckBiometrics) {
-      List<BiometricType> availableBiometrics =
-          await localAuth.getAvailableBiometrics();
-      _hasFaceID = availableBiometrics.contains(BiometricType.face);
-      _hasFingerprint = availableBiometrics.contains(BiometricType.fingerprint);
-      _hasIris = availableBiometrics.contains(BiometricType.iris);
-      _hasStrong = availableBiometrics.contains(BiometricType.strong);
-      _hasWeak = availableBiometrics.contains(BiometricType.weak);
+    try {
+      bool canCheckBiometrics = await localAuth.canCheckBiometrics &&
+          await localAuth.isDeviceSupported();
+      if (canCheckBiometrics) {
+        List<BiometricType> availableBiometrics =
+            await localAuth.getAvailableBiometrics();
+        _hasFaceID = availableBiometrics.contains(BiometricType.face);
+        _hasFingerprint =
+            availableBiometrics.contains(BiometricType.fingerprint);
+        _hasIris = availableBiometrics.contains(BiometricType.iris);
+        _hasStrong = availableBiometrics.contains(BiometricType.strong);
+        _hasWeak = availableBiometrics.contains(BiometricType.weak);
+      }
+    } on PlatformException catch (e) {
+      console.error(e.message.toString());
     }
   }
 

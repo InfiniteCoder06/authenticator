@@ -39,6 +39,9 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
   Future<bool> set(BiometricsOptions option) async {
     bool authenticated =
         await _authentication(option.context, "Set up biometic unlock");
+    if (authenticated) {
+      await info.storage.setLock(type: option.lockType);
+    }
     return option.next(authenticated);
   }
 
@@ -46,7 +49,9 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
   Future<bool> remove(BiometricsOptions option) async {
     bool authenticated =
         await _authentication(option.context, "Remove biometric");
-    if (authenticated) await info.clear();
+    if (authenticated) {
+      await info.storage.setLock(type: option.lockType);
+    }
     return option.next(authenticated);
   }
 

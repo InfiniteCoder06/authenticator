@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -10,31 +11,39 @@ import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/provider.dart';
 
 part 'security.controller.g.dart';
+part 'security.state.dart';
 
 @riverpod
 class SecurityController extends _$SecurityController with ConsoleMixin {
   @override
-  bool build() {
+  SecurityState build() {
     postInit();
-    return false;
+    return SecurityState.initial();
   }
 
   Future<void> postInit() async {
-    final securityService = ref.read(securityServiceProvider);
-    bool hasLock = await securityService.hasLock();
-    state = hasLock;
+    await refreshState();
     console.info("⚙️ Initialize");
   }
 
   Future<void> set(BuildContext context, {required LockType type}) async {
     final securityService = ref.read(securityServiceProvider);
-    bool hasLock = await securityService.set(context: context, type: type);
-    state = hasLock;
+    await securityService.set(context: context, type: type);
+    await refreshState();
   }
 
   Future<void> remove(BuildContext context, {required LockType type}) async {
     final securityService = ref.read(securityServiceProvider);
-    bool isRemoved = await securityService.remove(context: context, type: type);
-    state = !isRemoved;
+    await securityService.remove(context: context, type: type);
+    await refreshState();
+  }
+
+  Future<void> refreshState() async {
+    final securityService = ref.read(securityServiceProvider);
+    LockType lockType = await securityService.getLock();
+    state = state.copyWith(
+      isEnabled: lockType != LockType.none,
+      biometrics: lockType == LockType.biometrics,
+    );
   }
 }

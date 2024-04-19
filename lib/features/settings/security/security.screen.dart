@@ -16,6 +16,8 @@ class SecuritySettingsPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final isEnabled = ref
+        .watch(securityControllerProvider.select((state) => state.isEnabled));
     return Scaffold(
       body: CustomScrollView(
         slivers: <Widget>[
@@ -25,25 +27,44 @@ class SecuritySettingsPage extends HookConsumerWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[
-                  Builder(
-                    builder: (context) {
-                      final controller = ref.watch(securityControllerProvider);
-                      return MaterialSwitchListTile(
-                        title: const Text('Security'),
-                        subtitle: const Text('Enable security'),
-                        value: controller,
-                        onToggle: (bool value) {
-                          value
-                              ? ref
-                                  .read(securityControllerProvider.notifier)
-                                  .set(context, type: LockType.biometrics)
-                              : ref
-                                  .read(securityControllerProvider.notifier)
-                                  .remove(context, type: LockType.biometrics);
-                        },
-                      );
+                  MaterialSwitchListTile(
+                    title: const Text('Security'),
+                    subtitle: const Text('Enable security'),
+                    value: isEnabled,
+                    onToggle: (bool value) {
+                      value
+                          ? ref
+                              .read(securityControllerProvider.notifier)
+                              .set(context, type: LockType.pin)
+                          : ref
+                              .read(securityControllerProvider.notifier)
+                              .remove(context, type: LockType.pin);
                     },
-                  )
+                  ),
+                  if (isEnabled)
+                    Builder(
+                      builder: (context) {
+                        final controller = ref.watch(
+                            securityControllerProvider.select((state) =>
+                                (state.hasBiometrics, state.biometrics)));
+                        return MaterialSwitchListTile(
+                          title: const Text('Biometric Unlock'),
+                          subtitle: const Text(
+                              'Allow biometric authentication to unlock'),
+                          enabled: controller.$1,
+                          value: controller.$2,
+                          onToggle: (bool value) {
+                            value
+                                ? ref
+                                    .read(securityControllerProvider.notifier)
+                                    .set(context, type: LockType.biometrics)
+                                : ref
+                                    .read(securityControllerProvider.notifier)
+                                    .remove(context, type: LockType.biometrics);
+                          },
+                        );
+                      },
+                    )
                 ],
               ),
             ),

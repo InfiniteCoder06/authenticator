@@ -7,12 +7,12 @@ part of 'security.controller.dart';
 // **************************************************************************
 
 String _$securityControllerHash() =>
-    r'4212d0baacf257c09f455570afced7c90d61a47e';
+    r'47167339ee6e3195c1ad964aa46af52d27b11ebf';
 
 /// See also [SecurityController].
 @ProviderFor(SecurityController)
 final securityControllerProvider =
-    AutoDisposeNotifierProvider<SecurityController, bool>.internal(
+    AutoDisposeNotifierProvider<SecurityController, SecurityState>.internal(
   SecurityController.new,
   name: r'securityControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final securityControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$SecurityController = AutoDisposeNotifier<bool>;
+typedef _$SecurityController = AutoDisposeNotifier<SecurityState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

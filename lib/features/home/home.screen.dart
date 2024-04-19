@@ -41,7 +41,8 @@ class EntryOverviewPage extends HookConsumerWidget {
           builder: (context) {
             final selected = ref.watch(
                 homeControllerProvider.select((state) => state.selected));
-            final hasLock = ref.watch(securityControllerProvider);
+            final hasLock = ref.watch(
+                securityControllerProvider.select((state) => state.isEnabled));
             return MorphingAppBar(
               leading: selected.isNotEmpty
                   ? AppPopButton(

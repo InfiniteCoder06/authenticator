@@ -27,7 +27,7 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       canCancel: option.canCancel,
     ) as String?;
     if (matchedSecret != null) {
-      info.storage.setLock(option.lockType, matchedSecret);
+      info.storage.setLock(type: option.lockType, secret: matchedSecret);
       return true;
     } else {
       return false;
@@ -42,7 +42,7 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       secret: option.object!.secret,
       canCancel: option.canCancel,
     );
-    if (authenticated) await info.clear();
+    if (authenticated) info.storage.setLock(type: option.lockType);
     return option.next(authenticated);
   }
 

@@ -44,9 +44,11 @@ class SecurityPersistanceProvider extends StorageService with ConsoleMixin {
     console.info("⚙️ Initialize");
   }
 
-  Future<void> setLock(LockType type, String secret) async {
+  Future<void> setLock({required LockType type, String? secret}) async {
     await put(kLockType, type.index);
-    await put(kLockSecret, secret);
+    if (secret != null) {
+      await put(kLockSecret, secret);
+    }
   }
 
   Future<SecurityObject> getLock() async {

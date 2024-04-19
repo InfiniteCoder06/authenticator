@@ -23,24 +23,27 @@ class ItemOTP extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(behaviorControllerProvider);
-    ref.watch(progressProvider);
+    final progress = ref.watch(progressProvider);
     return AnimatedCrossFade(
       firstChild: AnimatedOpacity(
         duration: const Duration(milliseconds: 1),
         opacity: copied ? 0 : 1,
-        child: Text(
-          StringUtils.addCharAtPosition(
-            item.getOTP(),
-            " ",
-            state.codeGroup,
-            repeat: true,
-          ),
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Theme.of(context).colorScheme.tertiary,
+        child: AnimatedDefaultTextStyle(
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                color: codeColor(context, progress),
                 fontFamily: 'Poppins',
                 fontSize: state.fontSize.toDouble(),
                 fontWeight: FontWeight.w900,
               ),
+          duration: Durations.long2,
+          child: Text(
+            StringUtils.addCharAtPosition(
+              item.getOTP(),
+              " ",
+              state.codeGroup,
+              repeat: true,
+            ),
+          ),
         ),
       ),
       secondChild: AnimatedOpacity(
@@ -59,5 +62,13 @@ class ItemOTP extends HookConsumerWidget {
           copied ? CrossFadeState.showSecond : CrossFadeState.showFirst,
       duration: Durations.long2,
     );
+  }
+
+  Color codeColor(BuildContext context, double seconds) {
+    ColorScheme colorScheme = Theme.of(context).colorScheme;
+    if ((seconds > 25 && seconds < 30)) {
+      return colorScheme.error;
+    }
+    return colorScheme.tertiary;
   }
 }

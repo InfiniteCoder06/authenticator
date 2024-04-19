@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -60,7 +61,11 @@ class ScreenLockHelper {
         foregroundColor: colorScheme.onSecondaryContainer,
         backgroundColor: colorScheme.secondaryContainer,
         buttonStyle: FilledButton.styleFrom(
+          shape: RoundedRectangleBorder(
+            borderRadius: ShapeConstant.large,
+          ),
           side: BorderSide(
+            style: BorderStyle.none,
             color: colorScheme.secondaryContainer,
           ),
         ),
