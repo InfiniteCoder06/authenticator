@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Authenticator"
+        android:label="${title}"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/${iconName}">
         <activity
             android:name=".MainActivity"
             android:exported="true"
