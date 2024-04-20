@@ -1,5 +1,4 @@
 // 🐦 Flutter imports:
-import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -7,6 +6,7 @@ import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 
 class ScreenLockHelper {
   static Widget dotBuilder(bool enabled, SecretConfig config) {

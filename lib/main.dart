@@ -15,7 +15,7 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/router/app_router.config.dart';
-import 'package:authenticator/core/utils/constants/shape.constant.dart';
+import 'package:authenticator/core/utils/constants/theme.constant.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/firebase_options.dart';
 import 'package:authenticator/provider.dart';
@@ -83,53 +83,17 @@ class MyApp extends HookConsumerWidget {
       title: 'Authenticator',
       debugShowCheckedModeBanner: false,
       navigatorKey: _navigator,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: lightColorScheme,
-        appBarTheme: AppBarTheme(
-          backgroundColor: lightColorScheme.surface,
-          elevation: 0,
-        ),
-        listTileTheme: ListTileThemeData(
-          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.small),
-        ),
-        popupMenuTheme: PopupMenuThemeData(
-          elevation: 1,
-          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.medium),
-        ),
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: lightColorScheme.inverseSurface,
-          behavior: SnackBarBehavior.floating,
-        ),
-        scaffoldBackgroundColor: lightColorScheme.surface,
-        splashColor: lightColorScheme.onSurface.withOpacity(0.18),
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        colorScheme: darkColorScheme,
-        appBarTheme: AppBarTheme(
-          backgroundColor: darkColorScheme.surface,
-          elevation: 0,
-        ),
-        listTileTheme: ListTileThemeData(
-          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.small),
-        ),
-        popupMenuTheme: PopupMenuThemeData(
-          elevation: 1,
-          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.medium),
-        ),
-        snackBarTheme: SnackBarThemeData(
-          backgroundColor: darkColorScheme.onPrimaryContainer,
-          behavior: SnackBarBehavior.floating,
-        ),
-        scaffoldBackgroundColor: darkColorScheme.surface,
-        splashColor: darkColorScheme.onSurface.withOpacity(0.18),
-      ),
+      theme: ThemeConstant.getLightThemeData(lightColorScheme),
+      darkTheme: ThemeConstant.getDarkThemeData(darkColorScheme),
       themeMode: controller.themeMode,
       initialRoute: AppRouter.home.path,
-      builder: (context, child) =>
-          AppBuilder(navKey: _navigator, child: child!),
+      builder: (_, child) => AppBuilder(
+        navKey: _navigator,
+        themeMode: controller.themeMode,
+        lightColorScheme: lightColorScheme,
+        darkColorScheme: darkColorScheme,
+        child: child!,
+      ),
       onGenerateRoute: (settings) =>
           AppRouteConfig(context: context, settings: settings).generate(),
       navigatorObservers: [NavigationHistoryObserver()],

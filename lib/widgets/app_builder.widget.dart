@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // 🌎 Project imports:
+import 'package:authenticator/core/utils/constants/theme.constant.dart';
 import 'package:authenticator/core/utils/local_auth/app_local_auth.widget.dart';
 import 'package:authenticator/widgets/loader.overlay.dart';
 
@@ -12,10 +13,16 @@ class AppBuilder extends StatelessWidget {
     super.key,
     this.child,
     this.navKey,
+    required this.themeMode,
+    required this.lightColorScheme,
+    required this.darkColorScheme,
   });
 
   final Widget? child;
   final GlobalKey<NavigatorState>? navKey;
+  final ThemeMode themeMode;
+  final ColorScheme lightColorScheme;
+  final ColorScheme darkColorScheme;
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +82,12 @@ class AppBuilder extends StatelessWidget {
     return kIsWeb
         ? widget
         : Builder(builder: (context) {
-            return AppLocalAuth(navKey: navKey!, child: widget);
+            return Theme(
+              data: ThemeConstant.getDarkMode(context, themeMode)
+                  ? ThemeConstant.getDarkThemeData(darkColorScheme)
+                  : ThemeConstant.getLightThemeData(lightColorScheme),
+              child: AppLocalAuth(navKey: navKey!, child: widget),
+            );
           });
   }
 }

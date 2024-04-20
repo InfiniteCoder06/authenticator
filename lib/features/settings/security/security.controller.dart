@@ -1,8 +1,8 @@
 // 🐦 Flutter imports:
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:equatable/equatable.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
