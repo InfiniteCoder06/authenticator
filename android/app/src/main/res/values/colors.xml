@@ -1,0 +1,5 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <color name="white">#ffffff</color>
+    <color name="md_theme_light_background">#fefbff</color>
+    <color name="md_theme_dark_background">#1b1b1f</color>
+</resources>
