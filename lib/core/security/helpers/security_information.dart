@@ -9,37 +9,37 @@ class SecurityInformations with ConsoleMixin {
     required this.storage,
   });
 
-  bool? _hasFaceID;
-  bool? _hasFingerprint;
-  bool? _hasIris;
-  bool? _hasStrong;
-  bool? _hasWeak;
+  // Flag to indicate if biometrics availability has been checked
+  bool _biometricsChecked = false;
 
-  bool get hasFaceID => _hasFaceID ?? false;
-  bool get hasFingerprint => _hasFingerprint ?? false;
-  bool get hasIris => _hasIris ?? false;
-  bool get hasStrong => _hasStrong ?? false;
-  bool get hasWeak => _hasWeak ?? false;
+  // Use a single map to store all biometric availabilities
+  final Map<BiometricType, bool> _biometricAvailability = {};
+
+  bool get hasFaceID => _biometricAvailability[BiometricType.face] ?? false;
+  bool get hasFingerprint =>
+      _biometricAvailability[BiometricType.fingerprint] ?? false;
+  bool get hasIris => _biometricAvailability[BiometricType.iris] ?? false;
+  bool get hasStrong => _biometricAvailability[BiometricType.strong] ?? false;
+  bool get hasWeak => _biometricAvailability[BiometricType.weak] ?? false;
 
   bool get hasLocalAuth =>
-      hasFaceID || hasFingerprint || hasIris || hasStrong || hasWeak;
+      _biometricAvailability.values.any((element) => element);
 
   Future<void> initialize() async {
-    try {
-      bool canCheckBiometrics = await localAuth.canCheckBiometrics &&
-          await localAuth.isDeviceSupported();
-      if (canCheckBiometrics) {
-        List<BiometricType> availableBiometrics =
-            await localAuth.getAvailableBiometrics();
-        _hasFaceID = availableBiometrics.contains(BiometricType.face);
-        _hasFingerprint =
-            availableBiometrics.contains(BiometricType.fingerprint);
-        _hasIris = availableBiometrics.contains(BiometricType.iris);
-        _hasStrong = availableBiometrics.contains(BiometricType.strong);
-        _hasWeak = availableBiometrics.contains(BiometricType.weak);
+    if (!_biometricsChecked) {
+      try {
+        final canCheckBiometrics = await localAuth.canCheckBiometrics &&
+            await localAuth.isDeviceSupported();
+        if (canCheckBiometrics) {
+          final availableBiometrics = await localAuth.getAvailableBiometrics();
+          for (final type in availableBiometrics) {
+            _biometricAvailability[type] = true;
+          }
+        }
+        _biometricsChecked = true;
+      } on PlatformException catch (e) {
+        console.error(e.message.toString());
       }
-    } on PlatformException catch (e) {
-      console.error(e.message.toString());
     }
   }
 
