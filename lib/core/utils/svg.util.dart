@@ -1,11 +1,14 @@
 // 🐦 Flutter imports:
-import 'package:flutter/services.dart';
+import 'package:flutter/material.dart';
 
 class SvgUtils {
-  static Future<String> renderIllustration(Color exColor, String path) async {
-    final String image = await rootBundle.loadString(path);
-    String valueString = exColor.toString().split('(0x')[1].split(')')[0];
+  static Future<String> renderIllustration(
+      BuildContext context, Color color, String path) async {
+    final assetBundle = DefaultAssetBundle.of(context);
+    final svgString = await assetBundle.loadString(path);
+
+    String valueString = color.toString().split('(0x')[1].split(')')[0];
     valueString = valueString.substring(2, valueString.length);
-    return image.replaceAll("#6c63ff", "#$valueString");
+    return svgString.replaceAll("#6c63ff", "#$valueString");
   }
 }
