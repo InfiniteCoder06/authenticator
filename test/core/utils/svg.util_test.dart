@@ -1,5 +1,6 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 // 📦 Package imports:
 import 'package:flutter_test/flutter_test.dart';
@@ -11,8 +12,8 @@ import 'package:authenticator/gen/assets.gen.dart';
 void main() {
   test('Test Color 1', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    final svg =
-        await SvgUtils.renderIllustration(Colors.lightGreen, Assets.empty.path);
+    final svg = await SvgUtils.renderIllustration(
+        rootBundle, Colors.lightGreen, Assets.empty.path);
     expect("""
         <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="647.63626" height="632.17383" viewBox="0 0 647.63626 632.17383" xmlns:xlink="http://www.w3.org/1999/xlink">
           <path d="M687.3279,276.08691H512.81813a15.01828,15.01828,0,0,0-15,15v387.85l-2,.61005-42.81006,13.11a8.00676,8.00676,0,0,1-9.98974-5.31L315.678,271.39691a8.00313,8.00313,0,0,1,5.31006-9.99l65.97022-20.2,191.25-58.54,65.96972-20.2a7.98927,7.98927,0,0,1,9.99024,5.3l32.5498,106.32Z" transform="translate(-276.18187 -133.91309)" fill="#f2f2f2"/>
@@ -31,8 +32,8 @@ void main() {
 
   test('Test Color 2', () async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    final svg =
-        await SvgUtils.renderIllustration(Colors.lime, Assets.empty.path);
+    final svg = await SvgUtils.renderIllustration(
+        rootBundle, Colors.lime, Assets.empty.path);
     expect("""
         <svg xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" width="647.63626" height="632.17383" viewBox="0 0 647.63626 632.17383" xmlns:xlink="http://www.w3.org/1999/xlink">
           <path d="M687.3279,276.08691H512.81813a15.01828,15.01828,0,0,0-15,15v387.85l-2,.61005-42.81006,13.11a8.00676,8.00676,0,0,1-9.98974-5.31L315.678,271.39691a8.00313,8.00313,0,0,1,5.31006-9.99l65.97022-20.2,191.25-58.54,65.96972-20.2a7.98927,7.98927,0,0,1,9.99024,5.3l32.5498,106.32Z" transform="translate(-276.18187 -133.91309)" fill="#f2f2f2"/>

@@ -16,7 +16,8 @@ class SvgLoader extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeColor = Theme.of(context).colorScheme.primary;
     return FutureBuilder<String>(
-      future: SvgUtils.renderIllustration(context, themeColor, svgPath),
+      future: SvgUtils.renderIllustration(
+          DefaultAssetBundle.of(context), themeColor, svgPath),
       builder: (context, snapshot) {
         if (!snapshot.hasData || snapshot.hasError) {
           return const Center(
