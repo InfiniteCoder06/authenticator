@@ -36,14 +36,20 @@ class Console {
     ),
   );
 
-  void info(String message) => _log(Level.info, message);
-  void debug(String message) => _log(Level.debug, message);
-  void warning(String message) => _log(Level.warning, message);
-  void error(String message) => _log(Level.error, "🔴 $message");
-  void fatal(String message) => _log(Level.fatal, message);
-  void trace(String message) => _log(Level.trace, message);
+  void info(String message, {String? name}) =>
+      _log(Level.info, message, customName: name);
+  void debug(String message, {String? name}) =>
+      _log(Level.debug, message, customName: name);
+  void warning(String message, {String? name}) =>
+      _log(Level.warning, message, customName: name);
+  void error(String message, {String? name}) =>
+      _log(Level.error, "🔴 $message", customName: name);
+  void fatal(String message, {String? name}) =>
+      _log(Level.fatal, message, customName: name);
+  void trace(String message, {String? name}) =>
+      _log(Level.trace, message, customName: name);
 
-  void _log(Level level, String message) {
-    logger.log(level, '$name: $message');
+  void _log(Level level, String message, {String? customName}) {
+    logger.log(level, '${customName ?? name}: $message');
   }
 }
