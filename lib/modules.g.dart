@@ -62,5 +62,20 @@ final firestoreProvider = Provider<FirebaseFirestore>.internal(
 );
 
 typedef FirestoreRef = ProviderRef<FirebaseFirestore>;
+String _$secureStorageHash() => r'de6bc057d8818e315d3e9ebf35e09a93c255c59b';
+
+/// See also [secureStorage].
+@ProviderFor(secureStorage)
+final secureStorageProvider = Provider<FlutterSecureStorage>.internal(
+  secureStorage,
+  name: r'secureStorageProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$secureStorageHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef SecureStorageRef = ProviderRef<FlutterSecureStorage>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

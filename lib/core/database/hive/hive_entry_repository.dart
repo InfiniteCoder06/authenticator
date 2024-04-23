@@ -15,17 +15,17 @@ import 'package:authenticator/core/utils/paths.util.dart';
 class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   HiveInterface hive;
   Box<Item>? _box;
+  FlutterSecureStorage secureStorage;
   AppPaths paths;
 
-  HiveEntryRepository(this.hive, this.paths);
+  HiveEntryRepository(this.hive, this.paths, this.secureStorage);
 
   @override
   Future<void> init() async {
     hive.registerAdapter(ItemAdapter());
 
-    const secureStorage = FlutterSecureStorage();
-    final encryptionKeyString = await secureStorage.read(key: 'key');
-    if (encryptionKeyString == null) {
+    final encryptionKeyString = await secureStorage.containsKey(key: 'key');
+    if (!encryptionKeyString) {
       final key = hive.generateSecureKey();
       await secureStorage.write(
         key: 'key',

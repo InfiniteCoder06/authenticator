@@ -2,6 +2,7 @@
 
 // 📦 Package imports:
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/src/hive_impl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:local_auth/local_auth.dart';
@@ -20,3 +21,7 @@ LocalAuthentication localAuth(LocalAuthRef ref) => LocalAuthentication();
 
 @Riverpod(keepAlive: true)
 FirebaseFirestore firestore(FirestoreRef ref) => FirebaseFirestore.instance;
+
+@Riverpod(keepAlive: true)
+FlutterSecureStorage secureStorage(SecureStorageRef ref) =>
+    const FlutterSecureStorage();

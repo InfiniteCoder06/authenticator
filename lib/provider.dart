@@ -24,8 +24,10 @@ SecurityPersistanceProvider securityStorage(SecurityStorageRef ref) =>
     SecurityPersistanceProvider(ref.read(hiveProvider));
 
 @Riverpod(keepAlive: true)
-HiveEntryRepository hiveEntryRepo(HiveEntryRepoRef ref) =>
-    HiveEntryRepository(ref.read(hiveProvider), ref.read(appPathsProvider));
+HiveEntryRepository hiveEntryRepo(HiveEntryRepoRef ref) => HiveEntryRepository(
+    ref.read(hiveProvider),
+    ref.read(appPathsProvider),
+    ref.read(secureStorageProvider));
 
 @Riverpod(keepAlive: true)
 FirebaseBackupRepository firebaseBackupRepo(FirebaseBackupRepoRef ref) =>
