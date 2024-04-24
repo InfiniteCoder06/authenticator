@@ -1,6 +1,7 @@
 // ignore_for_file: depend_on_referenced_packages
 
 // 🐦 Flutter imports:
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,33 +71,42 @@ class MyApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final controller = ref.watch(themeControllerProvider);
+    final useDynamic = controller.dynamicColor;
 
-    final lightColorScheme = ColorScheme.fromSeed(
+    final lightStaticScheme = ColorScheme.fromSeed(
       seedColor: Colors.primaries.elementAt(controller.themeAccent),
     );
 
-    final darkColorScheme = ColorScheme.fromSeed(
+    final darkStaticScheme = ColorScheme.fromSeed(
       seedColor: Colors.primaries.elementAt(controller.themeAccent),
       brightness: Brightness.dark,
     );
-    return MaterialApp(
-      title: 'Authenticator',
-      debugShowCheckedModeBanner: false,
-      navigatorKey: _navigator,
-      theme: ThemeConstant.getLightThemeData(lightColorScheme),
-      darkTheme: ThemeConstant.getDarkThemeData(darkColorScheme),
-      themeMode: controller.themeMode,
-      initialRoute: AppRouter.home.path,
-      builder: (_, child) => AppBuilder(
-        navKey: _navigator,
-        themeMode: controller.themeMode,
-        lightColorScheme: lightColorScheme,
-        darkColorScheme: darkColorScheme,
-        child: child!,
-      ),
-      onGenerateRoute: (settings) =>
-          AppRouteConfig(context: context, settings: settings).generate(),
-      navigatorObservers: [NavigationHistoryObserver()],
+    return DynamicColorBuilder(
+      builder: (lightDynamic, darkDynamic) {
+        final lightColorScheme =
+            useDynamic ? lightDynamic ?? lightStaticScheme : lightStaticScheme;
+        final darkColorScheme =
+            useDynamic ? darkDynamic ?? darkStaticScheme : darkStaticScheme;
+        return MaterialApp(
+          title: 'Authenticator',
+          debugShowCheckedModeBanner: false,
+          navigatorKey: _navigator,
+          theme: ThemeConstant.getLightThemeData(lightColorScheme),
+          darkTheme: ThemeConstant.getDarkThemeData(darkColorScheme),
+          themeMode: controller.themeMode,
+          initialRoute: AppRouter.home.path,
+          builder: (_, child) => AppBuilder(
+            navKey: _navigator,
+            themeMode: controller.themeMode,
+            lightColorScheme: lightColorScheme,
+            darkColorScheme: darkColorScheme,
+            child: child!,
+          ),
+          onGenerateRoute: (settings) =>
+              AppRouteConfig(context: context, settings: settings).generate(),
+          navigatorObservers: [NavigationHistoryObserver()],
+        );
+      },
     );
   }
 }
