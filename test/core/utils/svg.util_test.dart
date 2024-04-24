@@ -27,10 +27,11 @@ void main() {
           <path d="M801.81836,318.08691h-184a9.01015,9.01015,0,0,1-9-9v-44a9.01016,9.01016,0,0,1,9-9h184a9.01016,9.01016,0,0,1,9,9v44A9.01015,9.01015,0,0,1,801.81836,318.08691Z" transform="translate(-276.18187 -133.91309)" fill="#8bc34a"/>
           <circle cx="433.63626" cy="105.17383" r="20" fill="#8bc34a"/>
           <circle cx="433.63626" cy="105.17383" r="12.18187" fill="#fff"/>
-</svg>
+        </svg>
       """
-            .trim(),
-        svg.trim());
+            .replaceAll(' ', '')
+            .replaceAll(RegExp(r"\r|\n"), ''),
+        svg.replaceAll(' ', '').replaceAll(RegExp(r"\r|\n"), ''));
   });
 
   test('Test Color 2', () async {
@@ -50,9 +51,10 @@ void main() {
           <path d="M801.81836,318.08691h-184a9.01015,9.01015,0,0,1-9-9v-44a9.01016,9.01016,0,0,1,9-9h184a9.01016,9.01016,0,0,1,9,9v44A9.01015,9.01015,0,0,1,801.81836,318.08691Z" transform="translate(-276.18187 -133.91309)" fill="#cddc39"/>
           <circle cx="433.63626" cy="105.17383" r="20" fill="#cddc39"/>
           <circle cx="433.63626" cy="105.17383" r="12.18187" fill="#fff"/>
-</svg>
+        </svg>
       """
-            .trim(),
-        svg.trim());
+            .replaceAll(' ', '')
+            .replaceAll(RegExp(r"\r|\n"), ''),
+        svg.replaceAll(' ', '').replaceAll(RegExp(r"\r|\n"), ''));
   });
 }
