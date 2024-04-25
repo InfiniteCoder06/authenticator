@@ -324,10 +324,11 @@ packages:
   dynamic_color:
     dependency: "direct main"
     description:
-      name: dynamic_color
-      sha256: eae98052fa6e2826bdac3dd2e921c6ce2903be15c6b7f8b6d8a5d49b5086298d
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: main
+      resolved-ref: c1e5287b8829815e03af41066bf96c37f8319f41
+      url: "https://github.com/InfiniteCoder06/dynamic_color.git"
+    source: git
     version: "1.7.0"
   equatable:
     dependency: "direct main"

@@ -26,9 +26,12 @@ class AppBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemUiOverlayStyle overlay = const SystemUiOverlayStyle(
-      systemNavigationBarColor: Colors.transparent,
-      statusBarColor: Colors.transparent,
+    final useDark = ThemeConstant.getDarkMode(context, themeMode);
+    final surfaceColor =
+        useDark ? darkColorScheme.surface : lightColorScheme.surface;
+    SystemUiOverlayStyle overlay = SystemUiOverlayStyle(
+      systemNavigationBarColor: surfaceColor,
+      statusBarColor: surfaceColor,
     );
     if (kReleaseMode) {
       return buildWrapper(overlay);
