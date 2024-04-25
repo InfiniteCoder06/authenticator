@@ -10,21 +10,33 @@ class ItemBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isEmptyIssuer = item.issuer.isEmpty;
     return RichText(
       overflow: TextOverflow.ellipsis,
       text: TextSpan(
-        text: item.name,
-        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-        ),
         children: [
-          if (item.issuer.isNotEmpty)
+          if (isEmptyIssuer) ...[
             TextSpan(
-              text: " ( ${item.issuer} )",
+              text: item.name,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+          ],
+          if (!isEmptyIssuer) ...[
+            TextSpan(
+              text: item.issuer,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            TextSpan(
+              text: " ( ${item.name} )",
               style: DefaultTextStyle.of(context).style.copyWith(
-                color: Theme.of(context).colorScheme.outline,
-              ),
+                    color: Theme.of(context).colorScheme.outline,
+                  ),
             )
+          ],
         ],
       ),
     );
