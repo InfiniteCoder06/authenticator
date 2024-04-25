@@ -4,3 +4,6 @@
 [submodule "packages/swipeable_page_route"]
 	path = packages/swipeable_page_route
 	url = https://github.com/InfiniteCoder06/swipeable_page_route.git
+[submodule "packages/dynamic_color"]
+	path = packages/dynamic_color
+	url = https://github.com/InfiniteCoder06/dynamic_color.git
