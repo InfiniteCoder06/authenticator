@@ -18,8 +18,10 @@ class HomeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final padding = MediaQuery.of(context).padding;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10, left: 10, right: 10),
+      padding:
+          EdgeInsets.only(bottom: padding.bottom + 10, left: 10, right: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,

@@ -10,6 +10,7 @@ class AppCrossFade extends StatelessWidget {
     required this.firstChild,
     required this.secondChild,
     required this.showFirst,
+    this.curve = Curves.ease,
     this.alignment = Alignment.topCenter,
     this.duration = ConfigConstant.duration,
   });
@@ -18,6 +19,7 @@ class AppCrossFade extends StatelessWidget {
   final Widget secondChild;
   final bool showFirst;
   final AlignmentGeometry alignment;
+  final Curve curve;
   final Duration duration;
 
   @override
@@ -26,10 +28,11 @@ class AppCrossFade extends StatelessWidget {
       alignment: alignment,
       firstChild: firstChild,
       secondChild: secondChild,
-      sizeCurve: Curves.ease,
+      sizeCurve: curve,
       crossFadeState:
           showFirst ? CrossFadeState.showFirst : CrossFadeState.showSecond,
       duration: duration,
+      reverseDuration: duration,
     );
   }
 }

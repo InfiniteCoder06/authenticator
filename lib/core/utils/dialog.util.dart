@@ -10,60 +10,62 @@ import 'package:authenticator/core/utils/extension/item_x.extension.dart';
 import 'package:authenticator/provider.dart';
 
 class AppDialogs {
-  static Future<void> showDeletionDialog(
+  static Future<bool> showDeletionDialog(
       BuildContext context, List<Item> items, WidgetRef ref) async {
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          icon: const Icon(Icons.delete_rounded),
-          title: const Text('Delete'),
-          content: Container(
-            constraints: const BoxConstraints(maxHeight: 560, maxWidth: 560),
-            width: MediaQuery.of(context).size.width - 96,
-            child: Flex(
-              direction: Axis.vertical,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Text("Are you sure you want to delete this entry?"),
-                const Text("This action does not disable 2FA for"),
-                Flexible(
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final Item item = items.elementAt(index);
-                      final issuer = item.getIssuer();
-                      return Text(
-                        "\u2022 ${issuer.isNone() ? item.name : "${issuer.toNullable()} ( ${item.name} )"}",
-                      );
-                    },
-                  ),
+    return await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              icon: const Icon(Icons.delete_rounded),
+              title: const Text('Delete'),
+              content: Container(
+                constraints:
+                    const BoxConstraints(maxHeight: 560, maxWidth: 560),
+                width: MediaQuery.of(context).size.width - 96,
+                child: Flex(
+                  direction: Axis.vertical,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    const Text("Are you sure you want to delete this entry?"),
+                    const Text("This action does not disable 2FA for"),
+                    Flexible(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          final Item item = items.elementAt(index);
+                          final issuer = item.getIssuer();
+                          return Text(
+                            "\u2022 ${issuer.isNone() ? item.name : "${issuer.toNullable()} ( ${item.name} )"}",
+                          );
+                        },
+                      ),
+                    ),
+                    const Text(
+                      "To prevent losing access, make sure that you have disabled 2FA or that you have an alternative way to generate codes for this service.",
+                    )
+                  ],
                 ),
-                const Text(
-                  "To prevent losing access, make sure that you have disabled 2FA or that you have an alternative way to generate codes for this service.",
-                )
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await ref.read(hiveEntryRepoProvider).fakeDeleteAll(items);
+                    if (!context.mounted) return;
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text('Delete'),
+                ),
               ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () async {
-                await ref.read(hiveEntryRepoProvider).fakeDeleteAll(items);
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-              },
-              child: const Text('Delete'),
-            ),
-          ],
-        );
-      },
-    );
+            );
+          },
+        ) ??
+        false;
   }
 
   static Future<void> showErrorDialog(

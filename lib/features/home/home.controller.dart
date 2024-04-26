@@ -40,7 +40,8 @@ class HomeController extends _$HomeController with ConsoleMixin {
   Future<void> get() async {
     try {
       final entries = await ref.read(hiveEntryRepoProvider).getFiltered();
-      state = state.copyWith(entries: entries, error: '');
+      state =
+          state.copyWith(entries: entries, filteredEntries: entries, error: '');
     } catch (errorDB) {
       state = state.copyWith(error: errorDB.toString());
     }
@@ -99,4 +100,26 @@ class HomeController extends _$HomeController with ConsoleMixin {
       state = state.copyWith(selected: List.from(state.selected)..remove(item));
 
   void clearSelected() => state = state.copyWith(selected: List.empty());
+
+  void setSearchVisibility(bool showSearch) {
+    state = state.copyWith(showSearch: showSearch);
+    if (!showSearch) {
+      FocusManager.instance.primaryFocus?.unfocus();
+      setSearchText('');
+    }
+  }
+
+  void setSearchText(String text) {
+    List<Item> results = [];
+    for (Item item in state.entries) {
+      String lowerIssuer = item.issuer.toLowerCase();
+      String lowerName = item.name.toLowerCase();
+      if (lowerIssuer.contains(text.toLowerCase()) ||
+          lowerName.contains(text.toLowerCase())) {
+        results.add(item);
+      }
+    }
+
+    state = state.copyWith(filteredEntries: results, searchText: text);
+  }
 }

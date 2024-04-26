@@ -3,6 +3,7 @@ import 'dart:io';
 
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 
 // 📦 Package imports:
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -33,7 +34,11 @@ class EntryOverviewPage extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(homeControllerProvider.notifier).get();
+    final searchController = useTextEditingController();
+    useEffect(() {
+      ref.read(homeControllerProvider.notifier).get();
+      return null;
+    }, []);
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -60,12 +65,14 @@ class EntryOverviewPage extends HookConsumerWidget {
                   secondChild: IconButton(
                     onPressed: () async {
                       ref.read(homeControllerProvider.notifier).clearSelected();
+                      ref
+                          .read(homeControllerProvider.notifier)
+                          .setSearchVisibility(false);
+                      searchController.clear();
                       await Navigator.of(context).pushNamed(
                           AppRouter.details.path,
                           arguments: DetailPageArgs(item: selected.first));
-                      if (context.mounted) {
-                        ref.read(homeControllerProvider.notifier).get();
-                      }
+                      ref.read(homeControllerProvider.notifier).get();
                     },
                     icon: const Icon(Icons.edit_rounded),
                     tooltip: "Edit",
@@ -73,32 +80,42 @@ class EntryOverviewPage extends HookConsumerWidget {
                 ),
                 AppCrossFade(
                   showFirst: selected.isEmpty,
-                  firstChild: const SizedBox(height: 48),
+                  firstChild: IconButton(
+                    onPressed: () async {
+                      ref
+                          .read(homeControllerProvider.notifier)
+                          .setSearchVisibility(true);
+                    },
+                    icon: const Icon(Icons.search_rounded),
+                    tooltip: "Search",
+                  ),
                   secondChild: Row(
                     children: [
                       IconButton(
                         onPressed: () async {
+                          ref
+                              .read(homeControllerProvider.notifier)
+                              .setSearchVisibility(false);
+                          searchController.clear();
                           await Navigator.of(context).pushNamed(
                               AppRouter.transfer.path,
                               arguments: TransferPageArgs(
                                 items:
                                     ref.read(homeControllerProvider).selected,
                               ));
-                          if (context.mounted) {
-                            ref
-                                .read(homeControllerProvider.notifier)
-                                .clearSelected();
-                            ref.read(homeControllerProvider.notifier).get();
-                          }
+                          ref
+                              .read(homeControllerProvider.notifier)
+                              .clearSelected();
                         },
                         icon: const Icon(Icons.share_rounded),
                         tooltip: "Transfer",
                       ),
                       IconButton(
                         onPressed: () async {
-                          await AppDialogs.showDeletionDialog(
+                          FocusManager.instance.primaryFocus?.unfocus();
+                          bool hasDeleted = await AppDialogs.showDeletionDialog(
                               context, selected, ref);
-                          if (context.mounted) {
+                          if (hasDeleted) {
                             ref
                                 .read(homeControllerProvider.notifier)
                                 .clearSelected();
@@ -127,6 +144,10 @@ class EntryOverviewPage extends HookConsumerWidget {
                   ],
                   onSelected: (value) async {
                     if (value == 0) {
+                      ref
+                          .read(homeControllerProvider.notifier)
+                          .setSearchVisibility(false);
+                      searchController.clear();
                       await Navigator.of(context)
                           .pushNamed(AppRouter.settings.path);
                       ref.read(homeControllerProvider.notifier).get();
@@ -144,14 +165,44 @@ class EntryOverviewPage extends HookConsumerWidget {
       ),
       body: Builder(
         builder: (context) {
-          final entries = ref
-              .watch(homeControllerProvider.select((state) => state.entries));
+          final showSearch = ref.watch(
+              homeControllerProvider.select((state) => state.showSearch));
+          final entries = ref.watch(
+              homeControllerProvider.select((state) => state.filteredEntries));
           return Column(
             children: [
               AnimatedOpacity(
                 duration: Durations.short4,
                 opacity: entries.isEmpty ? 0 : 1,
                 child: const ProgressBar(),
+              ),
+              AppCrossFade(
+                duration: Durations.medium2,
+                showFirst: !showSearch,
+                curve: Curves.fastOutSlowIn,
+                firstChild: const SizedBox.shrink(),
+                secondChild: Padding(
+                  padding: const EdgeInsets.only(
+                      top: 8, left: 8, right: 8, bottom: 2),
+                  child: SearchBar(
+                    hintText: 'Search',
+                    controller: searchController,
+                    elevation: const WidgetStatePropertyAll(1),
+                    onChanged:
+                        ref.read(homeControllerProvider.notifier).setSearchText,
+                    trailing: [
+                      IconButton(
+                        onPressed: () {
+                          searchController.clear();
+                          ref
+                              .read(homeControllerProvider.notifier)
+                              .setSearchVisibility(false);
+                        },
+                        icon: const Icon(Icons.close_rounded),
+                      ),
+                    ],
+                  ),
+                ),
               ),
               Expanded(
                 child: entries.isEmpty
@@ -171,12 +222,14 @@ class EntryOverviewPage extends HookConsumerWidget {
                               ref.read(homeControllerProvider.notifier).get();
                             },
                             onEdit: (_) async {
+                              ref
+                                  .read(homeControllerProvider.notifier)
+                                  .setSearchVisibility(false);
+                              searchController.clear();
                               await Navigator.of(context).pushNamed(
                                   AppRouter.details.path,
                                   arguments: DetailPageArgs(item: item));
-                              if (context.mounted) {
-                                ref.read(homeControllerProvider.notifier).get();
-                              }
+                              ref.read(homeControllerProvider.notifier).get();
                             },
                             onLongPress: () {
                               if (selected.isEmpty) {
