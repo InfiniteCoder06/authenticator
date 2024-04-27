@@ -3,10 +3,11 @@ import 'dart:io';
 
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 
 // 📦 Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 
 // 🌎 Project imports:
@@ -14,11 +15,14 @@ import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/local_auth/app_local_auth.widget.dart';
+import 'package:authenticator/core/utils/otp.util.dart';
+import 'package:authenticator/core/utils/qr.util.dart';
 import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/features/home/widgets/home.bottom_sheet.dart';
 import 'package:authenticator/features/home/widgets/progress.widget.dart';
 import 'package:authenticator/features/settings/security/security.controller.dart';
 import 'package:authenticator/gen/assets.gen.dart';
+import 'package:authenticator/modules.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_cross_fade.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
@@ -35,8 +39,15 @@ class EntryOverviewPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchController = useTextEditingController();
+    ref.listen(showSearchProvider, (prev, next) {
+      if (!next) {
+        FocusManager.instance.primaryFocus?.unfocus();
+        searchController.clear();
+      }
+    });
+    useListenable(searchController);
     useEffect(() {
-      ref.read(homeControllerProvider.notifier).get();
+      ref.read(getAllItemProvider);
       return null;
     }, []);
     return Scaffold(
@@ -44,8 +55,7 @@ class EntryOverviewPage extends HookConsumerWidget {
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Builder(
           builder: (context) {
-            final selected = ref.watch(
-                homeControllerProvider.select((state) => state.selected));
+            final selected = ref.watch(selectedEntriesProvider);
             final hasLock = ref.watch(
                 securityControllerProvider.select((state) => state.isEnabled));
             return MorphingAppBar(
@@ -53,9 +63,10 @@ class EntryOverviewPage extends HookConsumerWidget {
                   ? AppPopButton(
                       forceCloseButton: true,
                       tooltip: "Clear",
-                      onPressed: () => ref
-                          .read(homeControllerProvider.notifier)
-                          .clearSelected())
+                      onPressed: ref
+                          .read(selectedEntriesProvider.notifier)
+                          .clearSelected,
+                    )
                   : null,
               title: const AppBarTitle(fallbackRouter: AppRouter.home),
               actions: [
@@ -64,15 +75,14 @@ class EntryOverviewPage extends HookConsumerWidget {
                   firstChild: const SizedBox(height: 48),
                   secondChild: IconButton(
                     onPressed: () async {
-                      ref.read(homeControllerProvider.notifier).clearSelected();
-                      ref
-                          .read(homeControllerProvider.notifier)
-                          .setSearchVisibility(false);
-                      searchController.clear();
+                      ref.read(showSearchProvider.notifier).state = false;
                       await Navigator.of(context).pushNamed(
                           AppRouter.details.path,
                           arguments: DetailPageArgs(item: selected.first));
-                      ref.read(homeControllerProvider.notifier).get();
+                      ref
+                          .read(selectedEntriesProvider.notifier)
+                          .clearSelected();
+                      ref.invalidate(getAllItemProvider);
                     },
                     icon: const Icon(Icons.edit_rounded),
                     tooltip: "Edit",
@@ -82,9 +92,7 @@ class EntryOverviewPage extends HookConsumerWidget {
                   showFirst: selected.isEmpty,
                   firstChild: IconButton(
                     onPressed: () async {
-                      ref
-                          .read(homeControllerProvider.notifier)
-                          .setSearchVisibility(true);
+                      ref.read(showSearchProvider.notifier).state = true;
                     },
                     icon: const Icon(Icons.search_rounded),
                     tooltip: "Search",
@@ -93,18 +101,14 @@ class EntryOverviewPage extends HookConsumerWidget {
                     children: [
                       IconButton(
                         onPressed: () async {
+                          ref.read(showSearchProvider.notifier).state = false;
+                          await Navigator.of(context)
+                              .pushNamed(AppRouter.transfer.path,
+                                  arguments: TransferPageArgs(
+                                    items: selected,
+                                  ));
                           ref
-                              .read(homeControllerProvider.notifier)
-                              .setSearchVisibility(false);
-                          searchController.clear();
-                          await Navigator.of(context).pushNamed(
-                              AppRouter.transfer.path,
-                              arguments: TransferPageArgs(
-                                items:
-                                    ref.read(homeControllerProvider).selected,
-                              ));
-                          ref
-                              .read(homeControllerProvider.notifier)
+                              .read(selectedEntriesProvider.notifier)
                               .clearSelected();
                         },
                         icon: const Icon(Icons.share_rounded),
@@ -117,9 +121,9 @@ class EntryOverviewPage extends HookConsumerWidget {
                               context, selected, ref);
                           if (hasDeleted) {
                             ref
-                                .read(homeControllerProvider.notifier)
+                                .read(selectedEntriesProvider.notifier)
                                 .clearSelected();
-                            ref.read(homeControllerProvider.notifier).get();
+                            ref.invalidate(getAllItemProvider);
                           }
                         },
                         icon: const Icon(Icons.delete_rounded),
@@ -144,13 +148,10 @@ class EntryOverviewPage extends HookConsumerWidget {
                   ],
                   onSelected: (value) async {
                     if (value == 0) {
-                      ref
-                          .read(homeControllerProvider.notifier)
-                          .setSearchVisibility(false);
-                      searchController.clear();
+                      ref.read(showSearchProvider.notifier).state = false;
                       await Navigator.of(context)
                           .pushNamed(AppRouter.settings.path);
-                      ref.read(homeControllerProvider.notifier).get();
+                      ref.invalidate(getAllItemProvider);
                     }
                     if (value == 1) {
                       if (!context.mounted) return;
@@ -165,10 +166,9 @@ class EntryOverviewPage extends HookConsumerWidget {
       ),
       body: Builder(
         builder: (context) {
-          final showSearch = ref.watch(
-              homeControllerProvider.select((state) => state.showSearch));
-          final entries = ref.watch(
-              homeControllerProvider.select((state) => state.filteredEntries));
+          final showSearch = ref.watch(showSearchProvider);
+          final entries =
+              ref.watch(filteredItemsProvider(searchController.text));
           return Column(
             children: [
               AnimatedOpacity(
@@ -188,15 +188,10 @@ class EntryOverviewPage extends HookConsumerWidget {
                     hintText: 'Search',
                     controller: searchController,
                     elevation: const WidgetStatePropertyAll(1),
-                    onChanged:
-                        ref.read(homeControllerProvider.notifier).setSearchText,
                     trailing: [
                       IconButton(
                         onPressed: () {
-                          searchController.clear();
-                          ref
-                              .read(homeControllerProvider.notifier)
-                              .setSearchVisibility(false);
+                          ref.read(showSearchProvider.notifier).state = false;
                         },
                         icon: const Icon(Icons.close_rounded),
                       ),
@@ -211,30 +206,27 @@ class EntryOverviewPage extends HookConsumerWidget {
                         itemCount: entries.length,
                         itemBuilder: (context, index) {
                           final item = entries[index];
-                          final selected = ref.watch(homeControllerProvider
-                              .select((state) => state.selected));
+                          final selected = ref.watch(selectedEntriesProvider);
                           return ItemCard(
                             index: index,
                             item: item,
                             onDelete: (_) async {
                               await AppDialogs.showDeletionDialog(
                                   context, [item], ref);
-                              ref.read(homeControllerProvider.notifier).get();
+                              ref.invalidate(getAllItemProvider);
                             },
                             onEdit: (_) async {
-                              ref
-                                  .read(homeControllerProvider.notifier)
-                                  .setSearchVisibility(false);
-                              searchController.clear();
+                              ref.read(showSearchProvider.notifier).state =
+                                  false;
                               await Navigator.of(context).pushNamed(
                                   AppRouter.details.path,
                                   arguments: DetailPageArgs(item: item));
-                              ref.read(homeControllerProvider.notifier).get();
+                              ref.invalidate(getAllItemProvider);
                             },
                             onLongPress: () {
                               if (selected.isEmpty) {
                                 ref
-                                    .read(homeControllerProvider.notifier)
+                                    .read(selectedEntriesProvider.notifier)
                                     .addSelected(item);
                               }
                             },
@@ -249,11 +241,11 @@ class EntryOverviewPage extends HookConsumerWidget {
                                           selected.contains(item);
                                       inList
                                           ? ref
-                                              .read(homeControllerProvider
+                                              .read(selectedEntriesProvider
                                                   .notifier)
                                               .removeSelected(item)
                                           : ref
-                                              .read(homeControllerProvider
+                                              .read(selectedEntriesProvider
                                                   .notifier)
                                               .addSelected(item);
                                     },
@@ -284,7 +276,7 @@ class EntryOverviewPage extends HookConsumerWidget {
           showDragHandle: true,
           builder: (_) {
             return HomeBottomSheet(
-              onAddQrPressed: () {
+              onAddQrPressed: () async {
                 if (!Platform.isAndroid) {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context)
@@ -292,19 +284,49 @@ class EntryOverviewPage extends HookConsumerWidget {
                     ..showSnackBar(
                         const SnackBar(content: Text("To Be Implemented")));
                 } else {
-                  Navigator.of(context).popAndPushNamed(AppRouter.scan.path);
+                  await Navigator.of(context)
+                      .popAndPushNamed(AppRouter.scan.path);
+                  ref.invalidate(getAllItemProvider);
                 }
               },
-              onAddImagePressed: () {
+              onAddImagePressed: () async {
                 Navigator.of(context).pop();
-                ref.read(homeControllerProvider.notifier).pickAndScan(context);
+                final pickedFile = await ref
+                    .read(imagePickerProvider)
+                    .pickImage(source: ImageSource.gallery);
+
+                if (pickedFile == null) {
+                  if (context.mounted) {
+                    AppDialogs.showErrorDialog(
+                        context, "User Cancelled Picker");
+                  }
+                  return;
+                }
+
+                final data = await pickedFile.readAsBytes();
+
+                final result = await QrUtils().decodeFile(data);
+
+                if (result.isNone() && context.mounted) {
+                  AppDialogs.showErrorDialog(context, "QR not Found");
+                  return;
+                }
+
+                final parseResult =
+                    OtpUtils.parseURI(Uri.parse(result.toNullable()!.text));
+
+                parseResult.fold(
+                    (text) => AppDialogs.showErrorDialog(context, text),
+                    (item) => Navigator.of(context).pushReplacementNamed(
+                        AppRouter.details.path,
+                        arguments: DetailPageArgs(item: item)));
               },
               onAddManualPressed: () async {
                 await Navigator.of(context).popAndPushNamed(
                     AppRouter.details.path,
                     arguments: const DetailPageArgs(item: null));
                 if (context.mounted) {
-                  ref.read(homeControllerProvider.notifier).get();
+                  ref.invalidate(getAllItemProvider);
                 }
               },
             );

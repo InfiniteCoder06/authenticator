@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 // 📦 Package imports:
+import 'package:buffer_image/buffer_image.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:zxing_lib/common.dart';
 import 'package:zxing_lib/multi.dart';
@@ -19,6 +20,19 @@ class IsoMessage {
 }
 
 class QrUtils {
+  Future<Option<Result>> decodeFile(Uint8List data) async {
+    final bufferImage = await BufferImage.fromFile(data);
+
+    if (bufferImage == null) return none();
+
+    final result = await decodeImageInIsolate(
+        bufferImage.buffer, bufferImage.width, bufferImage.height);
+
+    if (result.isNone()) return none();
+
+    return some(result.toNullable()!.first);
+  }
+
   Future<Option<List<Result>>> decodeImageInIsolate(
     Uint8List image,
     int width,

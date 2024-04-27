@@ -41,8 +41,7 @@ class ItemCard extends HookConsumerWidget {
       valueListenable: hasTapped,
       builder: (context, tap, child) {
         return Builder(builder: (context) {
-          final selected = ref
-              .watch(homeControllerProvider.select((state) => state.selected));
+          final selected = ref.watch(selectedEntriesProvider);
           return AnimationConfiguration.staggeredList(
             position: index,
             delay: Durations.short2,
@@ -77,10 +76,10 @@ class ItemCard extends HookConsumerWidget {
                           final bool inList = selected.contains(item);
                           inList
                               ? ref
-                                  .read(homeControllerProvider.notifier)
+                                  .read(selectedEntriesProvider.notifier)
                                   .removeSelected(item)
                               : ref
-                                  .read(homeControllerProvider.notifier)
+                                  .read(selectedEntriesProvider.notifier)
                                   .addSelected(item);
                         } else if (!tap && copyOnTap) {
                           hasTapped.value = true;
