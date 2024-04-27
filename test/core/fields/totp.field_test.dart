@@ -6,8 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/fields/totp.field.dart';
+import 'package:authenticator/core/utils/globals.dart';
 
 void main() {
   testWidgets('Totp Field Test',
