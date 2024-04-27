@@ -62,7 +62,7 @@ final firestoreProvider = Provider<FirebaseFirestore>.internal(
 );
 
 typedef FirestoreRef = ProviderRef<FirebaseFirestore>;
-String _$secureStorageHash() => r'de6bc057d8818e315d3e9ebf35e09a93c255c59b';
+String _$secureStorageHash() => r'a9fee6545cf8ae4f6c0480e70e02e655e1b9b34c';
 
 /// See also [secureStorage].
 @ProviderFor(secureStorage)

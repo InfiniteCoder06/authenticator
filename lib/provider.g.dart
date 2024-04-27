@@ -49,7 +49,7 @@ final securityStorageProvider = Provider<SecurityPersistanceProvider>.internal(
 );
 
 typedef SecurityStorageRef = ProviderRef<SecurityPersistanceProvider>;
-String _$hiveEntryRepoHash() => r'd2a304984c601ba241bb5a1c312c14efa4970468';
+String _$hiveEntryRepoHash() => r'fa0bef71799773360cb2c67860d38d0c62505cca';
 
 /// See also [hiveEntryRepo].
 @ProviderFor(hiveEntryRepo)
