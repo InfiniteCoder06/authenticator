@@ -97,67 +97,72 @@ class EntryOverviewPage extends HookConsumerWidget {
               return Expanded(
                 child: entries.isEmpty
                     ? SvgLoader(svgPath: Assets.empty.path)
-                    : ListView.builder(
-                        itemCount: entries.length,
-                        itemBuilder: (context, index) {
-                          final item = entries[index];
-                          final selected = ref.watch(selectedEntriesProvider);
-                          return ItemCard(
-                            index: index,
-                            item: item,
-                            onDelete: (_) async {
-                              await AppDialogs.showDeletionDialog(
-                                  context, [item], ref);
-                              ref.invalidate(getAllItemProvider);
-                            },
-                            onEdit: (_) async {
-                              ref.read(showSearchProvider.notifier).state =
-                                  false;
-                              await Navigator.of(context).pushNamed(
-                                  AppRouter.details.path,
-                                  arguments: DetailPageArgs(item: item));
-                              ref.invalidate(getAllItemProvider);
-                            },
-                            onLongPress: () {
-                              if (selected.isEmpty) {
-                                ref
-                                    .read(selectedEntriesProvider.notifier)
-                                    .addSelected(item);
-                              }
-                            },
-                            builder: (tap) {
-                              return Row(
-                                children: [
-                                  ItemAvatar(
-                                    item: item,
-                                    selected: selected.contains(item),
-                                    onAvatarPress: () {
-                                      final bool inList =
-                                          selected.contains(item);
-                                      inList
-                                          ? ref
-                                              .read(selectedEntriesProvider
-                                                  .notifier)
-                                              .removeSelected(item)
-                                          : ref
-                                              .read(selectedEntriesProvider
-                                                  .notifier)
-                                              .addSelected(item);
-                                    },
-                                  ),
-                                  ConfigConstant.sizedBoxW2,
-                                  ItemWidgetWrapper(
-                                    ItemBody(item),
-                                    otp: ItemOTP(
-                                      item,
-                                      copied: tap,
-                                    ),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
+                    : RefreshIndicator(
+                        onRefresh: () async {
+                          await Future.delayed(Durations.medium1);
+                          return ref.refresh(getAllItemProvider.future);
                         },
+                        child: ListView.builder(
+                          itemCount: entries.length,
+                          itemBuilder: (context, index) {
+                            final item = entries[index];
+                            final selected = ref.watch(selectedEntriesProvider);
+                            return ItemCard(
+                              index: index,
+                              item: item,
+                              onDelete: (_) async {
+                                await AppDialogs.showDeletionDialog(
+                                    context, [item], ref);
+                                ref.refresh(getAllItemProvider);
+                              },
+                              onEdit: (_) async {
+                                ref.read(showSearchProvider.notifier).state =
+                                    false;
+                                await Navigator.of(context).pushNamed(
+                                    AppRouter.details.path,
+                                    arguments: DetailPageArgs(item: item));
+                              },
+                              onLongPress: () {
+                                if (selected.isEmpty) {
+                                  ref
+                                      .read(selectedEntriesProvider.notifier)
+                                      .addSelected(item);
+                                }
+                              },
+                              builder: (tap) {
+                                return Row(
+                                  children: [
+                                    ItemAvatar(
+                                      item: item,
+                                      selected: selected.contains(item),
+                                      onAvatarPress: () {
+                                        final bool inList =
+                                            selected.contains(item);
+                                        inList
+                                            ? ref
+                                                .read(selectedEntriesProvider
+                                                    .notifier)
+                                                .removeSelected(item)
+                                            : ref
+                                                .read(selectedEntriesProvider
+                                                    .notifier)
+                                                .addSelected(item);
+                                      },
+                                    ),
+                                    ConfigConstant.sizedBoxW2,
+                                    ItemWidgetWrapper(
+                                      ItemBody(item),
+                                      otp: ItemOTP(
+                                        item,
+                                        copied: tap,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        ),
                       ),
               );
             },
@@ -181,7 +186,6 @@ class EntryOverviewPage extends HookConsumerWidget {
                 } else {
                   await Navigator.of(context)
                       .popAndPushNamed(AppRouter.scan.path);
-                  ref.invalidate(getAllItemProvider);
                 }
               },
               onAddImagePressed: () async {
@@ -216,9 +220,7 @@ class EntryOverviewPage extends HookConsumerWidget {
                 await Navigator.of(context).popAndPushNamed(
                     AppRouter.details.path,
                     arguments: const DetailPageArgs(item: null));
-                if (context.mounted) {
-                  ref.invalidate(getAllItemProvider);
-                }
+                if (context.mounted) {}
               },
             );
           },

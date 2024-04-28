@@ -18,6 +18,7 @@ import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/features/details/detail.controller.dart';
 import 'package:authenticator/features/details/widgets/add.widget.dart';
 import 'package:authenticator/features/details/widgets/icon.widget.dart';
+import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
 
@@ -33,12 +34,13 @@ class DetailPage extends HookConsumerWidget {
       return null;
     }, [item]);
     return PopScope(
-      canPop: false,
+      canPop: ref.read(detailController.notifier).canPop,
       onPopInvoked: (didPop) async {
         if (didPop) return;
         final bool shouldPop =
-            await ref.read(detailController.notifier).canPop(context);
+            await ref.read(detailController.notifier).popRequest(context);
         if (context.mounted && shouldPop) {
+          ref.refresh(getAllItemProvider);
           Navigator.pop(context);
         }
       },

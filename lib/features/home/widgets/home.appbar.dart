@@ -43,7 +43,7 @@ class HomeAppBar extends HookConsumerWidget {
               await Navigator.of(context).pushNamed(AppRouter.details.path,
                   arguments: DetailPageArgs(item: selected.first));
               ref.read(selectedEntriesProvider.notifier).clearSelected();
-              ref.invalidate(getAllItemProvider);
+              ref.refresh(getAllItemProvider);
             },
             icon: const Icon(Icons.edit_rounded),
             tooltip: "Edit",
@@ -79,7 +79,7 @@ class HomeAppBar extends HookConsumerWidget {
                       context, selected, ref);
                   if (hasDeleted) {
                     ref.read(selectedEntriesProvider.notifier).clearSelected();
-                    ref.invalidate(getAllItemProvider);
+                    ref.refresh(getAllItemProvider);
                   }
                 },
                 icon: const Icon(Icons.delete_rounded),
@@ -106,7 +106,7 @@ class HomeAppBar extends HookConsumerWidget {
             if (value == 0) {
               ref.read(showSearchProvider.notifier).state = false;
               await Navigator.of(context).pushNamed(AppRouter.settings.path);
-              ref.invalidate(getAllItemProvider);
+              ref.refresh(getAllItemProvider);
             }
             if (value == 1) {
               if (!context.mounted) return;
