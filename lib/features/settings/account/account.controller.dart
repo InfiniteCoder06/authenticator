@@ -1,4 +1,5 @@
 // 🐦 Flutter imports:
+import 'package:authenticator/features/home/home.controller.dart';
 import 'package:flutter/foundation.dart';
 
 // 📦 Package imports:
@@ -70,6 +71,7 @@ class AccountController extends _$AccountController with ConsoleMixin {
       console.debug("🟢 Successfully Synced");
       state =
           state.copyWith(isSyncing: false, syncingState: SyncingState.success);
+      ref.refresh(getAllItemProvider);
     } catch (e) {
       state = state.copyWith(
           isSyncing: false,
