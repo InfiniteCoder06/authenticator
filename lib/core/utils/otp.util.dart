@@ -63,4 +63,16 @@ class OtpUtils {
 
     return uriBuilder.build();
   }
+
+  static bool isValidSecret(String secret) {
+    int neededPadding = (8 - secret.length % 8) % 8;
+    var paddedStr = secret.padRight(secret.length + neededPadding, '=');
+
+    var regex = RegExp(kSecretPattern);
+
+    if (paddedStr.length % 2 != 0 || !regex.hasMatch(paddedStr)) {
+      return false;
+    }
+    return true;
+  }
 }

@@ -10,8 +10,8 @@ import 'package:reactive_forms/reactive_forms.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/models/item.model.dart';
-import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
+import 'package:authenticator/core/utils/validator.util.dart';
 import 'package:authenticator/provider.dart';
 
 part 'detail.state.dart';
@@ -38,7 +38,8 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
 
   final form = fb.group({
     'name': fb.control<String>('', [Validators.required]),
-    'secret': fb.control<String>('', [Validators.required, Validators.pattern(RegExp(kSecretPattern))]),
+    'secret':
+        fb.control<String>('', [Validators.required, const Base32Validator()]),
     'issuer': fb.control<String>(''),
   });
 
@@ -63,9 +64,9 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     if (!form.valid) return;
 
     final newItem = originalItem.toNullable()!.copyWith(
-          name: form.value.extract<String>('name').toNullable(),
-          secret: form.value.extract<String>('secret').toNullable(),
-          issuer: form.value.extract<String>('issuer').toNullable(),
+          name: form.value.extract<String>('name').toNullable()?.trim(),
+          secret: form.value.extract<String>('secret').toNullable()?.trim(),
+          issuer: form.value.extract<String>('issuer').toNullable()?.trim(),
         );
 
     await repository.create(newItem);
@@ -74,33 +75,33 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     }
   }
 
-  Future<bool> canPop(BuildContext context) async {
-    var hasChanges = form.dirty;
-    if (form.dirty) {
-      await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Unsaved Changes'),
-            content: const SizedBox(
-                width: 450, child: Text('You have unsaved changes')),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  hasChanges = false;
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Discard'),
-              ),
-              TextButton(
-                onPressed: Navigator.of(context).pop,
-                child: const Text('Cancel'),
-              )
-            ],
-          );
-        },
-      );
-    }
+  bool get canPop => form.dirty;
+
+  Future<bool> popRequest(BuildContext context) async {
+    var hasChanges = true;
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Unsaved Changes'),
+          content: const SizedBox(
+              width: 450, child: Text('You have unsaved changes')),
+          actions: [
+            TextButton(
+              onPressed: () {
+                hasChanges = false;
+                Navigator.of(context).pop();
+              },
+              child: const Text('Discard'),
+            ),
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text('Cancel'),
+            )
+          ],
+        );
+      },
+    );
 
     return !hasChanges;
   }
