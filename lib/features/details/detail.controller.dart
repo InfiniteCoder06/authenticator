@@ -75,35 +75,32 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     }
   }
 
-  bool get canPop => form.dirty;
+  bool get canPop => !form.dirty;
 
   Future<bool> popRequest(BuildContext context) async {
-    var hasChanges = true;
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Unsaved Changes'),
-          content: const SizedBox(
-              width: 450, child: Text('You have unsaved changes')),
-          actions: [
-            TextButton(
-              onPressed: () {
-                hasChanges = false;
-                Navigator.of(context).pop();
-              },
-              child: const Text('Discard'),
-            ),
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text('Cancel'),
-            )
-          ],
-        );
-      },
-    );
+    final canPop = (await showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Unsaved Changes'),
+              content: const SizedBox(
+                  width: 450, child: Text('You have unsaved changes')),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(false),
+                  child: const Text('Discard'),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(true),
+                  child: const Text('Cancel'),
+                )
+              ],
+            );
+          },
+        )) ??
+        true;
 
-    return !hasChanges;
+    return !canPop;
   }
 
   @override
