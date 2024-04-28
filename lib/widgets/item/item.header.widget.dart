@@ -34,7 +34,7 @@ class ItemAvatar extends StatelessWidget {
                   return CircleAvatar(
                     foregroundColor: Theme.of(context).colorScheme.primary,
                     backgroundColor:
-                        Theme.of(context).colorScheme.inversePrimary,
+                        Theme.of(context).colorScheme.primaryContainer,
                     child: Text(
                       item.name[0].toUpperCase(),
                     ),
@@ -51,7 +51,7 @@ class ItemAvatar extends StatelessWidget {
               scale: selected ? 1.01 : 0.0,
               duration: Durations.medium2,
               child: CircleAvatar(
-                backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+                backgroundColor: Theme.of(context).colorScheme.surface,
                 child: Icon(
                   Icons.done_rounded,
                   color: Theme.of(context).colorScheme.primary,

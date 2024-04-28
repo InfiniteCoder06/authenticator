@@ -56,9 +56,8 @@ class ItemCard extends HookConsumerWidget {
                     horizontal: 8,
                     vertical: 8,
                   ),
-                  child: Card(
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    shadowColor: Colors.transparent,
+                  child: Card.filled(
+                    clipBehavior: Clip.antiAlias,
                     shape: RoundedRectangleBorder(
                       borderRadius: ShapeConstant.extraLarge,
                     ),
@@ -93,7 +92,6 @@ class ItemCard extends HookConsumerWidget {
                       child: Slidable(
                         key: ValueKey(index),
                         startActionPane: ActionPane(
-                          extentRatio: 0.2,
                           motion: const StretchMotion(),
                           children: [
                             SlidableAction(
@@ -110,7 +108,6 @@ class ItemCard extends HookConsumerWidget {
                           ],
                         ),
                         endActionPane: ActionPane(
-                          extentRatio: 0.2,
                           motion: const StretchMotion(),
                           children: [
                             SlidableAction(
