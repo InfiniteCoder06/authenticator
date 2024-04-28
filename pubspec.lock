@@ -326,7 +326,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: c1e5287b8829815e03af41066bf96c37f8319f41
+      resolved-ref: b33ea17c3f31a33151b57fbe8a7552ef4c500f56
       url: "https://github.com/InfiniteCoder06/dynamic_color.git"
     source: git
     version: "1.7.0"
