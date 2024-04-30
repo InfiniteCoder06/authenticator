@@ -8,7 +8,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+// 🌎 Project imports:
+import 'package:authenticator/core/utils/paths.util.dart';
+
 part 'modules.g.dart';
+
+@Riverpod(keepAlive: true)
+AppPaths appPaths(AppPathsRef ref) => AppPaths();
 
 @Riverpod(keepAlive: true)
 HiveImpl hive(HiveRef ref) => HiveImpl();

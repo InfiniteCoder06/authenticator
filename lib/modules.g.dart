@@ -6,6 +6,20 @@ part of 'modules.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$appPathsHash() => r'fb93d81e06fb8da499a341ed7a2510f40f055953';
+
+/// See also [appPaths].
+@ProviderFor(appPaths)
+final appPathsProvider = Provider<AppPaths>.internal(
+  appPaths,
+  name: r'appPathsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$appPathsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef AppPathsRef = ProviderRef<AppPaths>;
 String _$hiveHash() => r'34f1028f0e4101b6099517775bbe10df3ce02dff';
 
 /// See also [hive].

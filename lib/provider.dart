@@ -7,33 +7,38 @@ import 'package:authenticator/core/database/hive/hive_entry_repository.dart';
 import 'package:authenticator/core/persistence/persistance.dart';
 import 'package:authenticator/core/persistence/security.persistance.dart';
 import 'package:authenticator/core/security/security_service.dart';
-import 'package:authenticator/core/utils/paths.util.dart';
 import 'package:authenticator/modules.dart';
 
 part 'provider.g.dart';
 
 @Riverpod(keepAlive: true)
-AppPaths appPaths(AppPathsRef ref) => AppPaths();
-
-@Riverpod(keepAlive: true)
 HivePersistanceProvider hiveStorage(HiveStorageRef ref) =>
-    HivePersistanceProvider(ref.read(hiveProvider));
+    HivePersistanceProvider(
+      ref.read(hiveProvider),
+      ref.read(appPathsProvider),
+    );
 
 @Riverpod(keepAlive: true)
 SecurityPersistanceProvider securityStorage(SecurityStorageRef ref) =>
-    SecurityPersistanceProvider(ref.read(hiveProvider));
+    SecurityPersistanceProvider(
+      ref.read(hiveProvider),
+      ref.read(appPathsProvider),
+      ref.read(secureStorageProvider),
+    );
 
 @Riverpod(keepAlive: true)
 HiveEntryRepository hiveEntryRepo(HiveEntryRepoRef ref) => HiveEntryRepository(
-    ref.read(hiveProvider),
-    ref.read(appPathsProvider),
-    ref.read(secureStorageProvider));
+      ref.read(hiveProvider),
+      ref.read(appPathsProvider),
+      ref.read(secureStorageProvider),
+    );
 
 @Riverpod(keepAlive: true)
 FirebaseBackupRepository firebaseBackupRepo(FirebaseBackupRepoRef ref) =>
     FirebaseBackupRepository(
-        firestore: ref.read(firestoreProvider),
-        storageService: ref.read(hiveStorageProvider));
+      firestore: ref.read(firestoreProvider),
+      storageService: ref.read(hiveStorageProvider),
+    );
 
 @Riverpod(keepAlive: true)
 SecurityInformations securityInformations(SecurityInformationsRef ref) =>
@@ -43,5 +48,6 @@ SecurityInformations securityInformations(SecurityInformationsRef ref) =>
     );
 
 @Riverpod(keepAlive: true)
-SecurityService securityService(SecurityServiceRef ref) =>
-    SecurityService(lockInfo: ref.read(securityInformationsProvider));
+SecurityService securityService(SecurityServiceRef ref) => SecurityService(
+      lockInfo: ref.read(securityInformationsProvider),
+    );

@@ -6,21 +6,7 @@ part of 'provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appPathsHash() => r'fb93d81e06fb8da499a341ed7a2510f40f055953';
-
-/// See also [appPaths].
-@ProviderFor(appPaths)
-final appPathsProvider = Provider<AppPaths>.internal(
-  appPaths,
-  name: r'appPathsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$appPathsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-typedef AppPathsRef = ProviderRef<AppPaths>;
-String _$hiveStorageHash() => r'da8c13781d0f21efdcbfbf98037385172a329c8e';
+String _$hiveStorageHash() => r'd50a7734ad91e8aa0e60735e513b3f10d505e9be';
 
 /// See also [hiveStorage].
 @ProviderFor(hiveStorage)
@@ -34,7 +20,7 @@ final hiveStorageProvider = Provider<HivePersistanceProvider>.internal(
 );
 
 typedef HiveStorageRef = ProviderRef<HivePersistanceProvider>;
-String _$securityStorageHash() => r'4043855f16dab22714e198ef56455c0ed50a0be5';
+String _$securityStorageHash() => r'401f9bb2205017af099bb36a55f16550778078a5';
 
 /// See also [securityStorage].
 @ProviderFor(securityStorage)

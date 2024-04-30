@@ -9,13 +9,14 @@ import 'package:authenticator/core/utils/paths.util.dart';
 
 class HivePersistanceProvider extends StorageService with ConsoleMixin {
   HiveInterface hive;
+  AppPaths paths;
   Box? _box;
 
-  HivePersistanceProvider(this.hive);
+  HivePersistanceProvider(this.hive, this.paths);
 
   @override
   Future<void> init() async {
-    _box = await hive.openBox(kAppPreferences, path: AppPaths.hivePath);
+    _box = await hive.openBox(kAppPreferences, path: paths.hivePath);
 
     console.info("⚙️ Initialize");
   }

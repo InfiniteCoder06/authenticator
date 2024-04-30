@@ -37,7 +37,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
     _box = await hive.openBox(
       kDatabase,
       encryptionCipher: HiveAesCipher(encryptionKeyUint8List),
-      path: AppPaths.hivePath,
+      path: paths.hivePath,
     );
     console.info("⚙️ Initialize");
   }

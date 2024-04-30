@@ -15,16 +15,17 @@ import 'package:authenticator/core/utils/paths.util.dart';
 
 class SecurityPersistanceProvider extends StorageService with ConsoleMixin {
   HiveInterface hive;
+  FlutterSecureStorage secureStorage;
+  AppPaths paths;
   Box? _box;
 
-  SecurityPersistanceProvider(this.hive);
+  SecurityPersistanceProvider(this.hive, this.paths, this.secureStorage);
 
   String kLockType = 'lockType';
   String kLockSecret = 'lockSecret';
 
   @override
   Future<void> init() async {
-    const secureStorage = FlutterSecureStorage();
     final encryptionKeyString = await secureStorage.read(key: 'key');
     if (encryptionKeyString == null) {
       final key = hive.generateSecureKey();
@@ -38,7 +39,7 @@ class SecurityPersistanceProvider extends StorageService with ConsoleMixin {
     _box = await hive.openBox(
       kSecurityPreferences,
       encryptionCipher: HiveAesCipher(encryptionKeyUint8List),
-      path: AppPaths.hivePath,
+      path: paths.hivePath,
     );
 
     console.info("⚙️ Initialize");

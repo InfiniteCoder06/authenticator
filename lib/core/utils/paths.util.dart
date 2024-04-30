@@ -12,18 +12,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 
-@immutable
 class AppPaths {
-  static Directory? main;
-  static Directory? hive;
-  static Directory? temp;
+  Directory? main;
+  Directory? hive;
+  Directory? temp;
 
-  static String get mainPath => main!.path;
-  static String get hivePath => hive!.path;
-  static String get tempPath => temp!.path;
+  String get mainPath => main!.path;
+  String get hivePath => hive!.path;
+  String get tempPath => temp!.path;
 
-  static String get tempVaultFilePath =>
-      join(AppPaths.tempPath, kVaultFileName);
+  String get tempVaultFilePath => join(tempPath, kVaultFileName);
 
   Future<void> init({String? path}) async {
     if (!kIsWeb) {
@@ -51,7 +49,7 @@ class AppPaths {
     temp = Directory(join(main!.path, 'temp'));
   }
 
-  static Future<void> cleanTemp() async {
+  Future<void> cleanTemp() async {
     if (await temp!.exists()) {
       await temp?.delete(recursive: true);
     }
