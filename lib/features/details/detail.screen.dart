@@ -23,14 +23,15 @@ import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
 
 class DetailPage extends HookConsumerWidget {
-  const DetailPage({super.key, required this.item});
+  const DetailPage({super.key, required this.item, required this.isUrl});
 
   final Option<Item> item;
+  final bool isUrl;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      ref.read(detailController.notifier).initialize(item);
+      ref.read(detailController.notifier).initialize(item, isUrl);
       return null;
     }, [item]);
     return PopScope(

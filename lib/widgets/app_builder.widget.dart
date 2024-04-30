@@ -4,34 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // 🌎 Project imports:
-import 'package:authenticator/core/utils/constants/theme.constant.dart';
 import 'package:authenticator/core/utils/local_auth/app_local_auth.widget.dart';
 import 'package:authenticator/widgets/loader.overlay.dart';
 
-class AppBuilder extends StatelessWidget {
+class AppBuilder extends StatefulWidget {
   const AppBuilder({
     super.key,
     this.child,
     this.navKey,
-    required this.themeMode,
-    required this.lightColorScheme,
-    required this.darkColorScheme,
   });
 
   final Widget? child;
   final GlobalKey<NavigatorState>? navKey;
-  final ThemeMode themeMode;
-  final ColorScheme lightColorScheme;
-  final ColorScheme darkColorScheme;
 
   @override
+  State<AppBuilder> createState() => _AppBuilderState();
+}
+
+class _AppBuilderState extends State<AppBuilder> {
+  @override
   Widget build(BuildContext context) {
-    final useDark = ThemeConstant.getDarkMode(context, themeMode);
-    final surfaceColor =
-        useDark ? darkColorScheme.surface : lightColorScheme.surface;
-    SystemUiOverlayStyle overlay = SystemUiOverlayStyle(
-      systemNavigationBarColor: surfaceColor,
-      statusBarColor: surfaceColor,
+    SystemUiOverlayStyle overlay = const SystemUiOverlayStyle(
+      systemNavigationBarColor: Colors.transparent,
+      statusBarColor: Colors.transparent,
     );
     if (kReleaseMode) {
       return buildWrapper(overlay);
@@ -53,17 +48,18 @@ class AppBuilder extends StatelessWidget {
   }
 
   Widget buildBanner(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Positioned(
       bottom: 0,
       right: 0,
       child: CustomPaint(
         painter: BannerPainter(
           message: 'Debug',
-          color: Theme.of(context).colorScheme.errorContainer,
+          color: colorScheme.errorContainer,
           textStyle: Theme.of(context)
               .textTheme
               .bodySmall!
-              .copyWith(color: Theme.of(context).colorScheme.error),
+              .copyWith(color: colorScheme.error),
           location: BannerLocation.bottomEnd,
           textDirection: Directionality.of(context),
           layoutDirection: Directionality.of(context),
@@ -73,24 +69,17 @@ class AppBuilder extends StatelessWidget {
   }
 
   Widget buildWrapper(SystemUiOverlayStyle overlay) {
-    final widget = LoadingOverlay(
+    final wrapper = LoadingOverlay(
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: overlay,
-          child: child ?? const SizedBox.shrink(),
+          child: widget.child ?? const SizedBox.shrink(),
         ),
       ),
     );
     return kIsWeb
-        ? widget
-        : Builder(builder: (context) {
-            return Theme(
-              data: ThemeConstant.getDarkMode(context, themeMode)
-                  ? ThemeConstant.getDarkThemeData(darkColorScheme)
-                  : ThemeConstant.getLightThemeData(lightColorScheme),
-              child: AppLocalAuth(navKey: navKey!, child: widget),
-            );
-          });
+        ? wrapper
+        : AppLocalAuth(navKey: widget.navKey!, child: wrapper);
   }
 }

@@ -1,14 +1,15 @@
 part of 'app.router.dart';
 
 class DetailPageArgs {
-  const DetailPageArgs({this.key, required this.item});
+  const DetailPageArgs({this.key, required this.item, required this.isUrl});
 
   final Key? key;
   final Item? item;
+  final bool isUrl;
 
   @override
   String toString() {
-    return 'DetailPageArgs{key: $key, item: $item}';
+    return 'DetailPageArgs{key: $key, item: $item, isUrl: $isUrl}';
   }
 }
 

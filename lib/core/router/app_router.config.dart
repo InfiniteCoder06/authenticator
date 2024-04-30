@@ -66,10 +66,12 @@ class AppRouteConfig {
               return DetailPage(
                 key: arguments.key,
                 item: optionOf(arguments.item),
+                isUrl: arguments.isUrl,
               );
             }
             return DetailPage(
               item: none(),
+              isUrl: false,
             );
           },
         );

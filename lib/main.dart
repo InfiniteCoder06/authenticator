@@ -95,12 +95,14 @@ class MyApp extends HookConsumerWidget {
           darkTheme: ThemeConstant.getDarkThemeData(darkColorScheme),
           themeMode: controller.themeMode,
           initialRoute: AppRouter.home.path,
-          builder: (_, child) => AppBuilder(
-            navKey: _navigator,
-            themeMode: controller.themeMode,
-            lightColorScheme: lightColorScheme,
-            darkColorScheme: darkColorScheme,
-            child: child!,
+          builder: (_, child) => Theme(
+            data: ThemeConstant.getDarkMode(context, controller.themeMode)
+                ? ThemeConstant.getDarkThemeData(darkColorScheme)
+                : ThemeConstant.getLightThemeData(lightColorScheme),
+            child: AppBuilder(
+              navKey: _navigator,
+              child: child!,
+            ),
           ),
           onGenerateRoute: (settings) =>
               AppRouteConfig(context: context, settings: settings).generate(),

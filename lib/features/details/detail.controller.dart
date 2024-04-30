@@ -10,6 +10,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/models/item.model.dart';
+import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/validator.util.dart';
 import 'package:authenticator/provider.dart';
@@ -23,10 +24,12 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
   DetailController(this.repository);
 
   Option<Item> originalItem = none();
+  bool isUrl = false;
   bool isLoading = true;
 
-  Future<void> initialize(Option<Item> item) async {
+  Future<void> initialize(Option<Item> item, bool isUrl) async {
     await Future.delayed(Durations.short1);
+    this.isUrl = isUrl;
     item.fold(
       () async => await _loadTemplate(),
       (item) async => _generateTemplate(item),
@@ -75,7 +78,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     }
   }
 
-  bool get canPop => !form.dirty;
+  bool get canPop => !form.dirty && !isUrl;
 
   Future<bool> popRequest(BuildContext context) async {
     final canPop = (await showDialog(

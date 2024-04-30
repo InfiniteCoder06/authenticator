@@ -120,7 +120,8 @@ class EntryOverviewPage extends HookConsumerWidget {
                                     false;
                                 await Navigator.of(context).pushNamed(
                                     AppRouter.details.path,
-                                    arguments: DetailPageArgs(item: item));
+                                    arguments: DetailPageArgs(
+                                        item: item, isUrl: false));
                               },
                               onLongPress: () {
                                 if (selected.isEmpty) {
@@ -214,12 +215,12 @@ class EntryOverviewPage extends HookConsumerWidget {
                     (text) => AppDialogs.showErrorDialog(context, text),
                     (item) => Navigator.of(context).pushReplacementNamed(
                         AppRouter.details.path,
-                        arguments: DetailPageArgs(item: item)));
+                        arguments: DetailPageArgs(item: item, isUrl: true)));
               },
               onAddManualPressed: () async {
                 await Navigator.of(context).popAndPushNamed(
                     AppRouter.details.path,
-                    arguments: const DetailPageArgs(item: null));
+                    arguments: const DetailPageArgs(item: null, isUrl: true));
                 if (context.mounted) {}
               },
             );

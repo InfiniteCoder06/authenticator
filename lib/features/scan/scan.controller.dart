@@ -36,8 +36,9 @@ class ScanController extends _$ScanController with ConsoleMixin {
       final result = OtpUtils.parseURI(Uri.parse(barcodes.first.rawValue!));
       result.match(
           (error) => showErrorDialog(context, error),
-          (item) => Navigator.of(context).pushReplacementNamed(AppRouter.details.path,
-              arguments: DetailPageArgs(item: item)));
+          (item) => Navigator.of(context).pushReplacementNamed(
+              AppRouter.details.path,
+              arguments: DetailPageArgs(item: item, isUrl: true)));
     } else {
       await showErrorDialog(context, 'Unknown');
     }

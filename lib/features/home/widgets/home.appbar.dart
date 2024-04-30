@@ -41,7 +41,8 @@ class HomeAppBar extends HookConsumerWidget {
             onPressed: () async {
               ref.read(showSearchProvider.notifier).state = false;
               await Navigator.of(context).pushNamed(AppRouter.details.path,
-                  arguments: DetailPageArgs(item: selected.first));
+                  arguments:
+                      DetailPageArgs(item: selected.first, isUrl: false));
               ref.read(selectedEntriesProvider.notifier).clearSelected();
               ref.refresh(getAllItemProvider);
             },

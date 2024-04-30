@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 // 🌎 Project imports:
+import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/security/security_service.dart';
+import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/schedule.mixin.dart';
+import 'package:authenticator/core/utils/otp.util.dart';
+import 'package:authenticator/core/utils/share.service.dart';
 import 'package:authenticator/provider.dart';
 
 class AppLocalAuth extends StatefulHookConsumerWidget {
@@ -30,14 +34,35 @@ class AppLocalAuth extends StatefulHookConsumerWidget {
 class AppLocalAuthState extends ConsumerState<AppLocalAuth>
     with WidgetsBindingObserver, ScheduleMixin {
   late SecurityService service;
+  int lockTime = 10;
   bool hasPinLockScreenOnState = false;
 
   @override
   void initState() {
     super.initState();
     service = ref.read(securityServiceProvider);
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => showLock());
+    ref
+        .read(securityStorageProvider)
+        .get(kLockTimeout, defaultValue: 10)
+        .then((value) => lockTime = value);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await showLock();
+      ShareService()
+        ..onDataReceived = _handleSharedData
+        ..getSharedData().then(_handleSharedData);
+    });
     WidgetsBinding.instance.addObserver(this);
+  }
+
+  void _handleSharedData(String sharedData) async {
+    if (sharedData.isNotEmpty) {
+      final result = OtpUtils.parseURI(Uri.parse(sharedData));
+      result.match(
+          (error) => AppDialogs.showErrorDialog(context, error),
+          (item) => Navigator.of(widget.navKey.currentContext!).pushNamed(
+              AppRouter.details.path,
+              arguments: DetailPageArgs(item: item, isUrl: true)));
+    }
   }
 
   Future<void> showLock() async {
@@ -65,16 +90,11 @@ class AppLocalAuthState extends ConsumerState<AppLocalAuth>
         cancelTimer(const ValueKey("SecurityService"));
         break;
       case AppLifecycleState.paused:
-        ref
-            .read(securityStorageProvider)
-            .get(kLockTimeout, defaultValue: 10)
-            .then((e) {
-          scheduleAction(
-            () => showLock(),
-            key: const ValueKey("SecurityService"),
-            duration: Duration(seconds: e),
-          );
-        });
+        scheduleAction(
+          () => showLock(),
+          key: const ValueKey("SecurityService"),
+          duration: Duration(seconds: lockTime),
+        );
         break;
     }
   }
