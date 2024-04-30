@@ -1,5 +1,4 @@
 // 🐦 Flutter imports:
-import 'package:authenticator/features/home/home.controller.dart';
 import 'package:flutter/foundation.dart';
 
 // 📦 Package imports:
@@ -14,6 +13,7 @@ import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/utils/database.utils.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
+import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/provider.dart';
 
 part 'account.state.dart';

@@ -10,7 +10,6 @@ import 'package:reactive_forms/reactive_forms.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/models/item.model.dart';
-import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/validator.util.dart';
 import 'package:authenticator/provider.dart';
