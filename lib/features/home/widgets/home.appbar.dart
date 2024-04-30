@@ -44,7 +44,6 @@ class HomeAppBar extends HookConsumerWidget {
                   arguments:
                       DetailPageArgs(item: selected.first, isUrl: false));
               ref.read(selectedEntriesProvider.notifier).clearSelected();
-              ref.refresh(getAllItemProvider);
             },
             icon: const Icon(Icons.edit_rounded),
             tooltip: "Edit",

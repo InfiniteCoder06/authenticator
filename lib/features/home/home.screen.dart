@@ -220,7 +220,7 @@ class EntryOverviewPage extends HookConsumerWidget {
               onAddManualPressed: () async {
                 await Navigator.of(context).popAndPushNamed(
                     AppRouter.details.path,
-                    arguments: const DetailPageArgs(item: null, isUrl: true));
+                    arguments: const DetailPageArgs(item: null, isUrl: false));
                 if (context.mounted) {}
               },
             );

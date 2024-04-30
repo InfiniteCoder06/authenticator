@@ -35,7 +35,7 @@ class DetailPage extends HookConsumerWidget {
       return null;
     }, [item]);
     return PopScope(
-      canPop: ref.read(detailController.notifier).canPop,
+      canPop: false,
       onPopInvoked: (didPop) async {
         if (didPop) return;
         final bool shouldPop =
@@ -56,8 +56,10 @@ class DetailPage extends HookConsumerWidget {
             IconButton(
               tooltip: "Save",
               icon: const Icon(Icons.save_rounded),
-              onPressed: () =>
-                  ref.read(detailController.notifier).save(context),
+              onPressed: () async {
+                await ref.read(detailController.notifier).save(context);
+                ref.refresh(getAllItemProvider);
+              },
             ),
             if (item.isSome())
               PopupMenuButton<int>(

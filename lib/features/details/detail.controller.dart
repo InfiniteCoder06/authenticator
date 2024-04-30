@@ -61,7 +61,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     notifyListeners();
   }
 
-  void save(BuildContext context) async {
+  Future<void> save(BuildContext context) async {
     form.markAllAsTouched();
     if (!form.valid) return;
 
@@ -77,9 +77,8 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     }
   }
 
-  bool get canPop => !form.dirty && !isUrl;
-
   Future<bool> popRequest(BuildContext context) async {
+    if (!form.dirty && !isUrl) return true;
     final canPop = (await showDialog(
           context: context,
           builder: (context) {

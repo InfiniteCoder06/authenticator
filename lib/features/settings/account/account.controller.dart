@@ -13,7 +13,6 @@ import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/utils/database.utils.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
-import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/provider.dart';
 
 part 'account.state.dart';
@@ -71,7 +70,6 @@ class AccountController extends _$AccountController with ConsoleMixin {
       console.debug("🟢 Successfully Synced");
       state =
           state.copyWith(isSyncing: false, syncingState: SyncingState.success);
-      ref.refresh(getAllItemProvider);
     } catch (e) {
       state = state.copyWith(
           isSyncing: false,
