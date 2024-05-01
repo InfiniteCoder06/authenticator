@@ -110,31 +110,35 @@ class HomeAppBar extends HookConsumerWidget {
             ],
           ),
         ),
-        PopupMenuButton<int>(
-          tooltip: "More",
-          icon: const Icon(Icons.more_vert_rounded),
-          itemBuilder: (context) => [
-            const PopupMenuItem(
-              value: 0,
-              child: Text("Settings"),
-            ),
-            if (hasLock)
+        AppCrossFade(
+          showFirst: selected.isEmpty,
+          firstChild: PopupMenuButton<int>(
+            tooltip: "More",
+            icon: const Icon(Icons.more_vert_rounded),
+            itemBuilder: (context) => [
               const PopupMenuItem(
-                value: 1,
-                child: Text("Lock"),
-              )
-          ],
-          onSelected: (value) async {
-            if (value == 0) {
-              ref.read(showSearchProvider.notifier).state = false;
-              await Navigator.of(context).pushNamed(AppRouter.settings.path);
-              ref.refresh(getAllItemProvider);
-            }
-            if (value == 1) {
-              if (!context.mounted) return;
-              AppLocalAuth.of(context)?.showLock();
-            }
-          },
+                value: 0,
+                child: Text("Settings"),
+              ),
+              if (hasLock)
+                const PopupMenuItem(
+                  value: 1,
+                  child: Text("Lock"),
+                )
+            ],
+            onSelected: (value) async {
+              if (value == 0) {
+                ref.read(showSearchProvider.notifier).state = false;
+                await Navigator.of(context).pushNamed(AppRouter.settings.path);
+                ref.refresh(getAllItemProvider);
+              }
+              if (value == 1) {
+                if (!context.mounted) return;
+                AppLocalAuth.of(context)?.showLock();
+              }
+            },
+          ),
+          secondChild: const SizedBox.shrink(),
         ),
       ],
     );
