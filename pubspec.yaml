@@ -64,7 +64,7 @@ dependencies:
   json_annotation: ^4.9.0
   local_auth: ^2.2.0
   logger: ^2.2.0
-  mobile_scanner: ^4.0.1
+  mobile_scanner: ^5.0.1
   navigation_history_observer: ^1.1.1
   otp: ^3.1.4
   path: ^1.9.0

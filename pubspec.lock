@@ -910,10 +910,10 @@ packages:
     dependency: "direct main"
     description:
       name: mobile_scanner
-      sha256: "827765afbd4792ff3fd105ad593821ac0f6d8a7d352689013b07ee85be336312"
+      sha256: "75bb4f875730f28bd5eb60fd76531ca762ba5d7c272d5b7d4fe55c20178f0a7b"
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.1"
+    version: "5.0.2"
   mocktail:
     dependency: "direct main"
     description:
