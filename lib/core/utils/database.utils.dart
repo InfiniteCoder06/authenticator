@@ -4,9 +4,10 @@ import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 
 class DatabaseUtils with ConsoleMixin {
   Future<(List<Item>, List<String>, List<Item>)> syncChanges(
-      (List<Item>, List<Item>) data) async {
-    var localEntries = data.$1;
-    var cloudEntries = data.$2;
+      (List<String>, List<String>) data) async {
+    var localEntries = data.$1.map(Item.fromJson).toList();
+    var cloudEntries = data.$2.map(Item.fromJson).toList();
+
     // Local Changes to to synced to cloud
     final localChangesDiff = differenceWithSet(localEntries, cloudEntries);
 

@@ -49,8 +49,12 @@ class AccountController extends _$AccountController with ConsoleMixin {
     state = state.copyWith(isSyncing: true, syncingState: SyncingState.syncing);
 
     try {
-      final localEntries = await entryRepository.getAll();
-      final cloudEntries = await backupRepository.getAll(state.userId);
+      final localEntries = (await entryRepository.getAll())
+          .map((item) => item.toJson())
+          .toList();
+      final cloudEntries = (await backupRepository.getAll(state.userId))
+          .map((item) => item.toJson())
+          .toList();
 
       final data = await compute(
           DatabaseUtils().syncChanges, (localEntries, cloudEntries));
