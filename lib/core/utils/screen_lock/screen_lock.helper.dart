@@ -23,14 +23,15 @@ class ScreenLockHelper {
 
   static SecretsConfig secretsConfig(ColorScheme colorScheme) {
     return SecretsConfig(
-      padding:
-          const EdgeInsets.only(top: 24, bottom: ConfigConstant.objectHeight2),
+      padding: const EdgeInsets.only(
+        top: ConfigConstant.objectHeight1,
+        bottom: ConfigConstant.objectHeight1,
+      ),
       secretConfig: SecretConfig(
         borderColor: colorScheme.primary,
         enabledColor: colorScheme.primary,
         size: 12,
-        builder: (context, config, enabled) =>
-            ScreenLockHelper.dotBuilder(enabled, config),
+        builder: (context, config, enabled) => dotBuilder(enabled, config),
       ),
     );
   }
@@ -43,6 +44,10 @@ class ScreenLockHelper {
         textTheme: TextTheme(
           displayLarge:
               textTheme.displayLarge?.copyWith(color: colorScheme.onSurface),
+          titleLarge:
+              textTheme.titleLarge?.copyWith(color: colorScheme.onSurface),
+          titleMedium:
+              textTheme.titleMedium?.copyWith(color: colorScheme.onSurface),
           bodyMedium:
               textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
         ),
@@ -51,9 +56,7 @@ class ScreenLockHelper {
   }
 
   static KeyPadConfig keyPadConfig(
-    TextTheme textTheme,
-    ColorScheme colorScheme,
-  ) {
+      TextTheme textTheme, ColorScheme colorScheme) {
     return KeyPadConfig(
       clearOnLongPressed: true,
       buttonConfig: KeyPadButtonConfig(
@@ -61,9 +64,7 @@ class ScreenLockHelper {
         foregroundColor: colorScheme.onSecondaryContainer,
         backgroundColor: colorScheme.secondaryContainer,
         buttonStyle: FilledButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: ShapeConstant.large,
-          ),
+          shape: RoundedRectangleBorder(borderRadius: ShapeConstant.large),
           side: BorderSide(
             style: BorderStyle.none,
             color: colorScheme.secondaryContainer,

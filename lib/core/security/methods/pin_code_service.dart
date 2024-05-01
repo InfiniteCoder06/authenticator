@@ -24,6 +24,7 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       onConfirmed: (matchedSecret) {
         Navigator.of(option.context).pop(matchedSecret);
       },
+      onCancelled: Navigator.of(option.context).pop,
       canCancel: option.canCancel,
     ) as String?;
     if (matchedSecret != null) {
@@ -55,7 +56,6 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       context: context,
       correctString: secret,
       canCancel: canCancel,
-      footer: buildFooter(context),
       onUnlocked: () => Navigator.of(context).pop(true),
     ) as bool;
     return authenticated == true;

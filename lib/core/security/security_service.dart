@@ -3,7 +3,6 @@
 library security_service;
 
 // 🐦 Flutter imports:
-import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -16,6 +15,7 @@ import 'package:authenticator/core/persistence/security.persistance.dart';
 import 'package:authenticator/core/security/security_object.dart';
 import 'package:authenticator/core/types/lock.type.dart';
 import 'package:authenticator/core/types/lock_flow.type.dart';
+import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/screen_lock/screen_lock.util.dart';
 import 'package:authenticator/widgets/app.button.widget.dart';

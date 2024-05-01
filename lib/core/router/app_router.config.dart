@@ -6,6 +6,7 @@ import 'package:flutter_screen_lock/flutter_screen_lock.dart';
 import 'package:fpdart/fpdart.dart';
 
 // 🌎 Project imports:
+import 'package:authenticator/core/router/settings/animated_route.settings.dart';
 import 'package:authenticator/core/router/settings/default_route.settings.dart';
 import 'package:authenticator/features/details/detail.screen.dart';
 import 'package:authenticator/features/home/home.screen.dart';
@@ -114,13 +115,13 @@ class AppRouteConfig {
           route: (context) => const SecuritySettingsPage(),
         );
       case AppRouter.lock:
-        return DefaultRouteSetting(
+        return AnimatedRouteSetting(
           fullscreenDialog: false,
           route: (context) {
             Object? arguments = settings?.arguments;
             if (arguments is SecurityPageArgs) {
               return PopScope(
-                canPop: arguments.canCancel && arguments.onCancelled == null,
+                canPop: arguments.canCancel,
                 onPopInvoked: (didPop) async {
                   if (didPop) return;
                 },
@@ -152,7 +153,7 @@ class AppRouteConfig {
               );
             } else if (arguments is SecurityCreatePageArgs) {
               return PopScope(
-                canPop: arguments.canCancel && arguments.onCancelled == null,
+                canPop: arguments.canCancel,
                 onPopInvoked: (didPop) async {
                   if (didPop) return;
                 },

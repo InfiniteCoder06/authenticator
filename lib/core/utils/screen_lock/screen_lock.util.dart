@@ -13,7 +13,6 @@ Future<T?> showEnhancedScreenLock<T>({
   required VoidCallback onUnlocked,
   String correctString = '',
   VoidCallback? onOpened,
-  ValidationCallback? onValidate,
   VoidCallback? onCancelled,
   ValueChanged<int>? onError,
   ValueChanged<int>? onMaxRetries,
@@ -23,25 +22,21 @@ Future<T?> showEnhancedScreenLock<T>({
   DelayBuilderCallback? delayBuilder,
   Widget? customizedButtonChild,
   VoidCallback? customizedButtonTap,
-  Widget? footer,
   Widget? cancelButton,
   Widget? deleteButton,
-  InputController? inputController,
   SecretsBuilderCallback? secretsBuilder,
-  bool useBlur = true,
-  bool useLandscape = false,
+  bool useBlur = false,
   bool canCancel = false,
 }) async {
   ColorScheme colorScheme = Theme.of(context).colorScheme;
   TextTheme textTheme = Theme.of(context).textTheme;
 
-  title = title ??
-      Text(
-        "Enter Passcode",
-        style: textTheme.titleLarge?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-      );
+  title = Column(
+    children: [
+      const FlutterLogo(size: 100),
+      title ?? Text("Unlock", style: textTheme.titleLarge),
+    ],
+  );
 
   KeyPadConfig keyPadConfig =
       ScreenLockHelper.keyPadConfig(textTheme, colorScheme);
@@ -55,7 +50,6 @@ Future<T?> showEnhancedScreenLock<T>({
         correctString: correctString,
         onUnlocked: onUnlocked,
         onOpened: onOpened,
-        onValidate: onValidate,
         onCancelled: onCancelled,
         onError: onError,
         onMaxRetries: onMaxRetries,
@@ -65,16 +59,23 @@ Future<T?> showEnhancedScreenLock<T>({
         config: screenLockConfig,
         secretsConfig: secretsConfig,
         keyPadConfig: keyPadConfig,
-        delayBuilder: delayBuilder,
+        delayBuilder: (context, duration) {
+          return Column(
+            children: [
+              const FlutterLogo(size: 100),
+              Text(
+                  "Max attempts reached, Try after ${duration.inSeconds} Seconds",
+                  style: textTheme.titleMedium)
+            ],
+          );
+        },
         customizedButtonChild: customizedButtonChild,
         customizedButtonTap: customizedButtonTap,
-        footer: footer,
-        cancelButton: cancelButton,
-        deleteButton: deleteButton,
-        inputController: inputController,
+        cancelButton: const Icon(Icons.arrow_drop_down_rounded),
+        deleteButton: const Icon(Icons.backspace_rounded),
         secretsBuilder: secretsBuilder,
         useBlur: useBlur,
-        useLandscape: useLandscape,
+        useLandscape: true,
         canCancel: canCancel,
       ));
 }
@@ -83,7 +84,6 @@ Future<T?> showEnhancedCreateScreenLock<T>({
   required BuildContext context,
   required ValueChanged<String> onConfirmed,
   VoidCallback? onOpened,
-  ValidationCallback? onValidate,
   VoidCallback? onCancelled,
   ValueChanged<int>? onError,
   ValueChanged<int>? onMaxRetries,
@@ -95,33 +95,28 @@ Future<T?> showEnhancedCreateScreenLock<T>({
   DelayBuilderCallback? delayBuilder,
   Widget? customizedButtonChild,
   VoidCallback? customizedButtonTap,
-  Widget? footer,
   Widget? cancelButton,
   Widget? deleteButton,
-  InputController? inputController,
   SecretsBuilderCallback? secretsBuilder,
-  bool useBlur = true,
-  bool useLandscape = false,
-  bool canCancel = false,
+  bool useBlur = false,
+  bool canCancel = true,
 }) async {
   ColorScheme colorScheme = Theme.of(context).colorScheme;
   TextTheme textTheme = Theme.of(context).textTheme;
 
-  title = title ??
-      Text(
-        "Set Pin Code",
-        style: textTheme.titleLarge?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-      );
+  title = Column(
+    children: [
+      const FlutterLogo(size: 100),
+      title ?? Text("Set Pin Code", style: textTheme.titleLarge),
+    ],
+  );
 
-  confirmTitle = confirmTitle ??
-      Text(
-        "Confirm Passcode",
-        style: textTheme.titleLarge?.copyWith(
-          color: colorScheme.onSurface,
-        ),
-      );
+  confirmTitle = Column(
+    children: [
+      const FlutterLogo(size: 100),
+      confirmTitle ?? Text("Confirm Passcode", style: textTheme.titleLarge),
+    ],
+  );
 
   KeyPadConfig keyPadConfig =
       ScreenLockHelper.keyPadConfig(textTheme, colorScheme);
@@ -134,7 +129,6 @@ Future<T?> showEnhancedCreateScreenLock<T>({
         context: context,
         onConfirmed: onConfirmed,
         onOpened: onOpened,
-        onValidate: onValidate,
         onCancelled: onCancelled,
         onError: onError,
         onMaxRetries: onMaxRetries,
@@ -146,16 +140,19 @@ Future<T?> showEnhancedCreateScreenLock<T>({
         config: screenLockConfig,
         secretsConfig: secretsConfig,
         keyPadConfig: keyPadConfig,
-        delayBuilder: delayBuilder,
+        delayBuilder: (context, duration) {
+          return Text(
+            "Max attempts reached, Try after ${duration.inSeconds} Seconds",
+            style: textTheme.titleMedium,
+          );
+        },
         customizedButtonChild: customizedButtonChild,
         customizedButtonTap: customizedButtonTap,
-        footer: footer,
-        cancelButton: cancelButton,
-        deleteButton: deleteButton,
-        inputController: inputController,
+        cancelButton: const Icon(Icons.arrow_drop_down_rounded),
+        deleteButton: const Icon(Icons.backspace_rounded),
         secretsBuilder: secretsBuilder,
         useBlur: useBlur,
-        useLandscape: useLandscape,
+        useLandscape: true,
         canCancel: canCancel,
       ));
 }
