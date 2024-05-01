@@ -18,7 +18,6 @@ import 'package:authenticator/core/types/lock_flow.type.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/screen_lock/screen_lock.util.dart';
-import 'package:authenticator/widgets/app.button.widget.dart';
 
 part './methods/biometrics_service.dart';
 part './methods/pin_code_service.dart';

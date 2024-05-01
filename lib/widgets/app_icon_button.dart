@@ -1,9 +1,6 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
-// 🌎 Project imports:
-import 'package:authenticator/widgets/app_tap_effect.dart';
-
 class AppIconButton extends StatelessWidget {
   final Widget icon;
   final VoidCallback onPressed;
@@ -54,30 +51,14 @@ class AppIconButton extends StatelessWidget {
     required Widget child,
     required BuildContext context,
   }) {
-    switch (Theme.of(context).platform) {
-      case TargetPlatform.android:
-      case TargetPlatform.fuchsia:
-      case TargetPlatform.linux:
-      case TargetPlatform.windows:
-        return InkWell(
-          customBorder: const CircleBorder(),
-          onTap: onPressed,
-          onLongPress: onLongPress,
-          child: Padding(
-            padding: padding,
-            child: icon,
-          ),
-        );
-      case TargetPlatform.iOS:
-      case TargetPlatform.macOS:
-        return AppTapEffect(
-          onTap: onPressed,
-          onLongPressed: onLongPress,
-          child: Padding(
-            padding: padding,
-            child: icon,
-          ),
-        );
-    }
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: onPressed,
+      onLongPress: onLongPress,
+      child: Padding(
+        padding: padding,
+        child: icon,
+      ),
+    );
   }
 }
