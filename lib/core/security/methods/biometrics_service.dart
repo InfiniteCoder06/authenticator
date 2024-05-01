@@ -71,20 +71,10 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
     } on PlatformException catch (e) {
       console.error("$e");
       if (e.code == auth_error.notAvailable) {
-        showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: const Text("Biometrics Not Available"),
-              content: const Text("This Device Does not support Biometrics"),
-              actions: [
-                TextButton(
-                  onPressed: Navigator.of(context).pop,
-                  child: const Text("Ok"),
-                )
-              ],
-            );
-          },
+        AppDialogs.showErrorDialog(
+          context,
+          "This Device Does not support Biometrics",
+          title: "Biometrics Not Available",
         );
       }
     }

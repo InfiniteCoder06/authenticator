@@ -68,15 +68,21 @@ class AppDialogs {
         false;
   }
 
-  static Future<void> showErrorDialog(
-      BuildContext context, String errorMessage) async {
+  static Future<void> showErrorDialog(BuildContext context, String errorMessage,
+      {String? title}) async {
     return await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           icon: const Icon(Icons.error_rounded),
-          title: const Text("Error"),
+          title: title == null ? const Text("Error") : Text(title),
           content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: Navigator.of(context).pop,
+              child: const Text("Ok"),
+            )
+          ],
         );
       },
     );

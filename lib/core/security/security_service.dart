@@ -3,6 +3,7 @@
 library security_service;
 
 // 🐦 Flutter imports:
+import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
