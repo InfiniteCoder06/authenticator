@@ -10,7 +10,7 @@ import 'package:uuid/uuid.dart';
 part 'item.model.g.dart';
 
 @HiveType(typeId: 0)
-class Item extends HiveObject with EquatableMixin {
+class Item extends HiveObject with EquatableMixin implements Comparable<Item> {
   @HiveField(0)
   String identifier;
   @HiveField(1)
@@ -114,8 +114,10 @@ class Item extends HiveObject with EquatableMixin {
   factory Item.fromMap(Map<String, dynamic> map) {
     return Item(
       identifier: map['identifier'] as String,
-      createdTime: DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
-      updatedTime: DateTime.fromMillisecondsSinceEpoch(map['updatedTime'] as int),
+      createdTime:
+          DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
+      updatedTime:
+          DateTime.fromMillisecondsSinceEpoch(map['updatedTime'] as int),
       name: map['name'] as String,
       iconUrl: map['iconUrl'] as String,
       secret: map['secret'] as String,
@@ -131,4 +133,10 @@ class Item extends HiveObject with EquatableMixin {
 
   @override
   bool get stringify => true;
+
+  @override
+  int compareTo(Item other) {
+    return createdTime.millisecondsSinceEpoch
+        .compareTo(other.createdTime.millisecondsSinceEpoch);
+  }
 }

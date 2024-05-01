@@ -8,6 +8,7 @@ import 'package:swipeable_page_route/swipeable_page_route.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
+import 'package:authenticator/core/utils/enums/sort.enum.dart';
 import 'package:authenticator/core/utils/local_auth/app_local_auth.widget.dart';
 import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/features/settings/security/security.controller.dart';
@@ -51,12 +52,33 @@ class HomeAppBar extends HookConsumerWidget {
         ),
         AppCrossFade(
           showFirst: selected.isEmpty,
-          firstChild: IconButton(
-            onPressed: () async {
-              ref.read(showSearchProvider.notifier).state = true;
-            },
-            icon: const Icon(Icons.search_rounded),
-            tooltip: "Search",
+          firstChild: Row(
+            children: [
+              IconButton(
+                onPressed: () async {
+                  ref.read(showSearchProvider.notifier).state = true;
+                },
+                icon: const Icon(Icons.search_rounded),
+                tooltip: "Search",
+              ),
+              PopupMenuButton(
+                icon: const Icon(Icons.sort_outlined),
+                tooltip: "Sort",
+                itemBuilder: (context) => Sort.values.map((value) {
+                  return CheckedPopupMenuItem(
+                    value: value.index,
+                    checked: ref.read(sortProvider.notifier).state == value,
+                    child: Text(
+                        value.name[0].toUpperCase() + value.name.substring(1)),
+                  );
+                }).toList(),
+                onSelected: (index) {
+                  ref.read(sortProvider.notifier).state =
+                      Sort.values.elementAt(index);
+                  ref.refresh(getAllItemProvider);
+                },
+              ),
+            ],
           ),
           secondChild: Row(
             children: [

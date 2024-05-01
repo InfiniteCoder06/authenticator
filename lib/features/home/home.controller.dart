@@ -4,11 +4,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
+import 'package:authenticator/core/utils/enums/sort.enum.dart';
 import 'package:authenticator/provider.dart';
 
 part 'home.controller.g.dart';
 
 final entriesProvider = StateProvider((_) => <Item>[]);
+final sortProvider = StateProvider((_) => Sort.date);
 final errorProvider = StateProvider((_) => '');
 final showSearchProvider = StateProvider((_) => false);
 
@@ -16,6 +18,33 @@ final showSearchProvider = StateProvider((_) => false);
 Future<void> getAllItem(GetAllItemRef ref) async {
   try {
     final items = await ref.read(hiveEntryRepoProvider).getFiltered();
+
+    final sortOrder = ref.watch(sortProvider);
+    switch (sortOrder) {
+      case Sort.name:
+        items
+            .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      case Sort.date:
+        items.sort();
+      case Sort.issuer:
+        items.sort((a, b) {
+          // Handle null issuers by placing them at the end
+          if (a.issuer.isEmpty && b.issuer.isNotEmpty) {
+            return 1;
+          } else if (a.issuer.isNotEmpty && b.issuer.isEmpty) {
+            return -1;
+          }
+
+          // If both have issuers (or neither do), sort by issuer first
+          if (a.issuer.isNotEmpty) {
+            int issuerComparison = a.issuer.compareTo(b.issuer);
+            if (issuerComparison != 0) return issuerComparison;
+          }
+
+          // Finally, sort by name
+          return a.name.compareTo(b.name);
+        });
+    }
     ref.read(entriesProvider.notifier).state = items;
   } catch (error) {
     ref.read(errorProvider.notifier).state = error.toString();
