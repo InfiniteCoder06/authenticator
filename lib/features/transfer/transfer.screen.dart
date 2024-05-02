@@ -14,6 +14,7 @@ import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/core/utils/extension/item_x.extension.dart';
 import 'package:authenticator/core/utils/utils.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
+import 'package:authenticator/widgets/app_cross_fade.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
 
 class TransferPage extends HookWidget {
@@ -27,9 +28,8 @@ class TransferPage extends HookWidget {
     var page = useValueNotifier(0);
     return PopScope(
       canPop: true,
-      onPopInvoked: (bool didPop) async {
+      onPopInvoked: (didPop) async {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        if (didPop) return;
       },
       child: Scaffold(
         appBar: MorphingAppBar(
@@ -87,7 +87,7 @@ class TransferPage extends HookWidget {
                 itemCount: items.length,
                 onPageChanged: (currentPage) => page.value = currentPage,
                 itemBuilder: (context, index) {
-                  final size = MediaQuery.of(context).size;
+                  final size = MediaQuery.of(context).size.shortestSide;
                   final Item item = items.elementAt(index);
                   return Center(
                     child: SingleChildScrollView(
@@ -99,9 +99,7 @@ class TransferPage extends HookWidget {
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             child: QrImageView(
                               data: item.uri.toString(),
-                              size: size.height > size.width
-                                  ? size.width * 0.5
-                                  : size.height * 0.5,
+                              size: size * 0.5,
                               backgroundColor: Colors.white,
                               dataModuleStyle: const QrDataModuleStyle(
                                 dataModuleShape: QrDataModuleShape.circle,
@@ -124,7 +122,7 @@ class TransferPage extends HookWidget {
             ),
             ValueListenableBuilder(
               valueListenable: page,
-              builder: (context, page, _) {
+              builder: (context, page, child) {
                 return Column(
                   children: [
                     Center(
@@ -132,37 +130,41 @@ class TransferPage extends HookWidget {
                         "Showing ${page + 1} / ${items.length} Items",
                       ),
                     ),
-                    OverflowBar(
-                      alignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        AnimatedSwitcher(
-                          duration: Durations.short4,
-                          child: page != 0
-                              ? TextButton(
-                                  onPressed: () async {
-                                    await pageController.previousPage(
-                                      duration: Durations.medium2,
-                                      curve: Curves.ease,
-                                    );
-                                  },
-                                  child: const Text("Back"),
-                                )
-                              : const SizedBox.shrink(),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            page == items.length - 1
-                                ? Navigator.of(context).pop()
-                                : await pageController.nextPage(
-                                    duration: Durations.medium2,
-                                    curve: Curves.ease,
-                                  );
-                          },
-                          child: Text(
-                            page == items.length - 1 ? "Done" : "Next",
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: OverflowBar(
+                        alignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          AppCrossFade(
+                            duration: Durations.short4,
+                            showFirst: page == 0,
+                            firstChild: const SizedBox.shrink(),
+                            secondChild: TextButton(
+                              onPressed: () {
+                                pageController.previousPage(
+                                  duration: Durations.medium2,
+                                  curve: Curves.ease,
+                                );
+                              },
+                              child: const Text("Back"),
+                            ),
                           ),
-                        )
-                      ],
+                          TextButton(
+                            onPressed: () {
+                              if (page == items.length - 1) {
+                                Navigator.of(context).pop();
+                              } else {
+                                pageController.nextPage(
+                                  duration: Durations.medium2,
+                                  curve: Curves.ease,
+                                );
+                              }
+                            },
+                            child: Text(
+                                page == items.length - 1 ? 'Done' : 'Next'),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 );
