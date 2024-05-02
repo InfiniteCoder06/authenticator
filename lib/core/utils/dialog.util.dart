@@ -55,7 +55,7 @@ class AppDialogs {
                 ),
                 TextButton(
                   onPressed: () async {
-                    await ref.read(hiveEntryRepoProvider).fakeDeleteAll(items);
+                    await ref.read(entryRepoProvider).fakeDeleteAll(items);
                     if (!context.mounted) return;
                     Navigator.of(context).pop(true);
                   },

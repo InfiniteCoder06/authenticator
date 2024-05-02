@@ -17,13 +17,13 @@ final showSearchProvider = StateProvider((_) => false);
 @riverpod
 Future<void> getAllItem(GetAllItemRef ref) async {
   try {
-    final items = await ref.read(hiveEntryRepoProvider).getFiltered();
+    final items = await ref.read(entryRepoProvider).getFiltered();
 
     final sortOrder = ref.watch(sortProvider);
     switch (sortOrder) {
       case Sort.name:
-        items
-            .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+        items.sort(
+            (a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
       case Sort.date:
         items.sort();
       case Sort.issuer:

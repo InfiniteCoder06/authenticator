@@ -38,7 +38,7 @@ void main() async {
   var container = ProviderContainer();
   final appPathsOverride = container.read(appPathsProvider);
   final securityServiceOverride = container.read(securityServiceProvider);
-  final entryRepositoryOverride = container.read(hiveEntryRepoProvider);
+  final entryRepositoryOverride = container.read(entryRepoProvider);
   final hiveStorageOverride = container.read(hiveStorageProvider);
   final securityStorageOverride = container.read(securityStorageProvider);
 

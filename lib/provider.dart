@@ -2,6 +2,7 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
+import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/database/firebase/firebase_backup_repository.dart';
 import 'package:authenticator/core/database/hive/hive_entry_repository.dart';
 import 'package:authenticator/core/persistence/persistance.dart';
@@ -27,20 +28,20 @@ SecurityPersistanceProvider securityStorage(SecurityStorageRef ref) =>
     );
 
 @Riverpod(keepAlive: true)
-HiveEntryRepository hiveEntryRepo(HiveEntryRepoRef ref) => HiveEntryRepository(
+BaseEntryRepository entryRepo(EntryRepoRef ref) => HiveEntryRepository(
       ref.read(hiveProvider),
       ref.read(appPathsProvider),
       ref.read(secureStorageProvider),
     );
 
-@Riverpod(keepAlive: true)
+@riverpod
 FirebaseBackupRepository firebaseBackupRepo(FirebaseBackupRepoRef ref) =>
     FirebaseBackupRepository(
       firestore: ref.read(firestoreProvider),
       storageService: ref.read(hiveStorageProvider),
     );
 
-@Riverpod(keepAlive: true)
+@riverpod
 SecurityInformations securityInformations(SecurityInformationsRef ref) =>
     SecurityInformations(
       localAuth: ref.read(localAuthProvider),

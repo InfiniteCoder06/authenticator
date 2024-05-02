@@ -6,11 +6,11 @@ part of 'modules.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$appPathsHash() => r'fb93d81e06fb8da499a341ed7a2510f40f055953';
+String _$appPathsHash() => r'48136c5453afa2a59a64d55d133e7d179a6ea631';
 
 /// See also [appPaths].
 @ProviderFor(appPaths)
-final appPathsProvider = Provider<AppPaths>.internal(
+final appPathsProvider = AutoDisposeProvider<AppPaths>.internal(
   appPaths,
   name: r'appPathsProvider',
   debugGetCreateSourceHash:
@@ -19,12 +19,12 @@ final appPathsProvider = Provider<AppPaths>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef AppPathsRef = ProviderRef<AppPaths>;
-String _$hiveHash() => r'34f1028f0e4101b6099517775bbe10df3ce02dff';
+typedef AppPathsRef = AutoDisposeProviderRef<AppPaths>;
+String _$hiveHash() => r'50be018b5006f83fbb6ec929ac35f90333787952';
 
 /// See also [hive].
 @ProviderFor(hive)
-final hiveProvider = Provider<HiveImpl>.internal(
+final hiveProvider = AutoDisposeProvider<HiveImpl>.internal(
   hive,
   name: r'hiveProvider',
   debugGetCreateSourceHash:
@@ -33,12 +33,12 @@ final hiveProvider = Provider<HiveImpl>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef HiveRef = ProviderRef<HiveImpl>;
-String _$imagePickerHash() => r'8c34a59b8a3cf6597ab76ddbb44106e4c39e2813';
+typedef HiveRef = AutoDisposeProviderRef<HiveImpl>;
+String _$imagePickerHash() => r'320373cd7a3964d1cabeb291795bcfcd6e7d4267';
 
 /// See also [imagePicker].
 @ProviderFor(imagePicker)
-final imagePickerProvider = Provider<ImagePicker>.internal(
+final imagePickerProvider = AutoDisposeProvider<ImagePicker>.internal(
   imagePicker,
   name: r'imagePickerProvider',
   debugGetCreateSourceHash:
@@ -47,12 +47,12 @@ final imagePickerProvider = Provider<ImagePicker>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef ImagePickerRef = ProviderRef<ImagePicker>;
-String _$localAuthHash() => r'b665e88a64aba570058e3724119212e8a38385dc';
+typedef ImagePickerRef = AutoDisposeProviderRef<ImagePicker>;
+String _$localAuthHash() => r'c3e7e42fa98ee53542b59355d5ca50b9eb909f89';
 
 /// See also [localAuth].
 @ProviderFor(localAuth)
-final localAuthProvider = Provider<LocalAuthentication>.internal(
+final localAuthProvider = AutoDisposeProvider<LocalAuthentication>.internal(
   localAuth,
   name: r'localAuthProvider',
   debugGetCreateSourceHash:
@@ -61,12 +61,12 @@ final localAuthProvider = Provider<LocalAuthentication>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef LocalAuthRef = ProviderRef<LocalAuthentication>;
-String _$firestoreHash() => r'4963ca786eb54685cef6453544040c7567e77c0f';
+typedef LocalAuthRef = AutoDisposeProviderRef<LocalAuthentication>;
+String _$firestoreHash() => r'57116d7f1e2dda861cf1362ca8fe50edc7a149b3';
 
 /// See also [firestore].
 @ProviderFor(firestore)
-final firestoreProvider = Provider<FirebaseFirestore>.internal(
+final firestoreProvider = AutoDisposeProvider<FirebaseFirestore>.internal(
   firestore,
   name: r'firestoreProvider',
   debugGetCreateSourceHash:
@@ -75,12 +75,13 @@ final firestoreProvider = Provider<FirebaseFirestore>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef FirestoreRef = ProviderRef<FirebaseFirestore>;
-String _$secureStorageHash() => r'a9fee6545cf8ae4f6c0480e70e02e655e1b9b34c';
+typedef FirestoreRef = AutoDisposeProviderRef<FirebaseFirestore>;
+String _$secureStorageHash() => r'525d10dc5fff421e5ae01100b4a50bee1dce912b';
 
 /// See also [secureStorage].
 @ProviderFor(secureStorage)
-final secureStorageProvider = Provider<FlutterSecureStorage>.internal(
+final secureStorageProvider =
+    AutoDisposeProvider<FlutterSecureStorage>.internal(
   secureStorage,
   name: r'secureStorageProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -90,6 +91,6 @@ final secureStorageProvider = Provider<FlutterSecureStorage>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef SecureStorageRef = ProviderRef<FlutterSecureStorage>;
+typedef SecureStorageRef = AutoDisposeProviderRef<FlutterSecureStorage>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

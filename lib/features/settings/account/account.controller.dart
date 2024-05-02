@@ -27,7 +27,7 @@ class AccountController extends _$AccountController with ConsoleMixin {
   @override
   AccountState build() {
     backupRepository = ref.read(firebaseBackupRepoProvider);
-    entryRepository = ref.read(hiveEntryRepoProvider);
+    entryRepository = ref.read(entryRepoProvider);
     storageService = ref.read(hiveStorageProvider);
     postInit();
     return AccountState.initial();

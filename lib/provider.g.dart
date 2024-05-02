@@ -35,27 +35,27 @@ final securityStorageProvider = Provider<SecurityPersistanceProvider>.internal(
 );
 
 typedef SecurityStorageRef = ProviderRef<SecurityPersistanceProvider>;
-String _$hiveEntryRepoHash() => r'fa0bef71799773360cb2c67860d38d0c62505cca';
+String _$entryRepoHash() => r'3dce729a5351bf1101903d339205831402262a47';
 
-/// See also [hiveEntryRepo].
-@ProviderFor(hiveEntryRepo)
-final hiveEntryRepoProvider = Provider<HiveEntryRepository>.internal(
-  hiveEntryRepo,
-  name: r'hiveEntryRepoProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$hiveEntryRepoHash,
+/// See also [entryRepo].
+@ProviderFor(entryRepo)
+final entryRepoProvider = Provider<BaseEntryRepository>.internal(
+  entryRepo,
+  name: r'entryRepoProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$entryRepoHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef HiveEntryRepoRef = ProviderRef<HiveEntryRepository>;
+typedef EntryRepoRef = ProviderRef<BaseEntryRepository>;
 String _$firebaseBackupRepoHash() =>
-    r'0bf17960da066f8cccb71188c9c92b5a988e9b66';
+    r'0b59d34b8354919494e7f6c870d464b9afa1658e';
 
 /// See also [firebaseBackupRepo].
 @ProviderFor(firebaseBackupRepo)
-final firebaseBackupRepoProvider = Provider<FirebaseBackupRepository>.internal(
+final firebaseBackupRepoProvider =
+    AutoDisposeProvider<FirebaseBackupRepository>.internal(
   firebaseBackupRepo,
   name: r'firebaseBackupRepoProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -65,13 +65,15 @@ final firebaseBackupRepoProvider = Provider<FirebaseBackupRepository>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef FirebaseBackupRepoRef = ProviderRef<FirebaseBackupRepository>;
+typedef FirebaseBackupRepoRef
+    = AutoDisposeProviderRef<FirebaseBackupRepository>;
 String _$securityInformationsHash() =>
-    r'c48dbfba7ead62ed1ef91dfd1310cb167f22017f';
+    r'30c35453a4f01073381b6f71e8e7213312142541';
 
 /// See also [securityInformations].
 @ProviderFor(securityInformations)
-final securityInformationsProvider = Provider<SecurityInformations>.internal(
+final securityInformationsProvider =
+    AutoDisposeProvider<SecurityInformations>.internal(
   securityInformations,
   name: r'securityInformationsProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -81,7 +83,7 @@ final securityInformationsProvider = Provider<SecurityInformations>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef SecurityInformationsRef = ProviderRef<SecurityInformations>;
+typedef SecurityInformationsRef = AutoDisposeProviderRef<SecurityInformations>;
 String _$securityServiceHash() => r'375fe0b693facc502a91e1bcdf3555c153573ef2';
 
 /// See also [securityService].

@@ -13,21 +13,21 @@ import 'package:authenticator/core/utils/paths.util.dart';
 
 part 'modules.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 AppPaths appPaths(AppPathsRef ref) => AppPaths();
 
-@Riverpod(keepAlive: true)
+@riverpod
 HiveImpl hive(HiveRef ref) => HiveImpl();
 
-@Riverpod(keepAlive: true)
+@riverpod
 ImagePicker imagePicker(ImagePickerRef ref) => ImagePicker();
 
-@Riverpod(keepAlive: true)
+@riverpod
 LocalAuthentication localAuth(LocalAuthRef ref) => LocalAuthentication();
 
-@Riverpod(keepAlive: true)
+@riverpod
 FirebaseFirestore firestore(FirestoreRef ref) => FirebaseFirestore.instance;
 
-@Riverpod(keepAlive: true)
+@riverpod
 FlutterSecureStorage secureStorage(SecureStorageRef ref) =>
     const FlutterSecureStorage();

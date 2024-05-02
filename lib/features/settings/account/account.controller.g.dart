@@ -6,7 +6,7 @@ part of 'account.controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$accountControllerHash() => r'778729ecf4ab7126dba14875c0da54f3095b18ff';
+String _$accountControllerHash() => r'e024306da6ec5f1c476447150d8130a26aa1b9d8';
 
 /// See also [AccountController].
 @ProviderFor(AccountController)

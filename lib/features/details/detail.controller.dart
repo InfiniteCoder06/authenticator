@@ -17,7 +17,7 @@ import 'package:authenticator/provider.dart';
 part 'detail.state.dart';
 
 final detailController = ChangeNotifierProvider.autoDispose(
-    (ref) => DetailController(ref.read(hiveEntryRepoProvider)));
+    (ref) => DetailController(ref.read(entryRepoProvider)));
 
 class DetailController extends ChangeNotifier with ConsoleMixin {
   DetailController(this.repository);
