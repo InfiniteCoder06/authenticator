@@ -138,7 +138,7 @@ class HomeAppBar extends HookConsumerWidget {
               }
             },
           ),
-          secondChild: const SizedBox.shrink(),
+          secondChild: const SizedBox(height: 48),
         ),
       ],
     );
