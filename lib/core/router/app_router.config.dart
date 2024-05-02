@@ -122,9 +122,6 @@ class AppRouteConfig {
             if (arguments is SecurityPageArgs) {
               return PopScope(
                 canPop: arguments.canCancel,
-                onPopInvoked: (didPop) async {
-                  if (didPop) return;
-                },
                 child: ScreenLock(
                   correctString: arguments.correctString,
                   onUnlocked: arguments.onUnlocked,
@@ -154,9 +151,6 @@ class AppRouteConfig {
             } else if (arguments is SecurityCreatePageArgs) {
               return PopScope(
                 canPop: arguments.canCancel,
-                onPopInvoked: (didPop) async {
-                  if (didPop) return;
-                },
                 child: ScreenLock.create(
                   onConfirmed: arguments.onConfirmed,
                   onOpened: arguments.onOpened,

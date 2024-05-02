@@ -84,8 +84,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
           builder: (context) {
             return AlertDialog(
               title: const Text('Unsaved Changes'),
-              content: const SizedBox(
-                  width: 450, child: Text('You have unsaved changes')),
+              content: const Text('You have unsaved changes'),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(false),
