@@ -36,47 +36,46 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   animations: ^2.0.11
-  archive: ^3.5.0
+  archive: ^3.5.1
   basic_utils: ^5.7.0
   buffer_image: ^0.3.12
-  cloud_firestore: ^4.17.2
-  cupertino_icons: ^1.0.8
+  cloud_firestore: ^4.17.3
   dotted_border: ^2.1.0
   dynamic_color:
     git:
       url: https://github.com/InfiniteCoder06/dynamic_color.git
       ref: main
   equatable: ^2.0.5
-  firebase_core: ^2.30.1
+  firebase_core: ^2.31.0
   flutter_hooks: ^0.20.5
   flutter_screen_lock:
     git:
       url: https://github.com/InfiniteCoder06/flutter_screen_lock.git
       ref: master
-  flutter_secure_storage: ^9.0.0
+  flutter_secure_storage: ^9.1.1
   flutter_slidable: ^3.1.0
   flutter_staggered_animations: ^1.1.1
   flutter_svg: ^2.0.10+1
   fpdart: ^1.1.0
   hive: ^2.2.3
   hooks_riverpod: ^2.5.1
-  image_picker: ^1.1.0
+  image_picker: ^1.1.1
   json_annotation: ^4.9.0
   local_auth: ^2.2.0
-  logger: ^2.2.0
-  mobile_scanner: ^5.0.1
+  logger: ^2.3.0
+  mobile_scanner: ^5.1.1
   navigation_history_observer: ^1.1.1
   otp: ^3.1.4
   path: ^1.9.0
   path_provider: ^2.1.3
   popover: ^0.3.0
   qr_flutter: ^4.1.0
-  reactive_forms: ^17.0.0
+  reactive_forms: ^17.0.1
   riverpod_annotation: ^2.3.5
   swipeable_page_route:
     git:
       url: https://github.com/InfiniteCoder06/swipeable_page_route.git
-      ref: 66775ac1524018b8fad10b811bc6b3132ca1d3f2
+      ref: main
   uri: ^1.0.0
   url_launcher: ^6.2.6
   uuid: ^4.4.0
@@ -92,13 +91,13 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.2
+  flutter_lints: ^4.0.0
   build_runner: ^2.4.9
   flutter_gen_runner: ^5.4.0
   hive_generator: ^2.0.1
   import_sorter: ^4.6.0
   json_serializable: ^6.8.0
-  riverpod_generator: ^2.4.0
+  riverpod_generator: ^2.4.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
