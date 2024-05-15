@@ -46,7 +46,7 @@ class AccountSettingsPage extends HookConsumerWidget {
     );
     return PopScope(
       canPop: true,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ref.refresh(getAllItemProvider);
         if (didPop) return;

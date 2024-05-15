@@ -18,14 +18,18 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
           customizedButtonTap: () async {
             await _authentication(option.context, "Unlock")
                 .then((authenticated) {
-              if (authenticated) Navigator.of(option.context).pop(true);
+              if (authenticated && option.context.mounted) {
+                Navigator.of(option.context).pop(true);
+              }
             });
           },
           canCancel: option.canCancel,
           onOpened: () async {
             await _authentication(option.context, "Unlock")
                 .then((authenticated) {
-              if (authenticated) Navigator.of(option.context).pop(true);
+              if (authenticated && option.context.mounted) {
+                Navigator.of(option.context).pop(true);
+              }
             });
           },
         ) as bool? ??

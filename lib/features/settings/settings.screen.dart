@@ -17,7 +17,7 @@ class SettingsOverviewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: true,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         if (didPop) return;
       },

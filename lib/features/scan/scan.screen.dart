@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:swipeable_page_route/swipeable_page_route.dart';
 
@@ -13,7 +14,7 @@ import 'package:authenticator/features/scan/qr_overlay/material_preview.overlay.
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_cross_fade.dart';
 
-class ScanPage extends StatefulWidget {
+class ScanPage extends StatefulHookWidget {
   const ScanPage({super.key});
 
   @override
@@ -47,6 +48,7 @@ class _ScanPageState extends State<ScanPage> {
                 AppRouter.details.path,
                 arguments: DetailPageArgs(item: item, isUrl: true)));
       } else {
+        if (!mounted) return;
         await AppDialogs.showErrorDialog(context, 'Unknown');
         controller.start();
       }

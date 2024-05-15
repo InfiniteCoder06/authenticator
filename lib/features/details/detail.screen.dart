@@ -36,7 +36,7 @@ class DetailPage extends HookConsumerWidget {
     }, [item]);
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         if (didPop) return;
         final bool shouldPop =
             await ref.read(detailController.notifier).popRequest(context);
@@ -76,6 +76,7 @@ class DetailPage extends HookConsumerWidget {
                     await AppDialogs.showDeletionDialog(
                         context, [item.toNullable()!], ref);
                     Future<void>.delayed(Durations.medium2, () {
+                      if (!context.mounted) return;
                       Navigator.of(context).pop();
                     });
                   }

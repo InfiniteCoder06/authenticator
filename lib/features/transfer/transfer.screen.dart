@@ -28,7 +28,7 @@ class TransferPage extends HookWidget {
     var page = useValueNotifier(0);
     return PopScope(
       canPop: true,
-      onPopInvoked: (didPop) async {
+      onPopInvokedWithResult: (didPop, result) async {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
       },
       child: Scaffold(
