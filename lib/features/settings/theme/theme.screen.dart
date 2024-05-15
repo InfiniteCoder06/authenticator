@@ -10,7 +10,6 @@ import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
-import 'package:authenticator/widgets/switch_list_tile.dart';
 
 class ThemeSettingsPage extends HookConsumerWidget {
   const ThemeSettingsPage({super.key});
@@ -126,12 +125,12 @@ class ThemeSettingsPage extends HookConsumerWidget {
                     builder: (context) {
                       final dynamicColor = ref.watch(themeControllerProvider
                           .select((state) => state.dynamicColor));
-                      return MaterialSwitchListTile(
+                      return SwitchListTile(
                         title: const Text("Dynamic Color"),
                         subtitle: const Text(
                             "Use Accent Color from System/ Wallpaper"),
                         value: dynamicColor,
-                        onToggle: (bool value) => ref
+                        onChanged: (value) => ref
                             .read(themeControllerProvider.notifier)
                             .setDynamicColor(value),
                       );

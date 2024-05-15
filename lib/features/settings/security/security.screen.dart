@@ -9,7 +9,6 @@ import 'package:authenticator/core/types/lock.type.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/features/settings/security/security.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
-import 'package:authenticator/widgets/switch_list_tile.dart';
 
 class SecuritySettingsPage extends HookConsumerWidget {
   const SecuritySettingsPage({super.key});
@@ -27,11 +26,11 @@ class SecuritySettingsPage extends HookConsumerWidget {
             sliver: SliverList(
               delegate: SliverChildListDelegate(
                 <Widget>[
-                  MaterialSwitchListTile(
+                  SwitchListTile(
                     title: const Text('Security'),
                     subtitle: const Text('Enable security'),
                     value: isEnabled,
-                    onToggle: (bool value) {
+                    onChanged: (value) {
                       value
                           ? ref
                               .read(securityControllerProvider.notifier)
@@ -47,21 +46,26 @@ class SecuritySettingsPage extends HookConsumerWidget {
                         final controller = ref.watch(
                             securityControllerProvider.select((state) =>
                                 (state.hasBiometrics, state.biometrics)));
-                        return MaterialSwitchListTile(
+                        return SwitchListTile(
                           title: const Text('Biometric Unlock'),
                           subtitle: const Text(
                               'Allow biometric authentication to unlock'),
-                          enabled: controller.$1,
                           value: controller.$2,
-                          onToggle: (bool value) {
-                            value
-                                ? ref
-                                    .read(securityControllerProvider.notifier)
-                                    .set(context, type: LockType.biometrics)
-                                : ref
-                                    .read(securityControllerProvider.notifier)
-                                    .remove(context, type: LockType.biometrics);
-                          },
+                          onChanged: controller.$1
+                              ? (value) {
+                                  value
+                                      ? ref
+                                          .read(securityControllerProvider
+                                              .notifier)
+                                          .set(context,
+                                              type: LockType.biometrics)
+                                      : ref
+                                          .read(securityControllerProvider
+                                              .notifier)
+                                          .remove(context,
+                                              type: LockType.biometrics);
+                                }
+                              : null,
                         );
                       },
                     )

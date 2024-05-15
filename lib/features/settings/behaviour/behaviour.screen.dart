@@ -10,7 +10,6 @@ import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
-import 'package:authenticator/widgets/switch_list_tile.dart';
 
 class BehaviourSettingsPage extends HookConsumerWidget {
   const BehaviourSettingsPage({super.key});
@@ -29,13 +28,13 @@ class BehaviourSettingsPage extends HookConsumerWidget {
                   Builder(builder: (context) {
                     final copyOnTap = ref.watch(behaviorControllerProvider
                         .select((state) => state.copyOnTap));
-                    return MaterialSwitchListTile(
+                    return SwitchListTile(
                       title: const Text("Copy tokens when tapped"),
                       subtitle: const Text(
                         "Copy tokens to the clipboard by tapping them",
                       ),
                       value: copyOnTap,
-                      onToggle: (value) async => ref
+                      onChanged: (value) async => ref
                           .read(behaviorControllerProvider.notifier)
                           .toggleCopyOnTap(value),
                     );
