@@ -35,17 +35,10 @@
   <title>Authenticator</title>
   <link rel="manifest" href="manifest.json">
 
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    const serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
-
   <style>
     body {
-        background-color: #e6e6e6;
-      }
+      background-color: #e6e6e6;
+    }
 
     @media (prefers-color-scheme: dark) {
       body {
@@ -113,26 +106,7 @@
     <img src="icons/android-chrome-192.png" alt="Loading indicator..." />
   </div>
   <script>
-    window.addEventListener('load', function (ev) {
-      var loading = document.querySelector('#loading');
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        },
-        onEntrypointLoaded: function (engineInitializer) {
-          loading.classList.add('main_done');
-          engineInitializer.initializeEngine().then(function (appRunner) {
-            loading.classList.add('init_done');
-            appRunner.runApp().then(function (app) {
-              window.setTimeout(function () {
-                loading.remove();
-              }, 200);
-            });
-          });
-        }
-      });
-    });
+    {{flutter_bootstrap_js}}
   </script>
 </body>
 
