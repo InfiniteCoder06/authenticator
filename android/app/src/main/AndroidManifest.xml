@@ -2,7 +2,8 @@
     <application
         android:label="${title}"
         android:name="${applicationName}"
-        android:icon="@mipmap/${iconName}">
+        android:icon="@mipmap/${iconName}"
+        android:enableOnBackInvokedCallback="true">
         <activity
             android:name=".MainActivity"
             android:exported="true"
