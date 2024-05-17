@@ -20,8 +20,8 @@ Future<Directory> getTempDir() async {
   return dir;
 }
 
-Future<void> deleteTempDir() async {
-  var dir = Directory(tempPath);
+Future<void> deleteTempDir(String path) async {
+  var dir = Directory(path);
   if (await dir.exists()) {
     await dir.delete(recursive: true);
   }

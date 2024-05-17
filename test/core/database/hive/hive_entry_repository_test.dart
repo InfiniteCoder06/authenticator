@@ -6,15 +6,25 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/src/hive_impl.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:uuid/uuid.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/database/hive/hive_entry_repository.dart';
 import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/utils/paths.util.dart';
-import '../../../utils/hive.util.dart';
+import '../../../utils/path.util.dart';
 
-class MockSecureStorage extends Mock implements FlutterSecureStorage {}
+class MockSecureStorage extends Mock implements FlutterSecureStorage {
+  @override
+  Future<void> write(
+      {required String key,
+      required String? value,
+      IOSOptions? iOptions,
+      AndroidOptions? aOptions,
+      LinuxOptions? lOptions,
+      WebOptions? webOptions,
+      MacOsOptions? mOptions,
+      WindowsOptions? wOptions}) async {}
+}
 
 void main() {
   late List<int> key;
@@ -31,14 +41,14 @@ void main() {
   final secureStorage = MockSecureStorage();
   final item = Item.initial();
   final items = List.generate(9, (index) {
-    final identifier = const Uuid().v4();
-    return Item.initial(identifier: identifier);
+    var item = Item.initial().copyWith(deleted: index.isEven);
+    return item;
   });
 
   void initMock() async {
-    when(() => secureStorage.containsKey(key: any()))
-        .thenAnswer((_) => Future.value(true));
-    when(() => secureStorage.read(key: any()))
+    when(() => secureStorage.containsKey(key: 'key'))
+        .thenAnswer((_) => Future.value(false));
+    when(() => secureStorage.read(key: 'key'))
         .thenAnswer((_) async => base64Encode(key));
   }
 
@@ -54,11 +64,6 @@ void main() {
     await entryRepository.init();
   });
 
-  test('Basic Test', () async {
-    final data = await entryRepository.getAll();
-    expect(data, []);
-  });
-
   test('Insert Test', () async {
     await entryRepository.create(item);
     final data = await entryRepository.getAll();
@@ -68,12 +73,34 @@ void main() {
   });
 
   test('Insert Many', () async {
-    for (var item in items) {
-      await entryRepository.create(item);
-    }
+    await entryRepository.createAll(items);
     final data = await entryRepository.getAll();
 
     expect(data.length, 10);
+  });
+
+  test('Get Filtered', () async {
+    final data = await entryRepository.getFiltered();
+    expect(data.length, 5);
+  });
+
+  test('Get Deleted', () async {
+    final data = await entryRepository.getDeletedEntries();
+    expect(data.length, 5);
+  });
+
+  test('Delete Item', () async {
+    await entryRepository.delete(item);
+    expect((await entryRepository.getAll()).length, 9);
+    expect((await entryRepository.getFiltered()).length, 4);
+    expect((await entryRepository.getDeletedEntries()).length, 5);
+  });
+
+  test('Fake Delete Item', () async {
+    await entryRepository.fakeDeleteAll([items.elementAt(1)]);
+    expect((await entryRepository.getAll()).length, 9);
+    expect((await entryRepository.getFiltered()).length, 3);
+    expect((await entryRepository.getDeletedEntries()).length, 6);
   });
 
   test('Update Item', () async {
@@ -87,6 +114,6 @@ void main() {
 
   tearDownAll(() async {
     await entryRepository.clear();
-    await deleteTempDir();
+    await deleteTempDir(appPaths.tempPath);
   });
 }

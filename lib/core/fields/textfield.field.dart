@@ -25,12 +25,6 @@ class AppTextField extends StatelessWidget {
         labelText: label,
         hintText: hint,
         border: const OutlineInputBorder(),
-        suffixIcon: IconButton(
-          icon: const Icon(Icons.more_vert),
-          onPressed: () => ScaffoldMessenger.of(context)
-            ..hideCurrentSnackBar()
-            ..showSnackBar(const SnackBar(content: Text("To Be Implemented"))),
-        ),
       ),
     );
   }

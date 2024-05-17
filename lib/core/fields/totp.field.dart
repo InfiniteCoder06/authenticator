@@ -19,27 +19,22 @@ class AppTotpField extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final obscureTextController = useValueNotifier(true);
-    return ValueListenableBuilder(
-      valueListenable: obscureTextController,
-      builder: (context, obscureText, child) {
-        return ReactiveTextField(
-          formControlName: formName,
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            labelText: label,
-            hintText: hint,
-            border: const OutlineInputBorder(),
-            suffixIcon: IconButton(
-              icon: Icon(obscureText
-                  ? Icons.visibility_rounded
-                  : Icons.visibility_off_rounded),
-              onPressed: () => obscureTextController.value = !obscureText,
-            ),
-          ),
-        );
-      },
+    final obscureText = useState(true);
+    return ReactiveTextField(
+      formControlName: formName,
+      obscureText: obscureText.value,
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: hint,
+        border: const OutlineInputBorder(),
+        suffixIcon: IconButton(
+          tooltip: obscureText.value ? "Show Secret" : "Hide Secret",
+          icon: Icon(obscureText.value
+              ? Icons.visibility_rounded
+              : Icons.visibility_off_rounded),
+          onPressed: () => obscureText.value = !obscureText.value,
+        ),
+      ),
     );
   }
 }

@@ -24,11 +24,9 @@ class AppPaths {
   String get tempVaultFilePath => join(tempPath, kVaultFileName);
 
   Future<void> init({String? path}) async {
-    if (!kIsWeb) {
-      main = await getApplicationSupportDirectory();
-    } else {
-      main = Directory('');
-    }
+    main = !kIsWeb && path == null
+        ? await getApplicationSupportDirectory()
+        : Directory(path ?? '');
 
     hive = Directory(join(main!.path, 'hive'));
     temp = Directory(join(main!.path, 'temp'));
@@ -44,9 +42,14 @@ class AppPaths {
   }
 
   Future<void> initTest(String path) async {
-    main = Directory('');
+    main = Directory(path);
     hive = Directory(join(main!.path, 'hive'));
     temp = Directory(join(main!.path, 'temp'));
+
+    if (!kIsWeb) {
+      await temp!.create(recursive: true);
+      cleanTemp();
+    }
   }
 
   Future<void> cleanTemp() async {

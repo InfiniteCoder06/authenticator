@@ -22,18 +22,21 @@ class OtpUtils {
       return left("Parameter Secret is Required");
     } else {
       secret = uri.queryParameters['secret'].toString();
+      final isValid = isValidSecret(secret);
+      if (!isValid) {
+        return left("Parameter Secret is Invalid");
+      }
     }
 
     final List<String> pathSegments = uri.pathSegments;
 
     if (pathSegments.last.contains(":")) {
       final List<String> strings = uri.pathSegments.last.split(":");
-      strings.length == 2
-          ? {
-              name = strings.elementAt(1),
-              issuer = strings.elementAt(0),
-            }
-          : name = strings.last;
+      if (strings.length != 2) {
+        return left("Invalid URI");
+      }
+      name = strings.elementAt(1);
+      issuer = strings.elementAt(0);
     } else {
       issuer = uri.queryParameters['issuer'] ?? '';
       name = uri.pathSegments.last;

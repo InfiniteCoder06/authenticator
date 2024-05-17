@@ -10,8 +10,7 @@ import 'package:authenticator/core/fields/totp.field.dart';
 import 'package:authenticator/core/utils/globals.dart';
 
 void main() {
-  testWidgets('Totp Field Test',
-      (tester) async {
+  testWidgets('Totp Field Test', (tester) async {
     final form = fb.group({
       'secret': fb.control<String>('',
           [Validators.required, Validators.pattern(RegExp(kSecretPattern))]),
@@ -36,6 +35,14 @@ void main() {
     await tester.pump();
 
     expect(find.text('InvalidSecret'), findsOneWidget);
+
+    expect(find.byTooltip("Show Secret"), findsOneWidget);
+    expect(find.byTooltip("Hide Secret"), findsNothing);
+    await tester.tap(find.byType(IconButton));
+    await tester.pump();
+
+    expect(find.byTooltip("Hide Secret"), findsOneWidget);
+    expect(find.byTooltip("Show Secret"), findsNothing);
   });
 
   testWidgets('Validation Required', (tester) async {
