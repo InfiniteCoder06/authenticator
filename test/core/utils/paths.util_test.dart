@@ -71,11 +71,14 @@ void main() {
       await appPaths.initTest(tempDir.path);
 
       final tempFile = File(appPaths.tempVaultFilePath);
-      await tempFile.create();
+      await tempFile.create(recursive: true);
+
+      expect(tempFile.existsSync(), isTrue);
 
       await appPaths.cleanTemp();
 
       expect(tempFile.existsSync(), isFalse);
+
       expect(Directory(appPaths.tempPath).existsSync(), isTrue);
     });
   });

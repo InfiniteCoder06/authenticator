@@ -45,11 +45,6 @@ class AppPaths {
     main = Directory(path);
     hive = Directory(join(main!.path, 'hive'));
     temp = Directory(join(main!.path, 'temp'));
-
-    if (!kIsWeb) {
-      await temp!.create(recursive: true);
-      cleanTemp();
-    }
   }
 
   Future<void> cleanTemp() async {
