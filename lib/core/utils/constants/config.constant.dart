@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 class ConfigConstant {
-  ConfigConstant._internal();
   static const titleConstraints = BoxConstraints(minWidth: 80);
 
   static const double sliverExpandedHeight = 200;
