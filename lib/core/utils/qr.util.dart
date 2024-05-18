@@ -21,7 +21,12 @@ class IsoMessage {
 
 class QrUtils {
   Future<Option<Result>> decodeFile(Uint8List data) async {
-    final bufferImage = await BufferImage.fromFile(data);
+    BufferImage? bufferImage;
+    try {
+      bufferImage = await BufferImage.fromFile(data);
+    } catch (_) {
+      bufferImage = null;
+    }
 
     if (bufferImage == null) return none();
 
@@ -40,11 +45,12 @@ class QrUtils {
     bool isRgb = true,
   }) async {
     IsoMessage message = IsoMessage(image, width, height);
-    if (isRgb) {
-      return compute(decodeImage, message);
-    } else {
-      return compute(decodeCamera, message);
-    }
+    return compute(decodeImage, message);
+    // if (isRgb) {
+    //   return compute(decodeImage, message);
+    // } else {
+    //   return compute(decodeCamera, message);
+    // }
   }
 
   int getLuminanceSourcePixel(List<int> byte, int index) {
@@ -75,19 +81,19 @@ class QrUtils {
         );
       });
 
-  Option<List<Result>> decodeCamera(IsoMessage message) => Option.tryCatch(() {
-        final imageSource = PlanarYUVLuminanceSource(
-          message.byteData.buffer.asUint8List(),
-          message.width,
-          message.height,
-        );
+  // Option<List<Result>> decodeCamera(IsoMessage message) => Option.tryCatch(() {
+  //       final imageSource = PlanarYUVLuminanceSource(
+  //         message.byteData.buffer.asUint8List(),
+  //         message.width,
+  //         message.height,
+  //       );
 
-        final bitmap = BinaryBitmap(HybridBinarizer(imageSource));
-        final reader = GenericMultipleBarcodeReader(MultiFormatReader());
+  //       final bitmap = BinaryBitmap(HybridBinarizer(imageSource));
+  //       final reader = GenericMultipleBarcodeReader(MultiFormatReader());
 
-        return reader.decodeMultiple(
-          bitmap,
-          const DecodeHint(alsoInverted: true, tryHarder: true),
-        );
-      });
+  //       return reader.decodeMultiple(
+  //         bitmap,
+  //         const DecodeHint(alsoInverted: true, tryHarder: true),
+  //       );
+  //     });
 }
