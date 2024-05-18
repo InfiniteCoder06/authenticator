@@ -1,20 +1,22 @@
-// 📦 Package imports:
+// 🎯 Dart imports:
 import 'dart:convert';
 
-import 'package:authenticator/core/database/hive/hive_entry_repository.dart';
-import 'package:authenticator/core/utils/paths.util.dart';
-import 'package:authenticator/provider.dart';
+// 🐦 Flutter imports:
 import 'package:flutter/material.dart';
+
+// 📦 Package imports:
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hive/src/hive_impl.dart';
-
-// 🌎 Project imports:
-import 'package:authenticator/core/models/item.model.dart';
-import 'package:authenticator/core/utils/dialog.util.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 
+// 🌎 Project imports:
+import 'package:authenticator/core/database/hive/hive_entry_repository.dart';
+import 'package:authenticator/core/models/item.model.dart';
+import 'package:authenticator/core/utils/dialog.util.dart';
+import 'package:authenticator/core/utils/paths.util.dart';
+import 'package:authenticator/provider.dart';
 import '../../utils/path.util.dart';
 
 class MockSecureStorage extends Mock implements FlutterSecureStorage {
