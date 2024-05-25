@@ -492,12 +492,11 @@ packages:
   flutter_screen_lock:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "8188b4331767bec6ffd82d433cefba25f11a7562"
-      url: "https://github.com/InfiniteCoder06/flutter_screen_lock.git"
-    source: git
-    version: "9.0.2"
+      name: flutter_screen_lock
+      sha256: "07cb55016cf16b0374e6f79918964c65f2f722a461d1f56eb79cb88e1123b9a7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "9.1.0"
   flutter_secure_storage:
     dependency: "direct main"
     description:
