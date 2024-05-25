@@ -67,7 +67,11 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
 
     final newItem = originalItem.toNullable()!.copyWith(
           name: form.value.extract<String>('name').toNullable()?.trim(),
-          secret: form.value.extract<String>('secret').toNullable()?.trim(),
+          secret: form.value
+              .extract<String>('secret')
+              .toNullable()
+              ?.replaceAll(" ", "")
+              .trim(),
           issuer: form.value.extract<String>('issuer').toNullable()?.trim(),
         );
 

@@ -9,8 +9,10 @@ class Base32Validator extends Validator<dynamic> {
 
   @override
   Map<String, dynamic>? validate(AbstractControl<dynamic> control) {
-    return control.value is String && OtpUtils.isValidSecret((control.value as String).trim())
+    return control.value is String &&
+            OtpUtils.isValidSecret(
+                (control.value as String).replaceAll(" ", "").trim())
         ? null
-        : {'validBase32': false};
+        : {'Enter valid Base 32': false};
   }
 }

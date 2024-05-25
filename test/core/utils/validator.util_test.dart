@@ -6,7 +6,7 @@ import 'package:reactive_forms/reactive_forms.dart';
 import 'package:authenticator/core/utils/validator.util.dart';
 
 void main() {
-  test('FormControl is valid if value equals to validator value', () {
+  test('Empty Secret', () {
     // Given: an invalid control
     final control = FormControl<String>(
       value: "",
@@ -14,6 +14,28 @@ void main() {
     );
 
     expect(control.valid, false);
-    expect(control.hasError('validBase32'), true);
+    expect(control.hasError('Enter valid Base 32'), true);
+  });
+
+  test('Random Secret', () {
+    // Given: an invalid control
+    final control = FormControl<String>(
+      value: "reighdkfhgifdhgkl",
+      validators: [const Base32Validator()],
+    );
+
+    expect(control.valid, false);
+    expect(control.hasError('Enter valid Base 32'), true);
+  });
+
+  test('Test Secret with Spaces', () {
+    // Given: an invalid control
+    final control = FormControl<String>(
+      value: "JBSW Y3DP EHPK 3PXP",
+      validators: [const Base32Validator()],
+    );
+
+    expect(control.valid, true);
+    expect(control.hasError('Enter valid Base 32'), false);
   });
 }
