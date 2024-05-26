@@ -36,7 +36,9 @@ class SettingsOverviewPage extends StatelessWidget {
                       title: const Text("Accounts"),
                       subtitle: const Text("Sync App"),
                       onTap: () {
-                        if (kIsWeb || Platform.isAndroid) {
+                        if (kIsWeb ||
+                            Platform.isAndroid ||
+                            Platform.isWindows) {
                           Navigator.of(context)
                               .pushNamed(AppRouter.account.path);
                         } else {
