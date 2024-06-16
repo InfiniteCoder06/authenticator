@@ -50,6 +50,8 @@ void main() async {
   await hiveStorageOverride.init();
   await securityStorageOverride.init();
 
+  final (light, dark) = await getAccentColor();
+
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
@@ -60,12 +62,47 @@ void main() async {
 
   runApp(UncontrolledProviderScope(
     container: container,
-    child: MyApp(),
+    child: MyApp(
+      lightDynamicInit: light,
+      darkDynamicInit: dark,
+    ),
   ));
 }
 
+Future<(ColorScheme?, ColorScheme?)> getAccentColor() async {
+  ColorScheme? light;
+  ColorScheme? dark;
+  try {
+    final corePalette = await DynamicColorPlugin.getCorePalette();
+    if (corePalette != null) {
+      light = corePalette.toColorScheme();
+      dark = corePalette.toColorScheme(brightness: Brightness.dark);
+      return (light, dark);
+    }
+  } on PlatformException {}
+
+  try {
+    final Color? accentColor = await DynamicColorPlugin.getAccentColor();
+
+    if (accentColor != null) {
+      light = ColorScheme.fromSeed(
+        seedColor: accentColor,
+        brightness: Brightness.light,
+      );
+      dark = ColorScheme.fromSeed(
+        seedColor: accentColor,
+        brightness: Brightness.dark,
+      );
+      return (light, dark);
+    }
+  } on PlatformException {}
+  return (light, dark);
+}
+
 class MyApp extends HookConsumerWidget {
-  MyApp({super.key});
+  MyApp({super.key, this.lightDynamicInit, this.darkDynamicInit});
+  final ColorScheme? lightDynamicInit;
+  final ColorScheme? darkDynamicInit;
 
   final GlobalKey<NavigatorState> _navigator = GlobalKey<NavigatorState>();
 
@@ -84,10 +121,12 @@ class MyApp extends HookConsumerWidget {
     );
     return DynamicColorBuilder(
       builder: (lightDynamic, darkDynamic) {
-        final lightColorScheme =
-            useDynamic ? lightDynamic ?? lightStaticScheme : lightStaticScheme;
-        final darkColorScheme =
-            useDynamic ? darkDynamic ?? darkStaticScheme : darkStaticScheme;
+        final lightColorScheme = useDynamic
+            ? lightDynamic ?? (lightDynamicInit ?? lightStaticScheme)
+            : lightStaticScheme;
+        final darkColorScheme = useDynamic
+            ? darkDynamic ?? (darkDynamicInit ?? darkStaticScheme)
+            : darkStaticScheme;
         return MaterialApp(
           title: 'Authenticator',
           debugShowCheckedModeBanner: false,
