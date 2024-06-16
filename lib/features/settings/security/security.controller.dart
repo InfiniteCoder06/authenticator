@@ -43,6 +43,7 @@ class SecurityController extends _$SecurityController with ConsoleMixin {
     LockType lockType = await securityService.getLock();
     state = state.copyWith(
       isEnabled: lockType != LockType.none,
+      hasBiometrics: securityService.lockInfo.hasLocalAuth,
       biometrics: lockType == LockType.biometrics,
     );
   }

@@ -75,14 +75,14 @@ class SettingsOverviewPage extends StatelessWidget {
                       title: const Text("Security"),
                       subtitle: const Text("Password, Biometric, etc."),
                       onTap: () {
-                        if (kIsWeb || !Platform.isAndroid) {
+                        if (Platform.isAndroid || Platform.isWindows) {
+                          Navigator.of(context)
+                              .pushNamed(AppRouter.security.path);
+                        } else {
                           ScaffoldMessenger.of(context)
                             ..hideCurrentSnackBar()
                             ..showSnackBar(const SnackBar(
                                 content: Text("To Be Implemented")));
-                        } else {
-                          Navigator.of(context)
-                              .pushNamed(AppRouter.security.path);
                         }
                       },
                     ),

@@ -48,8 +48,10 @@ class SecuritySettingsPage extends HookConsumerWidget {
                                 (state.hasBiometrics, state.biometrics)));
                         return SwitchListTile(
                           title: const Text('Biometric Unlock'),
-                          subtitle: const Text(
-                              'Allow biometric authentication to unlock'),
+                          subtitle: controller.$1
+                              ? const Text(
+                                  'Allow biometric authentication to unlock')
+                              : const Text('Unsupported Hardware'),
                           value: controller.$2,
                           onChanged: controller.$1
                               ? (value) {
