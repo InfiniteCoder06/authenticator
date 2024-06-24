@@ -60,7 +60,7 @@ class AccountController extends _$AccountController with ConsoleMixin {
           DatabaseUtils().syncChanges, (localEntries, cloudEntries));
 
       // Backup
-      await backupData(data.$1, data.$2, data.$3);
+      await backupDataSmart(data.$1, data.$2, data.$3);
 
       // Restore if UserID Changes
       if (userId != state.userId) {
@@ -83,8 +83,8 @@ class AccountController extends _$AccountController with ConsoleMixin {
     }
   }
 
-  Future<void> backupData(List<Item> itemsToBeBackup, List<String> deletedIds,
-      List<Item> itemsToBeCreated) async {
+  Future<void> backupDataSmart(List<Item> itemsToBeBackup,
+      List<String> deletedIds, List<Item> itemsToBeCreated) async {
     final localDeleted = await entryRepository.getDeletedEntries();
     List<String> deletesIds = [
       ...localDeleted.map((item) => item.identifier),
@@ -99,10 +99,31 @@ class AccountController extends _$AccountController with ConsoleMixin {
     await entryRepository.deleteAll(localDeleted);
   }
 
-  Future<void> restoreData(String userId) async {
+  Future<void> backupDataManual() async {
+    console.debug("⚙️ Start sync");
+    state = state.copyWith(isSyncing: true, syncingState: SyncingState.syncing);
+
+    final localDeleted = await entryRepository.getDeletedEntries();
+    final localItems = await entryRepository.getFiltered();
+    List<String> deletesIds =
+        localDeleted.map((item) => item.identifier).toList();
+
+    console.debug("🗑️ Cloud Items Deleted : ${deletesIds.length}");
+
+    await backupRepository.backup(localItems,
+        userId: state.userId, deleteIds: deletesIds);
+    await entryRepository.deleteAll(localDeleted);
+
+    console.debug("🟢 Successfully Synced");
+  }
+
+  Future<void> restoreData(String userId, {bool logging = false}) async {
+    if (logging) console.debug("⚙️ Start sync");
     final cloudData = await backupRepository.getAll(userId);
 
     await entryRepository.clear();
     await entryRepository.createAll(cloudData);
+
+    if (logging) console.debug("🟢 Successfully Synced");
   }
 }

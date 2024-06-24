@@ -88,7 +88,7 @@ class AccountSettingsPage extends HookConsumerWidget {
                             },
                           ),
                           ListTile(
-                            key: const Key("settings.list.security"),
+                            key: const Key("settings.list.smartSync"),
                             leading: const Icon(Icons.refresh_rounded),
                             title: const Text("Sync Changes"),
                             onTap: () async {
@@ -96,7 +96,27 @@ class AccountSettingsPage extends HookConsumerWidget {
                                   .read(accountControllerProvider.notifier)
                                   .syncChanges(userId);
                             },
-                          )
+                          ),
+                          ListTile(
+                            key: const Key("settings.list.backup"),
+                            leading: const Icon(Icons.cloud_upload_rounded),
+                            title: const Text("Backup"),
+                            onTap: () async {
+                              await ref
+                                  .read(accountControllerProvider.notifier)
+                                  .backupDataManual();
+                            },
+                          ),
+                          ListTile(
+                            key: const Key("settings.list.restore"),
+                            leading: const Icon(Icons.cloud_download_rounded),
+                            title: const Text("Restore"),
+                            onTap: () async {
+                              await ref
+                                  .read(accountControllerProvider.notifier)
+                                  .restoreData(userId, logging: true);
+                            },
+                          ),
                         ],
                       );
                     }),
