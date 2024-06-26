@@ -23,12 +23,12 @@ class ThemeController extends _$ThemeController with ConsoleMixin {
 
   void postInit() async {
     final storageService = ref.read(hiveStorageProvider);
-    var dynamicColor =
+    final dynamicColor =
         await storageService.get<bool>(kdynamicColor, defaultValue: false);
     final themeModeDb =
         await storageService.get<int>(kthemeMode, defaultValue: 0);
-    var themeMode = ThemeMode.values.elementAt(themeModeDb);
-    var themeAccent =
+    final themeMode = ThemeMode.values.elementAt(themeModeDb);
+    final themeAccent =
         await storageService.get<int>(kthemeAccent, defaultValue: 5);
 
     state = state.copyWith(
