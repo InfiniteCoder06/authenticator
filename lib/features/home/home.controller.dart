@@ -1,4 +1,5 @@
 // 📦 Package imports:
+import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -12,7 +13,8 @@ part 'home.controller.g.dart';
 final entriesProvider = StateProvider((_) => <Item>[]);
 final sortProvider = StateProvider((_) => Sort.date);
 final errorProvider = StateProvider((_) => '');
-final showSearchProvider = StateProvider((_) => false);
+final showSearchProvider = StateProvider.autoDispose(
+    (ref) => ref.watch(behaviorControllerProvider).searchOnStart);
 
 @riverpod
 Future<void> getAllItem(GetAllItemRef ref) async {

@@ -20,13 +20,17 @@ class BehaviorController extends _$BehaviorController with ConsoleMixin {
 
   void postInit() async {
     final storageService = ref.read(hiveStorageProvider);
-    var copyOnTap =
-        await storageService.get<bool>(kCopyOnTap, defaultValue: false);
+    final copyOnTap =
+        await storageService.get<bool>(kCopyOnTap, defaultValue: true);
+    final searchOnStart =
+        await storageService.get<bool>(kSearchOnTap, defaultValue: false);
     final fontSize = await storageService.get<int>(kFontSize, defaultValue: 25);
-    var codeGroup = await storageService.get<int>(kCodeGroup, defaultValue: 3);
+    final codeGroup =
+        await storageService.get<int>(kCodeGroup, defaultValue: 3);
 
     state = state.copyWith(
       copyOnTap: copyOnTap,
+      searchOnStart: searchOnStart,
       codeGroup: codeGroup,
       fontSize: fontSize,
     );
@@ -38,6 +42,12 @@ class BehaviorController extends _$BehaviorController with ConsoleMixin {
     final storageService = ref.read(hiveStorageProvider);
     await storageService.put<bool>(kCopyOnTap, value);
     state = state.copyWith(copyOnTap: value);
+  }
+
+  Future<void> toggleSearchOnStart(bool value) async {
+    final storageService = ref.read(hiveStorageProvider);
+    await storageService.put<bool>(kSearchOnTap, value);
+    state = state.copyWith(searchOnStart: value);
   }
 
   Future<void> setFontSize(int fontSize) async {

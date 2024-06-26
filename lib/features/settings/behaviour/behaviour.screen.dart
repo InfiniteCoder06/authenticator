@@ -39,6 +39,20 @@ class BehaviourSettingsPage extends HookConsumerWidget {
                           .toggleCopyOnTap(value),
                     );
                   }),
+                  Builder(builder: (context) {
+                    final searchOnStart = ref.watch(behaviorControllerProvider
+                        .select((state) => state.searchOnStart));
+                    return SwitchListTile(
+                      title: const Text("Search on Start"),
+                      subtitle: const Text(
+                        "Open the search field on Start",
+                      ),
+                      value: searchOnStart,
+                      onChanged: (value) async => ref
+                          .read(behaviorControllerProvider.notifier)
+                          .toggleSearchOnStart(value),
+                    );
+                  }),
                   const ListTile(
                     title: Text("Font Size"),
                     subtitle: Text(

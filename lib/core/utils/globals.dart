@@ -10,6 +10,7 @@ const kdynamicColor = "dynamic-color";
 const kthemeAccent = "theme-accent";
 const kthemeMode = "theme-mode";
 
+const kSearchOnTap = "search-on-tap";
 const kCopyOnTap = "copy-on-tap";
 const kFontSize = "font-size";
 const kCodeGroup = "code-group";
