@@ -1,11 +1,11 @@
 // 📦 Package imports:
-import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/utils/enums/sort.enum.dart';
+import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:authenticator/provider.dart';
 
 part 'home.controller.g.dart';

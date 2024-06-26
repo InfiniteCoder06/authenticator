@@ -1,5 +1,10 @@
+// 🐦 Flutter imports:
 import 'package:flutter/widgets.dart';
+
+// 📦 Package imports:
 import 'package:flutter_test/flutter_test.dart';
+
+// 🌎 Project imports:
 import 'package:authenticator/core/utils/mixin/schedule.mixin.dart';
 
 class TestClass with ScheduleMixin {}
