@@ -19,6 +19,7 @@ const kLockTimeout = "lock-timeout";
 
 const kLocalSync = "last-synced";
 const kUserId = "user-id";
+const kBackupNeeded = "backup-needed";
 
 const kScheme = "otpauth";
 const kSchemeExport = "otpauth-migration";

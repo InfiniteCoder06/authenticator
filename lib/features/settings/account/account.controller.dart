@@ -64,13 +64,14 @@ class AccountController extends _$AccountController with ConsoleMixin {
 
       // Restore if UserID Changes
       if (userId != state.userId) {
-        restoreData(userId);
+        await restoreData(userId);
       }
 
       final currentDate = DateTime.now().millisecondsSinceEpoch;
       await storageService.put(kLocalSync, currentDate);
       state = state.copyWith(userId: userId, lastSync: currentDate);
       await storageService.put(kUserId, userId);
+      await storageService.put(kBackupNeeded, false);
       console.debug("🟢 Successfully Synced");
       state =
           state.copyWith(isSyncing: false, syncingState: SyncingState.success);
@@ -113,17 +114,28 @@ class AccountController extends _$AccountController with ConsoleMixin {
     await backupRepository.backup(localItems,
         userId: state.userId, deleteIds: deletesIds);
     await entryRepository.deleteAll(localDeleted);
-
+    await storageService.put(kBackupNeeded, false);
+    state =
+        state.copyWith(isSyncing: false, syncingState: SyncingState.success);
     console.debug("🟢 Successfully Synced");
   }
 
   Future<void> restoreData(String userId, {bool logging = false}) async {
-    if (logging) console.debug("⚙️ Start sync");
+    if (logging) {
+      console.debug("⚙️ Start sync");
+      state =
+          state.copyWith(isSyncing: true, syncingState: SyncingState.syncing);
+    }
     final cloudData = await backupRepository.getAll(userId);
 
     await entryRepository.clear();
     await entryRepository.createAll(cloudData);
 
-    if (logging) console.debug("🟢 Successfully Synced");
+    if (logging) {
+      await storageService.put(kBackupNeeded, false);
+      state =
+          state.copyWith(isSyncing: false, syncingState: SyncingState.success);
+      console.debug("🟢 Successfully Synced");
+    }
   }
 }

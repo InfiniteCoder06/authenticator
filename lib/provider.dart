@@ -32,6 +32,7 @@ BaseEntryRepository entryRepo(EntryRepoRef ref) => HiveEntryRepository(
       ref.read(hiveProvider),
       ref.read(appPathsProvider),
       ref.read(secureStorageProvider),
+      ref.read(hiveStorageProvider),
     );
 
 @riverpod

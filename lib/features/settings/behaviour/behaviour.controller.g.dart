@@ -7,7 +7,7 @@ part of 'behaviour.controller.dart';
 // **************************************************************************
 
 String _$behaviorControllerHash() =>
-    r'b6635bb61182c76006e68baeb9e7407abfcf6a07';
+    r'2bead74662a4c8e937aba3c10af82b0b637a2473';
 
 /// See also [BehaviorController].
 @ProviderFor(BehaviorController)

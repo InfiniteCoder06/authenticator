@@ -45,6 +45,7 @@ class HomeAppBar extends HookConsumerWidget {
                   arguments:
                       DetailPageArgs(item: selected.first, isUrl: false));
               ref.read(selectedEntriesProvider.notifier).clearSelected();
+              ref.refresh(showBackupNotiProvider);
             },
             icon: const Icon(Icons.edit_rounded),
             tooltip: "Edit",
@@ -90,6 +91,7 @@ class HomeAppBar extends HookConsumerWidget {
                         items: selected,
                       ));
                   ref.read(selectedEntriesProvider.notifier).clearSelected();
+                  ref.refresh(showBackupNotiProvider);
                 },
                 icon: const Icon(Icons.share_rounded),
                 tooltip: "Transfer",
@@ -131,6 +133,7 @@ class HomeAppBar extends HookConsumerWidget {
                 ref.read(showSearchProvider.notifier).state = false;
                 await Navigator.of(context).pushNamed(AppRouter.settings.path);
                 ref.refresh(getAllItemProvider);
+                ref.refresh(showBackupNotiProvider);
               }
               if (value == 1) {
                 if (!context.mounted) return;

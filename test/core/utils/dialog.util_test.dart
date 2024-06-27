@@ -14,6 +14,7 @@ import 'package:mocktail/mocktail.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/database/hive/hive_entry_repository.dart';
 import 'package:authenticator/core/models/item.model.dart';
+import 'package:authenticator/core/persistence/persistance.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/paths.util.dart';
 import 'package:authenticator/provider.dart';
@@ -63,7 +64,10 @@ void main() {
       appPaths.initTest(tempDir.path);
       initMock();
 
-      entryRepository = HiveEntryRepository(hive, appPaths, secureStorage);
+      final persistanceProvider = HivePersistanceProvider(hive, appPaths);
+
+      entryRepository = HiveEntryRepository(
+          hive, appPaths, secureStorage, persistanceProvider);
       await entryRepository.init();
     });
 

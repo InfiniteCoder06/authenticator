@@ -5,6 +5,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/models/item.model.dart';
 import 'package:authenticator/core/utils/enums/sort.enum.dart';
+import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:authenticator/provider.dart';
 
@@ -13,8 +14,17 @@ part 'home.controller.g.dart';
 final entriesProvider = StateProvider((_) => <Item>[]);
 final sortProvider = StateProvider((_) => Sort.date);
 final errorProvider = StateProvider((_) => '');
-final showSearchProvider = StateProvider.autoDispose(
-    (ref) => ref.watch(behaviorControllerProvider).searchOnStart);
+final showSearchProvider =
+    StateProvider((ref) => ref.read(behaviorControllerProvider).searchOnStart);
+final showBackupBannerProvider = StateProvider((_) => false);
+
+@riverpod
+Future<void> showBackupNoti(ShowBackupNotiRef ref) async {
+  final show = await ref
+      .read(hiveStorageProvider)
+      .get(kBackupNeeded, defaultValue: false);
+  ref.read(showBackupBannerProvider.notifier).state = show;
+}
 
 @riverpod
 Future<void> getAllItem(GetAllItemRef ref) async {

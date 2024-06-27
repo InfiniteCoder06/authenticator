@@ -6,6 +6,21 @@ part of 'home.controller.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$showBackupNotiHash() => r'b4506de9eae593a66366ec459cdab884951cbd15';
+
+/// See also [showBackupNoti].
+@ProviderFor(showBackupNoti)
+final showBackupNotiProvider = AutoDisposeFutureProvider<void>.internal(
+  showBackupNoti,
+  name: r'showBackupNotiProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$showBackupNotiHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef ShowBackupNotiRef = AutoDisposeFutureProviderRef<void>;
 String _$getAllItemHash() => r'fc8331c9a862f11a78fcd54b21bc9da26bcaf90b';
 
 /// See also [getAllItem].

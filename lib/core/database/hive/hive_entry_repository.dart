@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
 import 'package:authenticator/core/models/item.model.dart';
+import 'package:authenticator/core/persistence/persistance.dart';
 import 'package:authenticator/core/utils/globals.dart';
 import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/paths.util.dart';
@@ -15,10 +16,12 @@ import 'package:authenticator/core/utils/paths.util.dart';
 class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   HiveInterface hive;
   Box<Item>? _box;
+  HivePersistanceProvider persistanceProvider;
   FlutterSecureStorage secureStorage;
   AppPaths paths;
 
-  HiveEntryRepository(this.hive, this.paths, this.secureStorage);
+  HiveEntryRepository(
+      this.hive, this.paths, this.secureStorage, this.persistanceProvider);
 
   @override
   Future<void> init() async {
@@ -46,6 +49,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   Future<void> create(Item item) async {
     try {
       await _box?.put(item.identifier, item);
+      await persistanceProvider.put<bool>(kBackupNeeded, true);
       console.debug("🛎️ Create: ${item.name}");
     } catch (e) {
       console.error("$e");
@@ -60,6 +64,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
         await _box?.put(item.identifier, item);
         console.debug("🛎️ Create: ${item.name}");
       }
+      await persistanceProvider.put<bool>(kBackupNeeded, true);
     } catch (e) {
       console.error("$e");
       return Future.error(e);
@@ -100,6 +105,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   Future<void> update(Item item) async {
     try {
       await _box?.put(item.identifier, item);
+      await persistanceProvider.put<bool>(kBackupNeeded, true);
       console.debug("✏️ Update: ${item.name}");
     } catch (e) {
       console.error("$e");
@@ -111,6 +117,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
   Future<void> delete(Item item) async {
     try {
       await _box?.delete(item.identifier);
+      await persistanceProvider.put<bool>(kBackupNeeded, true);
     } catch (e) {
       console.error("$e");
       return Future.error(e);
@@ -136,6 +143,7 @@ class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
         await _box?.put(item.identifier, item);
         console.debug("🗑️ Delete: ${item.name}");
       }
+      await persistanceProvider.put<bool>(kBackupNeeded, true);
     } catch (e) {
       console.error("$e");
       return Future.error(e);

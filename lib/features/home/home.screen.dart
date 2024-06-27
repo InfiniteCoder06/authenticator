@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
+import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/otp.util.dart';
 import 'package:authenticator/core/utils/qr.util.dart';
@@ -44,6 +45,7 @@ class EntryOverviewPage extends HookConsumerWidget {
     useListenable(searchController);
     useEffect(() {
       ref.read(getAllItemProvider);
+      ref.read(showBackupNotiProvider);
       return null;
     }, []);
     return Scaffold(
@@ -90,6 +92,49 @@ class EntryOverviewPage extends HookConsumerWidget {
               );
             },
           ),
+          Builder(builder: (context) {
+            final colorScheme = Theme.of(context).colorScheme;
+            final show = ref.watch(showBackupBannerProvider);
+            return AppCrossFade(
+              firstChild: Padding(
+                padding:
+                    const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 0),
+                child: Material(
+                  color: colorScheme.errorContainer,
+                  borderRadius: ShapeConstant.extraLarge,
+                  child: InkWell(
+                    borderRadius: ShapeConstant.extraLarge,
+                    onTap: () async {
+                      await Navigator.of(context)
+                          .pushNamed(AppRouter.account.path);
+                      ref.refresh(showBackupNotiProvider);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.info_outline_rounded,
+                            color: colorScheme.error,
+                          ),
+                          ConfigConstant.sizedBoxW1,
+                          Text(
+                            "Changes are not backed up",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: colorScheme.error),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              secondChild: const SizedBox.shrink(),
+              showFirst: show,
+            );
+          }),
           Builder(
             builder: (context) {
               final entries =
@@ -122,6 +167,7 @@ class EntryOverviewPage extends HookConsumerWidget {
                                     AppRouter.details.path,
                                     arguments: DetailPageArgs(
                                         item: item, isUrl: false));
+                                ref.refresh(showBackupNotiProvider);
                               },
                               onLongPress: () {
                                 if (selected.isEmpty) {
@@ -187,6 +233,7 @@ class EntryOverviewPage extends HookConsumerWidget {
                 } else {
                   await Navigator.of(context)
                       .popAndPushNamed(AppRouter.scan.path);
+                  ref.refresh(showBackupNotiProvider);
                 }
               },
               onAddImagePressed: () async {
@@ -211,17 +258,20 @@ class EntryOverviewPage extends HookConsumerWidget {
                 final parseResult =
                     OtpUtils.parseURI(Uri.parse(result.toNullable()!.text));
 
-                parseResult.fold(
-                    (text) => AppDialogs.showErrorDialog(context, text),
-                    (item) => Navigator.of(context).pushReplacementNamed(
-                        AppRouter.details.path,
-                        arguments: DetailPageArgs(item: item, isUrl: true)));
+                parseResult
+                    .fold((text) => AppDialogs.showErrorDialog(context, text),
+                        (item) async {
+                  await Navigator.of(context).pushReplacementNamed(
+                      AppRouter.details.path,
+                      arguments: DetailPageArgs(item: item, isUrl: true));
+                  ref.refresh(showBackupNotiProvider);
+                });
               },
               onAddManualPressed: () async {
                 await Navigator.of(context).popAndPushNamed(
                     AppRouter.details.path,
                     arguments: const DetailPageArgs(item: null, isUrl: false));
-                if (context.mounted) {}
+                ref.refresh(showBackupNotiProvider);
               },
             );
           },
