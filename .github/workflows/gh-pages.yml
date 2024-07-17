@@ -11,7 +11,7 @@ jobs:
     
     steps:
     - name: Checkout code 🛎️
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Install Flutter ⬇️
       uses: subosito/flutter-action@v2
@@ -24,11 +24,11 @@ jobs:
     - name: Get dependencies 🔃
       run: flutter pub get
     
-    - name: Build release project ⚙️
+    - name: Build release project ⛏️
       run: flutter build web --wasm
 
     - name: Deploy 🚀
-      uses: nwtgck/actions-netlify@v2.0
+      uses: nwtgck/actions-netlify@v3
       with:
         publish-dir: 'build/web/'
         production-branch: master

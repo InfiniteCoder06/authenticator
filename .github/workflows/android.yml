@@ -1,0 +1,48 @@
+name: Android CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code 🛎️
+      uses: actions/checkout@v4
+
+    - name: Set up JDK ⚙️
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'oracle'
+        cache: gradle
+
+    - name: Install Flutter ⬇️
+      uses: subosito/flutter-action@v2
+      with:
+        channel: 'master'
+        cache: true
+        cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:'
+        cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
+    
+    - name: Get dependencies 🔃
+      run: flutter pub get
+
+    - name: Build apk ⛏️
+      run: flutter build apk --obfuscate --split-debug-info=authenticator/symbols --split-per-abi
+
+    - name: Get release file apk path 🔳
+      id: releaseApk
+      run: echo "apkfile=$(find build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
+
+    - name: Upload artifact ⬆️
+      uses: actions/upload-artifact@v4
+      with:
+        name: Build APK
+        path: build/app/outputs/apk/release/*.apk
+
+    
