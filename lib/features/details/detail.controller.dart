@@ -25,6 +25,8 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
   Option<Item> originalItem = none();
   bool isUrl = false;
   bool isLoading = true;
+  bool saved = false;
+  bool get isNotDirty => saved || !form.dirty && !isUrl;
 
   Future<void> initialize(Option<Item> item, bool isUrl) async {
     await Future.delayed(Durations.short1);
@@ -76,35 +78,37 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
         );
 
     await repository.create(newItem);
+    saved = true;
     if (context.mounted) {
-      Navigator.of(context).pop(context);
+      Navigator.maybePop<bool>(context, true);
     }
   }
 
   Future<bool> popRequest(BuildContext context) async {
-    if (!form.dirty && !isUrl) return true;
+    if (isNotDirty) return true;
     final canPop = (await showDialog(
           context: context,
+          routeSettings: const RouteSettings(name: 'UnsavedChangesDialog'),
           builder: (context) {
             return AlertDialog(
               title: const Text('Unsaved Changes'),
               content: const Text('You have unsaved changes'),
               actions: [
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(false),
+                  onPressed: () => Navigator.of(context).pop(true),
                   child: const Text('Discard'),
                 ),
                 TextButton(
-                  onPressed: () => Navigator.of(context).pop(true),
+                  onPressed: () => Navigator.of(context).pop(false),
                   child: const Text('Cancel'),
                 )
               ],
             );
           },
         )) ??
-        true;
+        false;
 
-    return !canPop;
+    return canPop;
   }
 
   @override

@@ -17,6 +17,7 @@ import 'package:navigation_history_observer/navigation_history_observer.dart';
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/router/app_router.config.dart';
 import 'package:authenticator/core/utils/constants/theme.constant.dart';
+import 'package:authenticator/core/utils/route_observer.util.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/firebase_options.dart';
 import 'package:authenticator/modules.dart';
@@ -146,7 +147,10 @@ class MyApp extends HookConsumerWidget {
           ),
           onGenerateRoute: (settings) =>
               AppRouteConfig(context: context, settings: settings).generate(),
-          navigatorObservers: [NavigationHistoryObserver()],
+          navigatorObservers: [
+            NavigationHistoryObserver(),
+            CustomNavigatorObserver(ref: ref)
+          ],
         );
       },
     );

@@ -7,7 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
-import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/features/settings/account/account.controller.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 import 'package:authenticator/widgets/dropdown_list_tile.dart';
@@ -48,7 +47,6 @@ class AccountSettingsPage extends HookConsumerWidget {
       canPop: true,
       onPopInvokedWithResult: (didPop, result) async {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ref.refresh(getAllItemProvider);
         if (didPop) return;
       },
       child: Scaffold(

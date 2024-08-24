@@ -108,7 +108,6 @@ class EntryOverviewPage extends HookConsumerWidget {
                     onTap: () async {
                       await Navigator.of(context)
                           .pushNamed(AppRouter.account.path);
-                      ref.refresh(showBackupNotiProvider);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(16),
@@ -159,7 +158,9 @@ class EntryOverviewPage extends HookConsumerWidget {
                               onDelete: (_) async {
                                 await AppDialogs.showDeletionDialog(
                                     context, [item], ref);
-                                ref.refresh(getAllItemProvider);
+                                ref
+                                    .read(selectedEntriesProvider.notifier)
+                                    .clearSelected();
                               },
                               onEdit: (_) async {
                                 ref.read(showSearchProvider.notifier).state =
@@ -168,7 +169,9 @@ class EntryOverviewPage extends HookConsumerWidget {
                                     AppRouter.details.path,
                                     arguments: DetailPageArgs(
                                         item: item, isUrl: false));
-                                ref.refresh(showBackupNotiProvider);
+                                ref
+                                    .read(selectedEntriesProvider.notifier)
+                                    .clearSelected();
                               },
                               onLongPress: () {
                                 if (selected.isEmpty) {
@@ -222,6 +225,7 @@ class EntryOverviewPage extends HookConsumerWidget {
         onPressed: () async => showModalBottomSheet(
           context: context,
           showDragHandle: true,
+          routeSettings: const RouteSettings(name: "HomeBottomSheet"),
           builder: (_) {
             return HomeBottomSheet(
               onAddQrPressed: () async {
@@ -234,7 +238,6 @@ class EntryOverviewPage extends HookConsumerWidget {
                 } else {
                   await Navigator.of(context)
                       .popAndPushNamed(AppRouter.scan.path);
-                  ref.refresh(showBackupNotiProvider);
                 }
               },
               onAddImagePressed: () async {
@@ -262,17 +265,15 @@ class EntryOverviewPage extends HookConsumerWidget {
                 parseResult
                     .fold((text) => AppDialogs.showErrorDialog(context, text),
                         (item) async {
-                  await Navigator.of(context).pushReplacementNamed(
+                  await Navigator.of(context).pushNamed(
                       AppRouter.details.path,
                       arguments: DetailPageArgs(item: item, isUrl: true));
-                  ref.refresh(showBackupNotiProvider);
                 });
               },
               onAddManualPressed: () async {
                 await Navigator.of(context).popAndPushNamed(
                     AppRouter.details.path,
                     arguments: const DetailPageArgs(item: null, isUrl: false));
-                ref.refresh(showBackupNotiProvider);
               },
             );
           },

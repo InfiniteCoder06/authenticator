@@ -45,7 +45,6 @@ class HomeAppBar extends HookConsumerWidget {
                   arguments:
                       DetailPageArgs(item: selected.first, isUrl: false));
               ref.read(selectedEntriesProvider.notifier).clearSelected();
-              ref.refresh(showBackupNotiProvider);
             },
             icon: const Icon(Icons.edit_rounded),
             tooltip: "Edit",
@@ -65,6 +64,7 @@ class HomeAppBar extends HookConsumerWidget {
               PopupMenuButton(
                 icon: const Icon(Icons.sort_outlined),
                 tooltip: "Sort",
+                routeSettings: const RouteSettings(name: 'HomeAppBarSort'),
                 itemBuilder: (context) => Sort.values.map((value) {
                   return CheckedPopupMenuItem(
                     value: value.index,
@@ -91,7 +91,6 @@ class HomeAppBar extends HookConsumerWidget {
                         items: selected,
                       ));
                   ref.read(selectedEntriesProvider.notifier).clearSelected();
-                  ref.refresh(showBackupNotiProvider);
                 },
                 icon: const Icon(Icons.share_rounded),
                 tooltip: "Transfer",
@@ -103,7 +102,6 @@ class HomeAppBar extends HookConsumerWidget {
                       context, selected, ref);
                   if (hasDeleted) {
                     ref.read(selectedEntriesProvider.notifier).clearSelected();
-                    ref.refresh(getAllItemProvider);
                   }
                 },
                 icon: const Icon(Icons.delete_rounded),
@@ -117,6 +115,7 @@ class HomeAppBar extends HookConsumerWidget {
           firstChild: PopupMenuButton<int>(
             tooltip: "More",
             icon: const Icon(Icons.more_vert_rounded),
+            routeSettings: const RouteSettings(name: 'HomeAppBarMore'),
             itemBuilder: (context) => [
               const PopupMenuItem(
                 value: 0,
@@ -132,8 +131,6 @@ class HomeAppBar extends HookConsumerWidget {
               if (value == 0) {
                 ref.read(showSearchProvider.notifier).state = false;
                 await Navigator.of(context).pushNamed(AppRouter.settings.path);
-                ref.refresh(getAllItemProvider);
-                ref.refresh(showBackupNotiProvider);
               }
               if (value == 1) {
                 if (!context.mounted) return;

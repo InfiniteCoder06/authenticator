@@ -18,7 +18,6 @@ import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/features/details/detail.controller.dart';
 import 'package:authenticator/features/details/widgets/add.widget.dart';
 import 'package:authenticator/features/details/widgets/icon.widget.dart';
-import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
 import 'package:authenticator/widgets/app_pop_button.dart';
 
@@ -41,8 +40,7 @@ class DetailPage extends HookConsumerWidget {
         final bool shouldPop =
             await ref.read(detailController.notifier).popRequest(context);
         if (context.mounted && shouldPop) {
-          ref.refresh(getAllItemProvider);
-          Navigator.pop(context);
+          Navigator.pop(context, result);
         }
       },
       child: Scaffold(
@@ -57,14 +55,20 @@ class DetailPage extends HookConsumerWidget {
               tooltip: "Save",
               icon: const Icon(Icons.save_rounded),
               onPressed: () async {
+                if (ref.read(detailController.notifier).isNotDirty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("No changes detected")),
+                  );
+                  return;
+                }
                 await ref.read(detailController.notifier).save(context);
-                ref.refresh(getAllItemProvider);
               },
             ),
             if (item.isSome())
               PopupMenuButton<int>(
                 tooltip: "More",
                 icon: const Icon(Icons.more_vert_rounded),
+                routeSettings: const RouteSettings(name: "DetailAppBarMore"),
                 itemBuilder: (context) => [
                   const PopupMenuItem(
                     value: 0,

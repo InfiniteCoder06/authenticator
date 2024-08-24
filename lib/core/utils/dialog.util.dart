@@ -14,6 +14,7 @@ class AppDialogs {
       BuildContext context, List<Item> items, WidgetRef ref) async {
     return await showDialog(
           context: context,
+          routeSettings: const RouteSettings(name: 'DeletionDialog'),
           builder: (context) {
             return AlertDialog(
               icon: const Icon(Icons.delete_rounded),
@@ -72,6 +73,7 @@ class AppDialogs {
       {String? title}) async {
     return await showDialog(
       context: context,
+      routeSettings: const RouteSettings(name: 'ErrorDialog'),
       builder: (context) {
         return AlertDialog(
           icon: const Icon(Icons.error_rounded),
@@ -92,6 +94,7 @@ class AppDialogs {
     var text = '';
     await showDialog(
       context: context,
+      routeSettings: const RouteSettings(name: 'ManualURIDialog'),
       builder: (context) {
         return AlertDialog(
           icon: const Icon(Icons.info_rounded),
