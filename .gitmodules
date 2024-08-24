@@ -1,3 +1,6 @@
 [submodule "packages/dynamic_color"]
 	path = packages/dynamic_color
 	url = https://github.com/InfiniteCoder06/dynamic_color.git
+[submodule "packages/flutter_slidable"]
+	path = packages/flutter_slidable
+	url = https://github.com/InfiniteCoder06/flutter_slidable.git
