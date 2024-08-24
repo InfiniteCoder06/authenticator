@@ -2,6 +2,7 @@
 import 'dart:io';
 
 // 🐦 Flutter imports:
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // 📦 Package imports:
@@ -224,7 +225,7 @@ class EntryOverviewPage extends HookConsumerWidget {
           builder: (_) {
             return HomeBottomSheet(
               onAddQrPressed: () async {
-                if (!Platform.isAndroid) {
+                if (kIsWeb || !Platform.isAndroid) {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context)
                     ..hideCurrentSnackBar()
