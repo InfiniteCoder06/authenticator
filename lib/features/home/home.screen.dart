@@ -224,8 +224,7 @@ class EntryOverviewPage extends HookConsumerWidget {
         tooltip: "Add",
         onPressed: () async => showModalBottomSheet(
           context: context,
-          showDragHandle: true,
-          routeSettings: const RouteSettings(name: "HomeBottomSheet"),
+          showDragHandle: false,
           builder: (_) {
             return HomeBottomSheet(
               onAddQrPressed: () async {
@@ -265,8 +264,7 @@ class EntryOverviewPage extends HookConsumerWidget {
                 parseResult
                     .fold((text) => AppDialogs.showErrorDialog(context, text),
                         (item) async {
-                  await Navigator.of(context).pushNamed(
-                      AppRouter.details.path,
+                  await Navigator.of(context).pushNamed(AppRouter.details.path,
                       arguments: DetailPageArgs(item: item, isUrl: true));
                 });
               },
