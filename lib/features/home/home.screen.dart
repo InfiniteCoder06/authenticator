@@ -13,17 +13,17 @@ import 'package:image_picker/image_picker.dart';
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
-import 'package:authenticator/core/utils/constants/shape.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/core/utils/otp.util.dart';
 import 'package:authenticator/core/utils/qr.util.dart';
 import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/features/home/widgets/home.appbar.dart';
 import 'package:authenticator/features/home/widgets/home.bottom_sheet.dart';
+import 'package:authenticator/features/home/widgets/home.info.dart';
+import 'package:authenticator/features/home/widgets/home.search.dart';
 import 'package:authenticator/features/home/widgets/progress.widget.dart';
 import 'package:authenticator/gen/assets.gen.dart';
 import 'package:authenticator/modules.dart';
-import 'package:authenticator/widgets/app_cross_fade.dart';
 import 'package:authenticator/widgets/item/item.body.widget.dart';
 import 'package:authenticator/widgets/item/item.card.widget.dart';
 import 'package:authenticator/widgets/item/item.header.widget.dart';
@@ -65,76 +65,8 @@ class EntryOverviewPage extends HookConsumerWidget {
               child: const ProgressBar(),
             );
           }),
-          Builder(
-            builder: (context) {
-              final showSearch = ref.watch(showSearchProvider);
-              return AppCrossFade(
-                duration: Durations.medium2,
-                showFirst: !showSearch,
-                curve: Curves.fastOutSlowIn,
-                firstChild: const SizedBox.shrink(),
-                secondChild: Padding(
-                  padding: const EdgeInsets.only(
-                      top: 8, left: 8, right: 8, bottom: 2),
-                  child: SearchBar(
-                    hintText: 'Search',
-                    controller: searchController,
-                    elevation: const WidgetStatePropertyAll(1),
-                    trailing: [
-                      IconButton(
-                        onPressed: () {
-                          ref.read(showSearchProvider.notifier).state = false;
-                        },
-                        icon: const Icon(Icons.close_rounded),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
-          ),
-          Builder(builder: (context) {
-            final colorScheme = Theme.of(context).colorScheme;
-            final show = ref.watch(showBackupBannerProvider);
-            return AppCrossFade(
-              firstChild: Padding(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 8, top: 8, bottom: 0),
-                child: Material(
-                  color: colorScheme.errorContainer,
-                  borderRadius: ShapeConstant.extraLarge,
-                  child: InkWell(
-                    borderRadius: ShapeConstant.extraLarge,
-                    onTap: () async {
-                      await Navigator.of(context)
-                          .pushNamed(AppRouter.account.path);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.info_outline_rounded,
-                            color: colorScheme.error,
-                          ),
-                          ConfigConstant.sizedBoxW1,
-                          Text(
-                            "Changes are not backed up",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: colorScheme.error),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              secondChild: const SizedBox.shrink(),
-              showFirst: show,
-            );
-          }),
+          HomeSearchBar(searchController: searchController),
+          const HomeInfoBar(),
           Builder(
             builder: (context) {
               final entries =
