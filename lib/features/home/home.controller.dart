@@ -12,7 +12,7 @@ import 'package:authenticator/provider.dart';
 part 'home.controller.g.dart';
 
 final entriesProvider = StateProvider((_) => <Item>[]);
-final sortProvider = StateProvider((_) => Sort.date);
+final sortProvider = StateProvider((_) => Sort.issuer);
 final errorProvider = StateProvider((_) => '');
 final showSearchProvider =
     StateProvider((ref) => ref.read(behaviorControllerProvider).searchOnStart);
