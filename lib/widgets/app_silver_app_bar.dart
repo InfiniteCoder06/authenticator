@@ -34,25 +34,14 @@ class AppExpandedAppBar extends StatelessWidget {
       pinned: true,
       floating: true,
       stretch: true,
-      title: const Text(""),
       elevation: Theme.of(context).appBarTheme.elevation,
       flexibleSpace: FlexibleSpaceBar(
-        collapseMode: CollapseMode.none,
-        background: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 16.0).copyWith(top: 72.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                fallbackRouter?.title ?? "",
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+        title: Text(
+          fallbackRouter?.title ?? "",
+          style: Theme.of(context).textTheme.headlineSmall,
         ),
+        titlePadding:
+            const EdgeInsets.only(bottom: 16.0, left: 60, right: 16.0, top: 0),
       ),
       actions: actions,
     );

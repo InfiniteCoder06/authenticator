@@ -72,7 +72,7 @@ dependencies:
   qr_flutter: ^4.1.0
   reactive_forms: ^17.0.1
   riverpod_annotation: ^2.3.5
-  swipeable_page_route: ^0.4.4
+  swipeable_page_route: 0.4.3
   uri: ^1.0.0
   url_launcher: ^6.3.0
   uuid: ^4.4.2
