@@ -19,6 +19,7 @@ import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/core/router/app_router.config.dart';
 import 'package:authenticator/core/utils/constants/theme.constant.dart';
 import 'package:authenticator/core/utils/route_observer.util.dart';
+import 'package:authenticator/features/settings/behaviour/behaviour.controller.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
 import 'package:authenticator/modules.dart';
 import 'package:authenticator/provider.dart';
@@ -50,6 +51,8 @@ void main() async {
   await entryRepositoryOverride.init();
   await hiveStorageOverride.init();
   await securityStorageOverride.init();
+
+  container.read(behaviorControllerProvider);
 
   final (light, dark) = await getAccentColor();
 

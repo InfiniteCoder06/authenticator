@@ -7,12 +7,12 @@ part of 'behaviour.controller.dart';
 // **************************************************************************
 
 String _$behaviorControllerHash() =>
-    r'2bead74662a4c8e937aba3c10af82b0b637a2473';
+    r'beff510fa28d12c13cb72b0f10b7311b0348cd89';
 
 /// See also [BehaviorController].
 @ProviderFor(BehaviorController)
 final behaviorControllerProvider =
-    AutoDisposeNotifierProvider<BehaviorController, BehaviorState>.internal(
+    NotifierProvider<BehaviorController, BehaviorState>.internal(
   BehaviorController.new,
   name: r'behaviorControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final behaviorControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$BehaviorController = AutoDisposeNotifier<BehaviorState>;
+typedef _$BehaviorController = Notifier<BehaviorState>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

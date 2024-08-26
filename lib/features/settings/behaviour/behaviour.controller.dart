@@ -10,7 +10,7 @@ import 'package:authenticator/provider.dart';
 part 'behaviour.controller.g.dart';
 part 'behaviour.state.dart';
 
-@riverpod
+@Riverpod(keepAlive: true)
 class BehaviorController extends _$BehaviorController with ConsoleMixin {
   @override
   BehaviorState build() {
