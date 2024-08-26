@@ -38,7 +38,7 @@ class _ScanPageState extends State<ScanPage> {
   @override
   Widget build(BuildContext context) {
     final torchEnabled = useValueNotifier(controller.torchEnabled);
-    final cameraFacing = useValueNotifier(controller.facing);
+    final cameraFacingState = useValueNotifier(controller.facing);
     return Scaffold(
       appBar: MorphingAppBar(
         title: const AppBarTitle(fallbackRouter: AppRouter.scan),
@@ -55,13 +55,13 @@ class _ScanPageState extends State<ScanPage> {
                 ),
                 onPressed: () {
                   controller.toggleTorch();
-                  setState(() {});
+                  torchEnabled.value = !torchEnabled.value;
                 },
               );
             },
           ),
           ValueListenableBuilder(
-            valueListenable: cameraFacing,
+            valueListenable: cameraFacingState,
             builder: (context, cameraFacing, child) {
               return IconButton(
                 icon: AppCrossFade(
@@ -71,7 +71,10 @@ class _ScanPageState extends State<ScanPage> {
                 ),
                 onPressed: () {
                   controller.switchCamera();
-                  setState(() {});
+                  cameraFacingState.value =
+                      cameraFacingState.value == CameraFacing.front
+                          ? CameraFacing.back
+                          : CameraFacing.front;
                 },
               );
             },
