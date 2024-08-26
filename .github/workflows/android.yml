@@ -13,6 +13,15 @@ jobs:
     steps:
     - name: Checkout code 🛎️
       uses: actions/checkout@v4
+      with:
+        path: authenticator
+
+    - name: Checkout Core Repo 🛎️
+      uses: actions/checkout@v4
+      with:
+        repository: InfiniteCoder06/authenticator_core
+        token: ${{ secrets.ACCESS_TOKEN }}
+        path: authenticator_core
 
     - name: Set up JDK ⚙️
       uses: actions/setup-java@v4
@@ -30,20 +39,23 @@ jobs:
         cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:'
     
     - name: Get dependencies 🔃
+      working-directory: ./authenticator
       run: flutter pub get
 
     - name: Build apk ⛏️
+      working-directory: ./authenticator
       run: flutter build apk --obfuscate --split-debug-info=authenticator/symbols --split-per-abi
 
     - name: Get release file apk path 🔳
       id: releaseApk
+      working-directory: ./authenticator
       run: echo "apkfile=$(find build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
 
     - name: Upload artifact ⬆️
       uses: actions/upload-artifact@v4
       with:
         name: Build APK
-        path: build/app/outputs/apk/release/*.apk
+        path: authenticator/build/app/outputs/apk/release/*.apk
         retention-days: 5
 
     

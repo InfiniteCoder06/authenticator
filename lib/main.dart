@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 // 📦 Package imports:
+import 'package:authenticator_core/firebase_options.dart';
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -19,7 +20,6 @@ import 'package:authenticator/core/router/app_router.config.dart';
 import 'package:authenticator/core/utils/constants/theme.constant.dart';
 import 'package:authenticator/core/utils/route_observer.util.dart';
 import 'package:authenticator/features/settings/theme/theme.controller.dart';
-import 'package:authenticator/firebase_options.dart';
 import 'package:authenticator/modules.dart';
 import 'package:authenticator/provider.dart';
 import 'package:authenticator/widgets/app_builder.widget.dart';

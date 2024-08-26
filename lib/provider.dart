@@ -1,9 +1,9 @@
 // 📦 Package imports:
+import 'package:authenticator_core/core/database/firebase_backup_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // 🌎 Project imports:
 import 'package:authenticator/core/database/adapter/base_entry_repository.dart';
-import 'package:authenticator/core/database/firebase/firebase_backup_repository.dart';
 import 'package:authenticator/core/database/hive/hive_entry_repository.dart';
 import 'package:authenticator/core/persistence/persistance.dart';
 import 'package:authenticator/core/persistence/security.persistance.dart';
