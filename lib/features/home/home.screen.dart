@@ -37,10 +37,14 @@ class EntryOverviewPage extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final searchController = useTextEditingController();
-    ref.listen(showSearchProvider, (prev, next) {
+    final searchNode = useFocusNode();
+    ref.listen(showSearchProvider, (prev, next) async {
       if (!next) {
         FocusManager.instance.primaryFocus?.unfocus();
         searchController.clear();
+      } else {
+        await Future.delayed(Durations.medium3);
+        searchNode.requestFocus();
       }
     });
     useListenable(searchController);
@@ -65,7 +69,10 @@ class EntryOverviewPage extends HookConsumerWidget {
               child: const ProgressBar(),
             );
           }),
-          HomeSearchBar(searchController: searchController),
+          HomeSearchBar(
+            focusNode: searchNode,
+            searchController: searchController,
+          ),
           Builder(
             builder: (context) {
               final entries =

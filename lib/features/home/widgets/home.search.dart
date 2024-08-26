@@ -9,8 +9,13 @@ import 'package:authenticator/features/home/home.controller.dart';
 import 'package:authenticator/widgets/app_cross_fade.dart';
 
 class HomeSearchBar extends HookConsumerWidget {
-  const HomeSearchBar({super.key, required this.searchController});
+  const HomeSearchBar({
+    super.key,
+    this.focusNode,
+    required this.searchController,
+  });
 
+  final FocusNode? focusNode;
   final TextEditingController searchController;
 
   @override
@@ -27,6 +32,8 @@ class HomeSearchBar extends HookConsumerWidget {
         child: SearchBar(
           hintText: 'Search',
           controller: searchController,
+          autoFocus: true,
+          focusNode: focusNode,
           elevation: const WidgetStatePropertyAll(1),
           trailing: [
             IconButton(
