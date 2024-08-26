@@ -66,7 +66,6 @@ class EntryOverviewPage extends HookConsumerWidget {
             );
           }),
           HomeSearchBar(searchController: searchController),
-          const HomeInfoBar(),
           Builder(
             builder: (context) {
               final entries =
@@ -80,12 +79,15 @@ class EntryOverviewPage extends HookConsumerWidget {
                           return ref.refresh(getAllItemProvider.future);
                         },
                         child: ListView.builder(
-                          itemCount: entries.length,
+                          itemCount: entries.length + 1,
                           itemBuilder: (context, index) {
-                            final item = entries[index];
+                            if (index == 0) {
+                              return const HomeInfoBar();
+                            }
+                            final item = entries[index - 1];
                             final selected = ref.watch(selectedEntriesProvider);
                             return ItemCard(
-                              index: index,
+                              index: index - 1,
                               item: item,
                               onDelete: (_) async {
                                 await AppDialogs.showDeletionDialog(
