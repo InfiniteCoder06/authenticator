@@ -1,9 +1,6 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
-// 📦 Package imports:
-import 'package:swipeable_page_route/swipeable_page_route.dart';
-
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
@@ -25,25 +22,94 @@ class AppExpandedAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppRouter? fallbackRouter =
         this.fallbackRouter ?? AppBarTitle.router(context);
-    return MorphingSliverAppBar(
-      expandedHeight: 152.0,
-      collapsedHeight: 64.0,
-      leading: ModalRoute.of(context)?.settings.name == "/"
-          ? null
-          : const AppPopButton(),
+
+    return SliverPersistentHeader(
       pinned: true,
-      floating: true,
-      stretch: true,
-      elevation: Theme.of(context).appBarTheme.elevation,
-      flexibleSpace: FlexibleSpaceBar(
-        title: Text(
-          fallbackRouter?.title ?? "",
-          style: Theme.of(context).textTheme.headlineSmall,
-        ),
-        titlePadding:
-            const EdgeInsets.only(bottom: 16.0, left: 60, right: 16.0, top: 0),
+      delegate: LargeCustomHeader(
+        title: fallbackRouter?.title ?? "",
+        topSafeAreaPadding: MediaQuery.of(context).padding.top,
+        leading: ModalRoute.of(context)?.settings.name == "/"
+            ? const SizedBox.shrink()
+            : const AppPopButton(),
+        height: 200,
       ),
-      actions: actions,
     );
+  }
+}
+
+class LargeCustomHeader extends SliverPersistentHeaderDelegate {
+  LargeCustomHeader({
+    required this.leading,
+    required this.topSafeAreaPadding,
+    required this.height,
+    this.title = '',
+  });
+
+  final String title;
+  final double height;
+
+  final Widget leading;
+  final double topSafeAreaPadding;
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    final titleAlignTween =
+        AlignmentTween(begin: Alignment.bottomLeft, end: Alignment.topLeft);
+    final titleMarginTween = EdgeInsetsTween(
+      begin: const EdgeInsets.only(left: 16, bottom: 20),
+      end: const EdgeInsets.only(top: 0, left: 72),
+    );
+
+    final progress = ((shrinkOffset / maxExtent) * 100) / kToolbarHeight;
+    final titleMarginProgress = titleMarginTween.lerp(progress.clamp(0, 1));
+    final titleAlignProgress = titleAlignTween.lerp(progress.clamp(0, 1));
+    return Container(
+      color: Theme.of(context).colorScheme.surface,
+      height: maxExtent,
+      child: Stack(
+        children: [
+          SizedBox(
+            height: topSafeAreaPadding + 200,
+            child: AppBar(
+              automaticallyImplyLeading: false,
+              leading: ModalRoute.of(context)?.settings.name == "/"
+                  ? null
+                  : const AppPopButton(),
+            ),
+          ),
+          Container(
+            height: 200,
+            padding: EdgeInsets.only(top: topSafeAreaPadding),
+            alignment: titleAlignProgress,
+            child: Container(
+              alignment: Alignment.centerLeft,
+              height: kToolbarHeight,
+              margin: titleMarginProgress,
+              child: Hero(
+                tag: 'MorphingAppBarTitle',
+                child: Text(
+                  title,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                        letterSpacing: -0.7,
+                      ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => height;
+
+  @override
+  double get minExtent => kToolbarHeight + topSafeAreaPadding;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
   }
 }
