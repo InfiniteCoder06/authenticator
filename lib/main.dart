@@ -57,12 +57,6 @@ void main() async {
   final (light, dark) = await getAccentColor();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      systemNavigationBarColor: Colors.transparent,
-    ),
-  );
 
   runApp(UncontrolledProviderScope(
     container: container,
