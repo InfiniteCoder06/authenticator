@@ -56,8 +56,9 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       context: context,
       correctString: secret,
       canCancel: canCancel,
+      onCancelled: () => Navigator.of(context).pop(false),
       onUnlocked: () => Navigator.of(context).pop(true),
-    ) as bool;
+    ) as bool?;
     return authenticated == true;
   }
 }
