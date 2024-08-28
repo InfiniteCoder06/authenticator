@@ -161,6 +161,7 @@ class EntryOverviewPage extends HookConsumerWidget {
           ),
         ],
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
         tooltip: "Add",
         onPressed: () async => showModalBottomSheet(
