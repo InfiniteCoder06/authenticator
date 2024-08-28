@@ -88,6 +88,7 @@ class AccountSettingsPage extends HookConsumerWidget {
                         ListTile(
                           key: const Key("settings.list.smartSync"),
                           leading: const Icon(Icons.refresh_rounded),
+                          enabled: userId != "Anonymous",
                           title: const Text("Sync Changes"),
                           onTap: () async {
                             await ref
@@ -98,6 +99,7 @@ class AccountSettingsPage extends HookConsumerWidget {
                         ListTile(
                           key: const Key("settings.list.backup"),
                           leading: const Icon(Icons.cloud_upload_rounded),
+                          enabled: userId != "Anonymous",
                           title: const Text("Backup"),
                           onTap: () async {
                             if (ref
@@ -119,6 +121,7 @@ class AccountSettingsPage extends HookConsumerWidget {
                         ListTile(
                           key: const Key("settings.list.restore"),
                           leading: const Icon(Icons.cloud_download_rounded),
+                          enabled: userId != "Anonymous",
                           title: const Text("Restore"),
                           onTap: () async {
                             await ref
