@@ -86,14 +86,11 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
               alignment: Alignment.centerLeft,
               height: kToolbarHeight,
               margin: titleMarginProgress,
-              child: Hero(
-                tag: 'MorphingAppBarTitle',
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        letterSpacing: -0.7,
-                      ),
-                ),
+              child: Text(
+                title,
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                      letterSpacing: -0.7,
+                    ),
               ),
             ),
           ),
