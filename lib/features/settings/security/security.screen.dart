@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:authenticator/core/types/lock.type.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/features/settings/security/security.controller.dart';
+import 'package:authenticator/widgets/app_cross_fade.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 
 class SecuritySettingsPage extends HookConsumerWidget {
@@ -39,8 +40,8 @@ class SecuritySettingsPage extends HookConsumerWidget {
                             .remove(context, type: LockType.pin);
                   },
                 ),
-                if (isEnabled)
-                  Builder(
+                AppCrossFade(
+                  firstChild: Builder(
                     builder: (context) {
                       final controller = ref.watch(
                           securityControllerProvider.select((state) =>
@@ -68,7 +69,10 @@ class SecuritySettingsPage extends HookConsumerWidget {
                             : null,
                       );
                     },
-                  )
+                  ),
+                  secondChild: const SizedBox.shrink(),
+                  showFirst: isEnabled,
+                ),
               ],
             ),
           ),
