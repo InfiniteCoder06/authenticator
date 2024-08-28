@@ -43,7 +43,7 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
     bool authenticated =
         await _authentication(option.context, "Set up biometic unlock");
     if (authenticated) {
-      await info.storage.setLock(type: option.lockType);
+      await info.storage.setLock(type: option.nextLockType);
     }
     return option.next(authenticated);
   }
@@ -53,7 +53,7 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
     bool authenticated =
         await _authentication(option.context, "Remove biometric");
     if (authenticated) {
-      await info.storage.setLock(type: option.lockType);
+      await info.storage.setLock(type: option.nextLockType);
     }
     return option.next(authenticated);
   }
@@ -63,14 +63,7 @@ class BiometricsService extends _BaseLockService<BiometricsOptions>
     String localizedReason,
   ) async {
     try {
-      return info.localAuth.authenticate(
-        localizedReason: localizedReason,
-        options: const AuthenticationOptions(
-          useErrorDialogs: true,
-          stickyAuth: false,
-          biometricOnly: false,
-        ),
-      );
+      return info.localAuth.authenticate(localizedReason: localizedReason);
     } on PlatformException catch (e) {
       console.error("$e");
       if (e.code == auth_error.notAvailable) {

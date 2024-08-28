@@ -4,13 +4,13 @@ abstract class _BaseLockOptions {
   final BuildContext context;
   final SecurityObject? object;
   final Future<bool> Function(bool authenticated) next;
-  final LockType lockType;
+  final LockType nextLockType;
   final LockFlowType flowType;
 
   _BaseLockOptions({
     required this.context,
     required this.object,
-    required this.lockType,
+    required this.nextLockType,
     required this.next,
     required this.flowType,
   });
@@ -31,7 +31,7 @@ class BiometricsOptions extends _BaseLockOptions {
   BiometricsOptions({
     required super.context,
     required super.object,
-    required super.lockType,
+    required super.nextLockType,
     required super.next,
     required super.flowType,
   });
@@ -41,7 +41,7 @@ class PinCodeOptions extends _BaseLockOptions {
   PinCodeOptions({
     required super.context,
     required super.object,
-    required super.lockType,
+    required super.nextLockType,
     required super.next,
     required super.flowType,
   });

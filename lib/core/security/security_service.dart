@@ -64,7 +64,7 @@ class SecurityService {
         return pinCodeService.unlock(PinCodeOptions(
           context: context,
           object: object,
-          lockType: LockType.pin,
+          nextLockType: LockType.pin,
           flowType: LockFlowType.unlock,
           next: (authenticated) async => authenticated,
         ));
@@ -72,7 +72,7 @@ class SecurityService {
         return biometricService.unlock(BiometricsOptions(
           context: context,
           object: object,
-          lockType: LockType.biometrics,
+          nextLockType: LockType.biometrics,
           flowType: LockFlowType.unlock,
           next: (bool authenticated) async => authenticated,
         ));
@@ -90,7 +90,7 @@ class SecurityService {
         return await pinCodeService.set(PinCodeOptions(
           context: context,
           object: null,
-          lockType: LockType.pin,
+          nextLockType: LockType.pin,
           flowType: LockFlowType.set,
           next: (authenticated) async => authenticated,
         ));
@@ -98,7 +98,7 @@ class SecurityService {
         return await biometricService.set(BiometricsOptions(
           context: context,
           object: null,
-          lockType: LockType.biometrics,
+          nextLockType: LockType.biometrics,
           flowType: LockFlowType.set,
           next: (authenticated) async => authenticated,
         ));
@@ -118,7 +118,7 @@ class SecurityService {
         return pinCodeService.remove(PinCodeOptions(
           context: context,
           object: object,
-          lockType: LockType.none,
+          nextLockType: LockType.none,
           flowType: LockFlowType.remove,
           next: (bool authenticated) async => authenticated,
         ));
@@ -126,7 +126,7 @@ class SecurityService {
         return biometricService.remove(BiometricsOptions(
           context: context,
           object: object,
-          lockType: LockType.pin,
+          nextLockType: LockType.pin,
           flowType: LockFlowType.remove,
           next: (bool authenticated) async => authenticated,
         ));

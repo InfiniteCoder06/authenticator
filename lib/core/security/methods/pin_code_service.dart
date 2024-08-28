@@ -28,7 +28,8 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       canCancel: option.canCancel,
     ) as String?;
     if (matchedSecret != null) {
-      await info.storage.setLock(type: option.lockType, secret: matchedSecret);
+      await info.storage
+          .setLock(type: option.nextLockType, secret: matchedSecret);
       return true;
     } else {
       return false;
@@ -41,20 +42,26 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
     bool authenticated = await _confirmOwnership(
       context: option.context,
       secret: option.object!.secret,
+      title: "Remove Lock",
       canCancel: option.canCancel,
     );
-    if (authenticated) await info.storage.setLock(type: option.lockType);
+    if (authenticated) await info.storage.setLock(type: option.nextLockType);
     return option.next(authenticated);
   }
 
   Future<bool> _confirmOwnership({
     required BuildContext context,
     required String secret,
+    String? title,
     bool canCancel = false,
   }) async {
     final authenticated = await showEnhancedScreenLock(
       context: context,
       correctString: secret,
+      title: Text(
+        title ?? 'Unlock',
+        style: Theme.of(context).textTheme.titleLarge,
+      ),
       canCancel: canCancel,
       onCancelled: () => Navigator.of(context).pop(false),
       onUnlocked: () => Navigator.of(context).pop(true),
