@@ -23,56 +23,53 @@ class SecuritySettingsPage extends HookConsumerWidget {
           const AppExpandedAppBar(),
           SliverPadding(
             padding: ConfigConstant.layoutPadding,
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                <Widget>[
-                  SwitchListTile(
-                    title: const Text('Security'),
-                    subtitle: const Text('Enable security'),
-                    value: isEnabled,
-                    onChanged: (value) {
-                      value
-                          ? ref
-                              .read(securityControllerProvider.notifier)
-                              .set(context, type: LockType.pin)
-                          : ref
-                              .read(securityControllerProvider.notifier)
-                              .remove(context, type: LockType.pin);
+            sliver: SliverList.list(
+              children: [
+                SwitchListTile(
+                  title: const Text('Security'),
+                  subtitle: const Text('Enable security'),
+                  value: isEnabled,
+                  onChanged: (value) {
+                    value
+                        ? ref
+                            .read(securityControllerProvider.notifier)
+                            .set(context, type: LockType.pin)
+                        : ref
+                            .read(securityControllerProvider.notifier)
+                            .remove(context, type: LockType.pin);
+                  },
+                ),
+                if (isEnabled)
+                  Builder(
+                    builder: (context) {
+                      final controller = ref.watch(
+                          securityControllerProvider.select((state) =>
+                              (state.hasBiometrics, state.biometrics)));
+                      return SwitchListTile(
+                        title: const Text('Biometric Unlock'),
+                        subtitle: controller.$1
+                            ? const Text(
+                                'Allow biometric authentication to unlock')
+                            : const Text('Unsupported Hardware'),
+                        value: controller.$2,
+                        onChanged: controller.$1
+                            ? (value) {
+                                value
+                                    ? ref
+                                        .read(
+                                            securityControllerProvider.notifier)
+                                        .set(context, type: LockType.biometrics)
+                                    : ref
+                                        .read(
+                                            securityControllerProvider.notifier)
+                                        .remove(context,
+                                            type: LockType.biometrics);
+                              }
+                            : null,
+                      );
                     },
-                  ),
-                  if (isEnabled)
-                    Builder(
-                      builder: (context) {
-                        final controller = ref.watch(
-                            securityControllerProvider.select((state) =>
-                                (state.hasBiometrics, state.biometrics)));
-                        return SwitchListTile(
-                          title: const Text('Biometric Unlock'),
-                          subtitle: controller.$1
-                              ? const Text(
-                                  'Allow biometric authentication to unlock')
-                              : const Text('Unsupported Hardware'),
-                          value: controller.$2,
-                          onChanged: controller.$1
-                              ? (value) {
-                                  value
-                                      ? ref
-                                          .read(securityControllerProvider
-                                              .notifier)
-                                          .set(context,
-                                              type: LockType.biometrics)
-                                      : ref
-                                          .read(securityControllerProvider
-                                              .notifier)
-                                          .remove(context,
-                                              type: LockType.biometrics);
-                                }
-                              : null,
-                        );
-                      },
-                    )
-                ],
-              ),
+                  )
+              ],
             ),
           ),
         ],

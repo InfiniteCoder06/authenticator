@@ -55,83 +55,81 @@ class AccountSettingsPage extends HookConsumerWidget {
             const AppExpandedAppBar(),
             SliverPadding(
               padding: ConfigConstant.layoutPadding,
-              sliver: SliverList(
-                delegate: SliverChildListDelegate(
-                  <Widget>[
-                    Builder(builder: (context) {
-                      final cloudUpdated = ref.watch(accountControllerProvider
-                          .select((state) => state.lastSync));
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Text(
-                          "Last Synced: ${DateTime.fromMillisecondsSinceEpoch(cloudUpdated).toIso8601String()}",
-                          style: Theme.of(context).textTheme.bodyLarge,
+              sliver: SliverList.list(
+                children: [
+                  Builder(builder: (context) {
+                    final cloudUpdated = ref.watch(accountControllerProvider
+                        .select((state) => state.lastSync));
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        "Last Synced: ${DateTime.fromMillisecondsSinceEpoch(cloudUpdated).toIso8601String()}",
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    );
+                  }),
+                  Builder(builder: (context) {
+                    final userId = ref.watch(accountControllerProvider
+                        .select((state) => state.userId));
+                    return Column(
+                      children: [
+                        MaterialDropDownListTile(
+                          leading: const Icon(Icons.account_circle_rounded),
+                          title: const Text("Account"),
+                          subtitle: const Text("Select Account to sync"),
+                          value: userId,
+                          onChanged: (changedUser) async {
+                            if (changedUser == null) return;
+                            await ref
+                                .read(accountControllerProvider.notifier)
+                                .syncChanges(changedUser);
+                          },
                         ),
-                      );
-                    }),
-                    Builder(builder: (context) {
-                      final userId = ref.watch(accountControllerProvider
-                          .select((state) => state.userId));
-                      return Column(
-                        children: [
-                          MaterialDropDownListTile(
-                            leading: const Icon(Icons.account_circle_rounded),
-                            title: const Text("Account"),
-                            subtitle: const Text("Select Account to sync"),
-                            value: userId,
-                            onChanged: (changedUser) async {
-                              if (changedUser == null) return;
+                        ListTile(
+                          key: const Key("settings.list.smartSync"),
+                          leading: const Icon(Icons.refresh_rounded),
+                          title: const Text("Sync Changes"),
+                          onTap: () async {
+                            await ref
+                                .read(accountControllerProvider.notifier)
+                                .syncChanges(userId);
+                          },
+                        ),
+                        ListTile(
+                          key: const Key("settings.list.backup"),
+                          leading: const Icon(Icons.cloud_upload_rounded),
+                          title: const Text("Backup"),
+                          onTap: () async {
+                            if (ref
+                                .read(accountControllerProvider)
+                                .isSyncRequired) {
                               await ref
                                   .read(accountControllerProvider.notifier)
-                                  .syncChanges(changedUser);
-                            },
-                          ),
-                          ListTile(
-                            key: const Key("settings.list.smartSync"),
-                            leading: const Icon(Icons.refresh_rounded),
-                            title: const Text("Sync Changes"),
-                            onTap: () async {
-                              await ref
-                                  .read(accountControllerProvider.notifier)
-                                  .syncChanges(userId);
-                            },
-                          ),
-                          ListTile(
-                            key: const Key("settings.list.backup"),
-                            leading: const Icon(Icons.cloud_upload_rounded),
-                            title: const Text("Backup"),
-                            onTap: () async {
-                              if (ref
-                                  .read(accountControllerProvider)
-                                  .isSyncRequired) {
-                                await ref
-                                    .read(accountControllerProvider.notifier)
-                                    .backupDataManual();
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                  ..hideCurrentSnackBar()
-                                  ..showSnackBar(
-                                    const SnackBar(
-                                        content: Text("Nothing to Sync")),
-                                  );
-                              }
-                            },
-                          ),
-                          ListTile(
-                            key: const Key("settings.list.restore"),
-                            leading: const Icon(Icons.cloud_download_rounded),
-                            title: const Text("Restore"),
-                            onTap: () async {
-                              await ref
-                                  .read(accountControllerProvider.notifier)
-                                  .restoreData(userId, logging: true);
-                            },
-                          ),
-                        ],
-                      );
-                    }),
-                  ],
-                ),
+                                  .backupDataManual();
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(
+                                  const SnackBar(
+                                      content: Text("Nothing to Sync")),
+                                );
+                            }
+                          },
+                        ),
+                        ListTile(
+                          key: const Key("settings.list.restore"),
+                          leading: const Icon(Icons.cloud_download_rounded),
+                          title: const Text("Restore"),
+                          onTap: () async {
+                            await ref
+                                .read(accountControllerProvider.notifier)
+                                .restoreData(userId, logging: true);
+                          },
+                        ),
+                      ],
+                    );
+                  }),
+                ],
               ),
             ),
           ],

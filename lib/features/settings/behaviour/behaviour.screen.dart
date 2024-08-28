@@ -22,83 +22,81 @@ class BehaviourSettingsPage extends HookConsumerWidget {
           const AppExpandedAppBar(),
           SliverPadding(
             padding: ConfigConstant.layoutPadding,
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                <Widget>[
-                  Builder(builder: (context) {
-                    final copyOnTap = ref.watch(behaviorControllerProvider
-                        .select((state) => state.copyOnTap));
-                    return SwitchListTile(
-                      title: const Text("Copy tokens when tapped"),
-                      subtitle: const Text(
-                        "Copy tokens to the clipboard by tapping them",
-                      ),
-                      value: copyOnTap,
-                      onChanged: (value) async => ref
-                          .read(behaviorControllerProvider.notifier)
-                          .toggleCopyOnTap(value),
-                    );
-                  }),
-                  Builder(builder: (context) {
-                    final searchOnStart = ref.watch(behaviorControllerProvider
-                        .select((state) => state.searchOnStart));
-                    return SwitchListTile(
-                      title: const Text("Search on Start"),
-                      subtitle: const Text(
-                        "Open the search field on Start",
-                      ),
-                      value: searchOnStart,
-                      onChanged: (value) async => ref
-                          .read(behaviorControllerProvider.notifier)
-                          .toggleSearchOnStart(value),
-                    );
-                  }),
-                  const ListTile(
-                    title: Text("Font Size"),
-                    subtitle: Text(
-                      "Change the font size of OTP",
+            sliver: SliverList.list(
+              children: [
+                Builder(builder: (context) {
+                  final copyOnTap = ref.watch(behaviorControllerProvider
+                      .select((state) => state.copyOnTap));
+                  return SwitchListTile(
+                    title: const Text("Copy tokens when tapped"),
+                    subtitle: const Text(
+                      "Copy tokens to the clipboard by tapping them",
                     ),
-                  ),
-                  Builder(builder: (context) {
-                    final fontSize = ref.watch(behaviorControllerProvider
-                        .select((state) => state.fontSize));
-                    return Slider(
-                      min: 20,
-                      max: 30,
-                      divisions: 10,
-                      value: fontSize.toDouble(),
-                      label: fontSize.toString(),
-                      onChanged: (value) => ref
-                          .read(behaviorControllerProvider.notifier)
-                          .setFontSize(value.toInt()),
-                    );
-                  }),
-                  const ListTile(
-                    title: Text("Code digit grouping"),
-                    subtitle: Text(
-                      "Select number of digits to group codes by",
+                    value: copyOnTap,
+                    onChanged: (value) async => ref
+                        .read(behaviorControllerProvider.notifier)
+                        .toggleCopyOnTap(value),
+                  );
+                }),
+                Builder(builder: (context) {
+                  final searchOnStart = ref.watch(behaviorControllerProvider
+                      .select((state) => state.searchOnStart));
+                  return SwitchListTile(
+                    title: const Text("Search on Start"),
+                    subtitle: const Text(
+                      "Open the search field on Start",
                     ),
+                    value: searchOnStart,
+                    onChanged: (value) async => ref
+                        .read(behaviorControllerProvider.notifier)
+                        .toggleSearchOnStart(value),
+                  );
+                }),
+                const ListTile(
+                  title: Text("Font Size"),
+                  subtitle: Text(
+                    "Change the font size of OTP",
                   ),
-                  Builder(builder: (context) {
-                    final codeGroup = ref.watch(behaviorControllerProvider
-                        .select((state) => state.codeGroup));
-                    return Slider(
-                      min: 2,
-                      max: 6,
-                      divisions: 4,
-                      value: codeGroup.toDouble(),
-                      label: codeGroup.toString(),
-                      onChanged: (value) => ref
-                          .read(behaviorControllerProvider.notifier)
-                          .setCodeGroup(value.toInt()),
-                    );
-                  }),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: FakeEntry(),
-                  )
-                ],
-              ),
+                ),
+                Builder(builder: (context) {
+                  final fontSize = ref.watch(behaviorControllerProvider
+                      .select((state) => state.fontSize));
+                  return Slider(
+                    min: 20,
+                    max: 30,
+                    divisions: 10,
+                    value: fontSize.toDouble(),
+                    label: fontSize.toString(),
+                    onChanged: (value) => ref
+                        .read(behaviorControllerProvider.notifier)
+                        .setFontSize(value.toInt()),
+                  );
+                }),
+                const ListTile(
+                  title: Text("Code digit grouping"),
+                  subtitle: Text(
+                    "Select number of digits to group codes by",
+                  ),
+                ),
+                Builder(builder: (context) {
+                  final codeGroup = ref.watch(behaviorControllerProvider
+                      .select((state) => state.codeGroup));
+                  return Slider(
+                    min: 2,
+                    max: 6,
+                    divisions: 4,
+                    value: codeGroup.toDouble(),
+                    label: codeGroup.toString(),
+                    onChanged: (value) => ref
+                        .read(behaviorControllerProvider.notifier)
+                        .setCodeGroup(value.toInt()),
+                  );
+                }),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: FakeEntry(),
+                ),
+              ],
             ),
           ),
         ],

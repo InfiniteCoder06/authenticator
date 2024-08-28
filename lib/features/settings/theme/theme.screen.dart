@@ -22,122 +22,117 @@ class ThemeSettingsPage extends HookConsumerWidget {
           const AppExpandedAppBar(),
           SliverPadding(
             padding: ConfigConstant.layoutPadding,
-            sliver: SliverList(
-              delegate: SliverChildListDelegate(
-                <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "App Color Theme",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                        ConfigConstant.sizedBoxH0,
-                        Text(
-                          "Try another look",
-                          style:
-                              Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall!
-                                        .color,
+            sliver: SliverList.list(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "App Color Theme",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      ConfigConstant.sizedBoxH0,
+                      Text(
+                        "Try another look",
+                        style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                              color:
+                                  Theme.of(context).textTheme.bodySmall!.color,
+                            ),
+                      ),
+                      ConfigConstant.sizedBoxH0,
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: Colors.primaries
+                              .mapWithIndex(
+                                (color, index) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5,
+                                    horizontal: 2.5,
                                   ),
-                        ),
-                        ConfigConstant.sizedBoxH0,
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: Colors.primaries
-                                .mapWithIndex(
-                                  (color, index) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      vertical: 5,
-                                      horizontal: 2.5,
+                                  child: Card(
+                                    elevation: 3,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: ShapeConstant.large,
                                     ),
-                                    child: Card(
-                                      elevation: 3,
-                                      shape: RoundedRectangleBorder(
+                                    shadowColor: Colors.transparent,
+                                    child: SizedBox(
+                                      height: 80,
+                                      width: 80,
+                                      child: InkWell(
                                         borderRadius: ShapeConstant.large,
-                                      ),
-                                      shadowColor: Colors.transparent,
-                                      child: SizedBox(
-                                        height: 80,
-                                        width: 80,
-                                        child: InkWell(
-                                          borderRadius: ShapeConstant.large,
-                                          onTap: () => ref
-                                              .read(themeControllerProvider
-                                                  .notifier)
-                                              .setAccent(index),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(13),
-                                            child: CircleAvatar(
-                                              backgroundColor: color,
-                                            ),
+                                        onTap: () => ref
+                                            .read(themeControllerProvider
+                                                .notifier)
+                                            .setAccent(index),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(13),
+                                          child: CircleAvatar(
+                                            backgroundColor: color,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                )
-                                .toList(),
-                          ),
-                        ),
-                        Builder(
-                          builder: (context) {
-                            final themeMode = ref.watch(themeControllerProvider
-                                .select((state) => state.themeMode));
-                            return Column(
-                              children: [
-                                SegmentedButton<ThemeMode>(
-                                  segments: const [
-                                    ButtonSegment(
-                                      icon: Icon(Icons.laptop_rounded),
-                                      value: ThemeMode.system,
-                                      label: Text("System"),
-                                    ),
-                                    ButtonSegment(
-                                      icon: Icon(Icons.light_mode_rounded),
-                                      value: ThemeMode.light,
-                                      label: Text("Light"),
-                                    ),
-                                    ButtonSegment(
-                                      icon: Icon(Icons.dark_mode_rounded),
-                                      value: ThemeMode.dark,
-                                      label: Text("Dark"),
-                                    ),
-                                  ],
-                                  onSelectionChanged: (themeMode) => ref
-                                      .read(themeControllerProvider.notifier)
-                                      .toggleThemeMode(themeMode.first),
-                                  selected: {themeMode},
                                 ),
-                              ],
-                            );
-                          },
+                              )
+                              .toList(),
                         ),
-                      ],
-                    ),
+                      ),
+                      Builder(
+                        builder: (context) {
+                          final themeMode = ref.watch(themeControllerProvider
+                              .select((state) => state.themeMode));
+                          return Column(
+                            children: [
+                              SegmentedButton<ThemeMode>(
+                                segments: const [
+                                  ButtonSegment(
+                                    icon: Icon(Icons.laptop_rounded),
+                                    value: ThemeMode.system,
+                                    label: Text("System"),
+                                  ),
+                                  ButtonSegment(
+                                    icon: Icon(Icons.light_mode_rounded),
+                                    value: ThemeMode.light,
+                                    label: Text("Light"),
+                                  ),
+                                  ButtonSegment(
+                                    icon: Icon(Icons.dark_mode_rounded),
+                                    value: ThemeMode.dark,
+                                    label: Text("Dark"),
+                                  ),
+                                ],
+                                onSelectionChanged: (themeMode) => ref
+                                    .read(themeControllerProvider.notifier)
+                                    .toggleThemeMode(themeMode.first),
+                                selected: {themeMode},
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  Builder(
-                    builder: (context) {
-                      final dynamicColor = ref.watch(themeControllerProvider
-                          .select((state) => state.dynamicColor));
-                      return SwitchListTile(
-                        title: const Text("Dynamic Color"),
-                        subtitle: const Text(
-                            "Use Accent Color from System/ Wallpaper"),
-                        value: dynamicColor,
-                        onChanged: (value) => ref
-                            .read(themeControllerProvider.notifier)
-                            .setDynamicColor(value),
-                      );
-                    },
-                  )
-                ],
-              ),
+                ),
+                Builder(
+                  builder: (context) {
+                    final dynamicColor = ref.watch(themeControllerProvider
+                        .select((state) => state.dynamicColor));
+                    return SwitchListTile(
+                      title: const Text("Dynamic Color"),
+                      subtitle:
+                          const Text("Use Accent Color from System/ Wallpaper"),
+                      value: dynamicColor,
+                      onChanged: (value) => ref
+                          .read(themeControllerProvider.notifier)
+                          .setDynamicColor(value),
+                    );
+                  },
+                )
+              ],
             ),
           ),
         ],
