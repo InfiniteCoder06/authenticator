@@ -48,7 +48,6 @@ class AccountSettingsPage extends HookConsumerWidget {
       canPop: true,
       onPopInvokedWithResult: (didPop, result) async {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        if (didPop) return;
       },
       child: Scaffold(
         body: CustomScrollView(

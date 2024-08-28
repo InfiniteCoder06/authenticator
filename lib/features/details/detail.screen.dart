@@ -36,6 +36,7 @@ class DetailPage extends HookConsumerWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
         if (didPop) return;
         final bool shouldPop =
             await ref.read(detailController.notifier).popRequest(context);
