@@ -8,6 +8,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:authenticator/core/utils/constants/config.constant.dart';
 import 'package:authenticator/core/utils/dialog.util.dart';
 import 'package:authenticator/features/settings/account/account.controller.dart';
+import 'package:authenticator/widgets/app_cross_fade.dart';
 import 'package:authenticator/widgets/app_silver_app_bar.dart';
 import 'package:authenticator/widgets/dropdown_list_tile.dart';
 import 'package:authenticator/widgets/loader.overlay.dart';
@@ -60,11 +61,19 @@ class AccountSettingsPage extends HookConsumerWidget {
                   Builder(builder: (context) {
                     final cloudUpdated = ref.watch(accountControllerProvider
                         .select((state) => state.lastSync));
+
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        "Last Synced: ${DateTime.fromMillisecondsSinceEpoch(cloudUpdated).toIso8601String()}",
-                        style: Theme.of(context).textTheme.bodyLarge,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: AppCrossFade(
+                        firstChild: Text(
+                          "Last Synced: Never Synced",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        secondChild: Text(
+                          "Last Synced: ${DateTime.fromMillisecondsSinceEpoch(cloudUpdated).toIso8601String()}",
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        showFirst: cloudUpdated == 1139941800000,
                       ),
                     );
                   }),
