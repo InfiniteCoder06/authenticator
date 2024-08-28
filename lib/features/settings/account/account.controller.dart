@@ -37,7 +37,13 @@ class AccountController extends _$AccountController with ConsoleMixin {
     try {
       final userId = await storageService.get(kUserId);
       final cloudChangesDiff = await backupRepository.lastUpdated();
-      state = state.copyWith(lastSync: cloudChangesDiff, userId: userId);
+      final isSyncRequired =
+          await storageService.get(kBackupNeeded, defaultValue: false);
+      state = state.copyWith(
+        lastSync: cloudChangesDiff,
+        isSyncRequired: isSyncRequired,
+        userId: userId,
+      );
       console.info("⚙️ Initialize");
     } catch (e) {
       console.error("Error");

@@ -61,7 +61,8 @@ class AccountSettingsPage extends HookConsumerWidget {
                     Builder(builder: (context) {
                       final cloudUpdated = ref.watch(accountControllerProvider
                           .select((state) => state.lastSync));
-                      return Center(
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Text(
                           "Last Synced: ${DateTime.fromMillisecondsSinceEpoch(cloudUpdated).toIso8601String()}",
                           style: Theme.of(context).textTheme.bodyLarge,
@@ -100,9 +101,20 @@ class AccountSettingsPage extends HookConsumerWidget {
                             leading: const Icon(Icons.cloud_upload_rounded),
                             title: const Text("Backup"),
                             onTap: () async {
-                              await ref
-                                  .read(accountControllerProvider.notifier)
-                                  .backupDataManual();
+                              if (ref
+                                  .read(accountControllerProvider)
+                                  .isSyncRequired) {
+                                await ref
+                                    .read(accountControllerProvider.notifier)
+                                    .backupDataManual();
+                              } else {
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(
+                                    const SnackBar(
+                                        content: Text("Nothing to Sync")),
+                                  );
+                              }
                             },
                           ),
                           ListTile(

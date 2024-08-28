@@ -10,6 +10,7 @@ enum SyncingState {
 class AccountState extends Equatable {
   final int lastSync;
   final String userId;
+  final bool isSyncRequired;
   final bool isSyncing;
   final SyncingState syncingState;
   final String errorMessage;
@@ -17,21 +18,23 @@ class AccountState extends Equatable {
   const AccountState(
     this.lastSync,
     this.userId,
+    this.isSyncRequired,
     this.isSyncing,
     this.syncingState,
     this.errorMessage,
   );
 
   factory AccountState.initial() => const AccountState(
-      1139941800000, "Anonymous", false, SyncingState.idle, '');
+      1139941800000, "Anonymous", false, false, SyncingState.idle, '');
 
   @override
   List<Object> get props =>
-      [lastSync, userId, isSyncing, syncingState, errorMessage];
+      [lastSync, userId, isSyncRequired, isSyncing, syncingState, errorMessage];
 
   AccountState copyWith({
     int? lastSync,
     String? userId,
+    bool? isSyncRequired,
     bool? isSyncing,
     SyncingState? syncingState,
     String? errorMessage,
@@ -39,6 +42,7 @@ class AccountState extends Equatable {
     return AccountState(
       lastSync ?? this.lastSync,
       userId ?? this.userId,
+      isSyncRequired ?? this.isSyncRequired,
       isSyncing ?? this.isSyncing,
       syncingState ?? this.syncingState,
       errorMessage ?? this.errorMessage,
