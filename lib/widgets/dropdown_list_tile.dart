@@ -33,7 +33,7 @@ class MaterialDropDownListTile extends StatelessWidget {
         value: value,
         borderRadius: ShapeConstant.small,
         padding: const EdgeInsets.all(8.0),
-        underline: Container(),
+        underline: const SizedBox.shrink(),
         items: const [
           DropdownMenuItem(
             value: "Praveen",

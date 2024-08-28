@@ -41,7 +41,7 @@ class AppIconButton extends StatelessWidget {
       );
     }
 
-    return Container(
+    return Padding(
       padding: const EdgeInsets.all(4),
       child: button,
     );

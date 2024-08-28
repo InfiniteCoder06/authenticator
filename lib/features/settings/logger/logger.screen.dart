@@ -261,24 +261,22 @@ class LogBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
       height: 60,
-      child: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            if (!dark)
-              BoxShadow(
-                color: Colors.grey[400]!,
-                blurRadius: 3,
-              ),
-          ],
-        ),
-        child: Material(
-          color: dark ? Colors.blueGrey[900] : Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
-            child: child,
-          ),
+      decoration: BoxDecoration(
+        boxShadow: [
+          if (!dark)
+            BoxShadow(
+              color: Colors.grey[400]!,
+              blurRadius: 3,
+            ),
+        ],
+      ),
+      child: Material(
+        color: dark ? Colors.blueGrey[900] : Colors.white,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 8, 15, 8),
+          child: child,
         ),
       ),
     );
