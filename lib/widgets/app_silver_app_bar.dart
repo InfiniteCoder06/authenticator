@@ -31,7 +31,7 @@ class AppExpandedAppBar extends StatelessWidget {
         leading: ModalRoute.of(context)?.settings.name == "/"
             ? const SizedBox.shrink()
             : const AppPopButton(),
-        height: 200,
+        height: 160,
       ),
     );
   }
@@ -57,7 +57,7 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
     final titleAlignTween =
         AlignmentTween(begin: Alignment.bottomLeft, end: Alignment.topLeft);
     final titleMarginTween = EdgeInsetsTween(
-      begin: const EdgeInsets.only(left: 16, bottom: 20),
+      begin: const EdgeInsets.only(left: 16, bottom: 0),
       end: const EdgeInsets.only(top: 0, left: 72),
     );
 
@@ -70,7 +70,7 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
       child: Stack(
         children: [
           SizedBox(
-            height: topSafeAreaPadding + 200,
+            height: topSafeAreaPadding + height,
             child: AppBar(
               automaticallyImplyLeading: false,
               leading: ModalRoute.of(context)?.settings.name == "/"
@@ -79,7 +79,7 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
             ),
           ),
           Container(
-            height: 200,
+            height: height,
             padding: EdgeInsets.only(top: topSafeAreaPadding),
             alignment: titleAlignProgress,
             child: Container(
