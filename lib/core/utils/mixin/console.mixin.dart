@@ -23,8 +23,9 @@ class TestingFilter extends LogFilter {
 }
 
 class Console {
-  final String name;
   Console({required this.name});
+
+  final String name;
 
   final logger = Logger(
     filter: kIsWeb ? ProductionFilter() : TestingFilter(),

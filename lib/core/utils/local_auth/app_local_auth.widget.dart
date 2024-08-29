@@ -23,9 +23,8 @@ class AppLocalAuth extends StatefulHookConsumerWidget {
 
   final GlobalKey<NavigatorState> navKey;
   final Widget child;
-  static AppLocalAuthState? of(BuildContext context) {
-    return context.findAncestorStateOfType<AppLocalAuthState>();
-  }
+  static AppLocalAuthState? of(BuildContext context) =>
+      context.findAncestorStateOfType<AppLocalAuthState>();
 
   @override
   ConsumerState<AppLocalAuth> createState() => AppLocalAuthState();
@@ -54,7 +53,7 @@ class AppLocalAuthState extends ConsumerState<AppLocalAuth>
     WidgetsBinding.instance.addObserver(this);
   }
 
-  void _handleSharedData(String sharedData) async {
+  Future<void> _handleSharedData(String sharedData) async {
     if (sharedData.isNotEmpty) {
       final result = OtpUtils.parseURI(Uri.parse(sharedData));
       result.match(
@@ -88,19 +87,15 @@ class AppLocalAuthState extends ConsumerState<AppLocalAuth>
         break;
       case AppLifecycleState.resumed:
         cancelTimer(const ValueKey("SecurityService"));
-        break;
       case AppLifecycleState.paused:
         scheduleAction(
-          () => showLock(),
+          showLock,
           key: const ValueKey("SecurityService"),
           duration: Duration(seconds: lockTime),
         );
-        break;
     }
   }
 
   @override
-  Widget build(BuildContext context) {
-    return widget.child;
-  }
+  Widget build(BuildContext context) => widget.child;
 }

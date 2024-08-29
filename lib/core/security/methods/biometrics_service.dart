@@ -2,8 +2,9 @@ part of '../security_service.dart';
 
 class BiometricsService extends _BaseLockService<BiometricsOptions>
     with ConsoleMixin {
-  final SecurityInformations info;
   BiometricsService(this.info);
+
+  final SecurityInformations info;
 
   @override
   Future<bool> unlock(BiometricsOptions option) async {

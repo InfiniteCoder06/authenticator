@@ -1,10 +1,6 @@
 part of 'theme.controller.dart';
 
 class ThemeState extends Equatable {
-  final bool dynamicColor;
-  final ThemeMode themeMode;
-  final int themeAccent;
-
   const ThemeState({
     required this.dynamicColor,
     required this.themeAccent,
@@ -13,6 +9,10 @@ class ThemeState extends Equatable {
 
   factory ThemeState.initial() => const ThemeState(
       dynamicColor: false, themeAccent: 3, themeMode: ThemeMode.light);
+
+  final bool dynamicColor;
+  final ThemeMode themeMode;
+  final int themeAccent;
 
   @override
   List<Object?> get props => [dynamicColor, themeAccent, themeMode];

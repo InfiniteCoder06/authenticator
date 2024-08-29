@@ -11,23 +11,6 @@ part 'item.model.g.dart';
 
 @HiveType(typeId: 0)
 class Item extends HiveObject with EquatableMixin implements Comparable<Item> {
-  @HiveField(0)
-  String identifier;
-  @HiveField(1)
-  DateTime createdTime;
-  @HiveField(2)
-  DateTime updatedTime;
-  @HiveField(3)
-  String name;
-  @HiveField(4)
-  String iconUrl;
-  @HiveField(5)
-  String secret;
-  @HiveField(6)
-  String issuer;
-  @HiveField(7)
-  bool deleted;
-
   Item({
     required this.identifier,
     required this.createdTime,
@@ -62,19 +45,50 @@ class Item extends HiveObject with EquatableMixin implements Comparable<Item> {
     return Item.fromMap(data!);
   }
 
+  factory Item.fromMap(Map<String, dynamic> map) => Item(
+        identifier: map['identifier'] as String,
+        createdTime:
+            DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
+        updatedTime:
+            DateTime.fromMillisecondsSinceEpoch(map['updatedTime'] as int),
+        name: map['name'] as String,
+        iconUrl: map['iconUrl'] as String,
+        secret: map['secret'] as String,
+        issuer: map['issuer'] as String,
+        deleted: map['deleted'] as bool,
+      );
+
+  factory Item.fromJson(String source) =>
+      Item.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @HiveField(0)
+  String identifier;
+  @HiveField(1)
+  DateTime createdTime;
+  @HiveField(2)
+  DateTime updatedTime;
+  @HiveField(3)
+  String name;
+  @HiveField(4)
+  String iconUrl;
+  @HiveField(5)
+  String secret;
+  @HiveField(6)
+  String issuer;
+  @HiveField(7)
+  bool deleted;
+
   @override
-  List<Object> get props {
-    return [
-      identifier,
-      createdTime,
-      updatedTime,
-      name,
-      iconUrl,
-      secret,
-      issuer,
-      deleted,
-    ];
-  }
+  List<Object> get props => [
+        identifier,
+        createdTime,
+        updatedTime,
+        name,
+        iconUrl,
+        secret,
+        issuer,
+        deleted,
+      ];
 
   Item copyWith({
     String? identifier,
@@ -98,45 +112,23 @@ class Item extends HiveObject with EquatableMixin implements Comparable<Item> {
     );
   }
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'identifier': identifier,
-      'createdTime': createdTime.millisecondsSinceEpoch,
-      'updatedTime': updatedTime.millisecondsSinceEpoch,
-      'name': name,
-      'iconUrl': iconUrl,
-      'secret': secret,
-      'issuer': issuer,
-      'deleted': deleted,
-    };
-  }
-
-  factory Item.fromMap(Map<String, dynamic> map) {
-    return Item(
-      identifier: map['identifier'] as String,
-      createdTime:
-          DateTime.fromMillisecondsSinceEpoch(map['createdTime'] as int),
-      updatedTime:
-          DateTime.fromMillisecondsSinceEpoch(map['updatedTime'] as int),
-      name: map['name'] as String,
-      iconUrl: map['iconUrl'] as String,
-      secret: map['secret'] as String,
-      issuer: map['issuer'] as String,
-      deleted: map['deleted'] as bool,
-    );
-  }
+  Map<String, dynamic> toMap() => <String, dynamic>{
+        'identifier': identifier,
+        'createdTime': createdTime.millisecondsSinceEpoch,
+        'updatedTime': updatedTime.millisecondsSinceEpoch,
+        'name': name,
+        'iconUrl': iconUrl,
+        'secret': secret,
+        'issuer': issuer,
+        'deleted': deleted,
+      };
 
   String toJson() => json.encode(toMap());
-
-  factory Item.fromJson(String source) =>
-      Item.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;
 
   @override
-  int compareTo(Item other) {
-    return createdTime.millisecondsSinceEpoch
-        .compareTo(other.createdTime.millisecondsSinceEpoch);
-  }
+  int compareTo(Item other) => createdTime.millisecondsSinceEpoch
+      .compareTo(other.createdTime.millisecondsSinceEpoch);
 }

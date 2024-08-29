@@ -65,14 +65,15 @@ class HomeAppBar extends HookConsumerWidget {
                 icon: const Icon(Icons.sort_outlined),
                 tooltip: "Sort",
                 routeSettings: const RouteSettings(name: 'HomeAppBarSort'),
-                itemBuilder: (context) => Sort.values.map((value) {
-                  return CheckedPopupMenuItem(
-                    value: value.index,
-                    checked: ref.read(sortProvider.notifier).state == value,
-                    child: Text(
-                        value.name[0].toUpperCase() + value.name.substring(1)),
-                  );
-                }).toList(),
+                itemBuilder: (context) => Sort.values
+                    .map((value) => CheckedPopupMenuItem(
+                          value: value.index,
+                          checked:
+                              ref.read(sortProvider.notifier).state == value,
+                          child: Text(value.name[0].toUpperCase() +
+                              value.name.substring(1)),
+                        ))
+                    .toList(),
                 onSelected: (index) {
                   ref.read(sortProvider.notifier).state =
                       Sort.values.elementAt(index);

@@ -85,22 +85,18 @@ class _ScanPageState extends State<ScanPage> {
         controller: controller,
         onDetect: (barcode) async =>
             onDetect(context: context, barcodes: barcode.barcodes),
-        placeholderBuilder: (_, child) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        errorBuilder: (context, error, _) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.error, color: Theme.of(context).colorScheme.error),
-                Text(error.errorCode.name),
-              ],
-            ),
-          );
-        },
+        placeholderBuilder: (_, child) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        errorBuilder: (context, error, _) => Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error, color: Theme.of(context).colorScheme.error),
+              Text(error.errorCode.name),
+            ],
+          ),
+        ),
         overlayBuilder: (context, constraints) =>
             const MaterialPreviewOverlay(),
       ),

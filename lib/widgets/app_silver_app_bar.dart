@@ -106,7 +106,5 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
   double get minExtent => kToolbarHeight + topSafeAreaPadding;
 
   @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) => true;
 }

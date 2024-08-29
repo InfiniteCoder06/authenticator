@@ -8,9 +8,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:authenticator/features/home/home.controller.dart';
 
 class CustomNavigatorObserver extends NavigatorObserver {
-  final WidgetRef ref;
-
   CustomNavigatorObserver({required this.ref});
+
+  final WidgetRef ref;
 
   @override
   void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {

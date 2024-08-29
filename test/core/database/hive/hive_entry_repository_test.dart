@@ -46,7 +46,7 @@ void main() {
     return item;
   });
 
-  void initMock() async {
+  Future<void> initMock() async {
     when(() => secureStorage.containsKey(key: 'key'))
         .thenAnswer((_) => Future.value(false));
     when(() => secureStorage.read(key: 'key'))

@@ -33,7 +33,7 @@ class AccountController extends _$AccountController with ConsoleMixin {
     return AccountState.initial();
   }
 
-  void postInit() async {
+  Future<void> postInit() async {
     try {
       final userId = await storageService.get(kUserId);
       final cloudChangesDiff = await backupRepository.lastUpdated();

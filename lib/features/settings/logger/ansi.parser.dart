@@ -4,11 +4,11 @@
 import 'package:flutter/material.dart';
 
 class AnsiParser {
+  AnsiParser(this.dark);
+
   static const TEXT = 0, BRACKET = 1, CODE = 2;
 
   final bool dark;
-
-  AnsiParser(this.dark);
 
   late List<TextSpan> spans;
   Color? foreground;
@@ -35,7 +35,6 @@ class AnsiParser {
           } else {
             text.write(c);
           }
-          break;
 
         case BRACKET:
           buffer.write(c);
@@ -45,7 +44,6 @@ class AnsiParser {
             state = TEXT;
             text.write(buffer);
           }
-          break;
 
         case CODE:
           buffer.write(c);
@@ -71,7 +69,6 @@ class AnsiParser {
             }
           }
 
-          break;
       }
     }
 
@@ -87,16 +84,12 @@ class AnsiParser {
       case 0:
         foreground = getColor(0, true);
         background = getColor(0, false);
-        break;
       case 38:
         foreground = getColor(codes[2], true);
-        break;
       case 39:
         foreground = getColor(0, true);
-        break;
       case 48:
         background = getColor(codes[2], false);
-        break;
       case 49:
         background = getColor(0, false);
     }
@@ -119,13 +112,11 @@ class AnsiParser {
     }
   }
 
-  TextSpan createSpan(String text) {
-    return TextSpan(
-      text: text,
-      style: TextStyle(
-        color: foreground,
-        backgroundColor: background,
-      ),
-    );
-  }
+  TextSpan createSpan(String text) => TextSpan(
+        text: text,
+        style: TextStyle(
+          color: foreground,
+          backgroundColor: background,
+        ),
+      );
 }

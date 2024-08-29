@@ -44,7 +44,7 @@ Future<T?> showEnhancedScreenLock<T>({
   ScreenLockConfig screenLockConfig =
       ScreenLockHelper.screenLockConfig(colorScheme, context, textTheme);
 
-  return await Navigator.of(context).pushNamed(AppRouter.lock.path,
+  return Navigator.of(context).pushNamed(AppRouter.lock.path,
       arguments: SecurityPageArgs(
         context: context,
         correctString: correctString,
@@ -59,16 +59,14 @@ Future<T?> showEnhancedScreenLock<T>({
         config: screenLockConfig,
         secretsConfig: secretsConfig,
         keyPadConfig: keyPadConfig,
-        delayBuilder: (context, duration) {
-          return Column(
-            children: [
-              const FlutterLogo(size: 100),
-              Text(
-                  "Max attempts reached, Try after ${duration.inSeconds} Seconds",
-                  style: textTheme.titleMedium)
-            ],
-          );
-        },
+        delayBuilder: (context, duration) => Column(
+          children: [
+            const FlutterLogo(size: 100),
+            Text(
+                "Max attempts reached, Try after ${duration.inSeconds} Seconds",
+                style: textTheme.titleMedium)
+          ],
+        ),
         customizedButtonChild: customizedButtonChild,
         customizedButtonTap: customizedButtonTap,
         cancelButton: const Icon(Icons.arrow_drop_down_rounded),
@@ -124,7 +122,7 @@ Future<T?> showEnhancedCreateScreenLock<T>({
   ScreenLockConfig screenLockConfig =
       ScreenLockHelper.screenLockConfig(colorScheme, context, textTheme);
 
-  return await Navigator.of(context).pushNamed(AppRouter.lock.path,
+  return Navigator.of(context).pushNamed(AppRouter.lock.path,
       arguments: SecurityCreatePageArgs(
         context: context,
         onConfirmed: onConfirmed,
@@ -140,12 +138,10 @@ Future<T?> showEnhancedCreateScreenLock<T>({
         config: screenLockConfig,
         secretsConfig: secretsConfig,
         keyPadConfig: keyPadConfig,
-        delayBuilder: (context, duration) {
-          return Text(
-            "Max attempts reached, Try after ${duration.inSeconds} Seconds",
-            style: textTheme.titleMedium,
-          );
-        },
+        delayBuilder: (context, duration) => Text(
+          "Max attempts reached, Try after ${duration.inSeconds} Seconds",
+          style: textTheme.titleMedium,
+        ),
         customizedButtonChild: customizedButtonChild,
         customizedButtonTap: customizedButtonTap,
         cancelButton: const Icon(Icons.arrow_drop_down_rounded),

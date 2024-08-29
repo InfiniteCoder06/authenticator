@@ -8,11 +8,11 @@ import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/paths.util.dart';
 
 class HivePersistanceProvider extends StorageService with ConsoleMixin {
+  HivePersistanceProvider(this.hive, this.paths);
+
   HiveInterface hive;
   AppPaths paths;
   Box? _box;
-
-  HivePersistanceProvider(this.hive, this.paths);
 
   @override
   Future<void> init() async {
@@ -27,9 +27,8 @@ class HivePersistanceProvider extends StorageService with ConsoleMixin {
   }
 
   @override
-  Future<T> get<T>(String key, {T? defaultValue}) async {
-    return await _box?.get(key, defaultValue: defaultValue) as T;
-  }
+  Future<T> get<T>(String key, {T? defaultValue}) async =>
+      await _box?.get(key, defaultValue: defaultValue) as T;
 
   @override
   Future<void> clear() async {

@@ -31,12 +31,12 @@ class LogConsolePage extends StatefulWidget {
 }
 
 class RenderedEvent {
+  RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
+
   final int id;
   final Level level;
   final TextSpan span;
   final String lowerCaseText;
-
-  RenderedEvent(this.id, this.level, this.span, this.lowerCaseText);
 }
 
 class _LogConsolePageState extends State<LogConsolePage> {
@@ -64,7 +64,7 @@ class _LogConsolePageState extends State<LogConsolePage> {
       followBottom.value = scrolledToBottom;
     });
 
-    _filterController.addListener(() => _refreshFilter());
+    _filterController.addListener(_refreshFilter);
   }
 
   @override
@@ -131,13 +131,11 @@ class _LogConsolePageState extends State<LogConsolePage> {
                 var logEntry = _filteredBuffer[index];
                 return ValueListenableBuilder(
                   valueListenable: logFontSize,
-                  builder: (context, fontSize, _) {
-                    return SelectableText.rich(
-                      logEntry.span,
-                      key: Key(logEntry.id.toString()),
-                      style: TextStyle(fontSize: fontSize),
-                    );
-                  },
+                  builder: (context, fontSize, _) => SelectableText.rich(
+                    logEntry.span,
+                    key: Key(logEntry.id.toString()),
+                    style: TextStyle(fontSize: fontSize),
+                  ),
                 );
               },
             ),
@@ -221,7 +219,7 @@ class _LogConsolePageState extends State<LogConsolePage> {
     );
   }
 
-  void _scrollToBottom() async {
+  Future<void> _scrollToBottom() async {
     scrollListenerEnabled.value = false;
 
     followBottom.value = true;
@@ -250,14 +248,13 @@ class _LogConsolePageState extends State<LogConsolePage> {
 }
 
 class LogBar extends StatelessWidget {
-  final bool dark;
-  final Widget child;
-
   const LogBar({
     required this.dark,
     required this.child,
     super.key,
   });
+  final bool dark;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {

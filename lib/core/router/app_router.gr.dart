@@ -8,9 +8,7 @@ class DetailPageArgs {
   final bool isUrl;
 
   @override
-  String toString() {
-    return 'DetailPageArgs{key: $key, item: $item, isUrl: $isUrl}';
-  }
+  String toString() => 'DetailPageArgs{key: $key, item: $item, isUrl: $isUrl}';
 }
 
 class TransferPageArgs {
@@ -20,9 +18,8 @@ class TransferPageArgs {
   final List<Item> items;
 
   @override
-  String toString() {
-    return 'TransferPageArgs{key: $key, items: ${items.toString()}}';
-  }
+  String toString() =>
+      'TransferPageArgs{key: $key, items: ${items.toString()}}';
 }
 
 class SecurityPageArgs {

@@ -2,14 +2,6 @@
 import 'package:flutter/material.dart';
 
 class AppIconButton extends StatelessWidget {
-  final Widget icon;
-  final VoidCallback onPressed;
-  final VoidCallback? onLongPress;
-  final double size;
-  final EdgeInsets padding;
-  final String? tooltip;
-  final Color? backgroundColor;
-
   const AppIconButton({
     super.key,
     required this.icon,
@@ -20,6 +12,14 @@ class AppIconButton extends StatelessWidget {
     this.tooltip,
     this.backgroundColor,
   });
+
+  final Widget icon;
+  final VoidCallback onPressed;
+  final VoidCallback? onLongPress;
+  final double size;
+  final EdgeInsets padding;
+  final String? tooltip;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +50,14 @@ class AppIconButton extends StatelessWidget {
   Widget buildPlatformWrapper({
     required Widget child,
     required BuildContext context,
-  }) {
-    return InkWell(
-      customBorder: const CircleBorder(),
-      onTap: onPressed,
-      onLongPress: onLongPress,
-      child: Padding(
-        padding: padding,
-        child: icon,
-      ),
-    );
-  }
+  }) =>
+      InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onPressed,
+        onLongPress: onLongPress,
+        child: Padding(
+          padding: padding,
+          child: icon,
+        ),
+      );
 }

@@ -1,14 +1,13 @@
 part of 'detail.controller.dart';
 
 class DetailState extends Equatable {
-  final Option<Item> originalItem;
-
   const DetailState({
     required this.originalItem,
   });
 
-  factory DetailState.initial() =>
-      DetailState(originalItem: none());
+  factory DetailState.initial() => DetailState(originalItem: none());
+
+  final Option<Item> originalItem;
 
   DetailState copyWith({
     Option<Item>? originalItem,

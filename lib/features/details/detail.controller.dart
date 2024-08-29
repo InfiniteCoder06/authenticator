@@ -32,7 +32,7 @@ class DetailController extends ChangeNotifier with ConsoleMixin {
     await Future.delayed(Durations.short1);
     this.isUrl = isUrl;
     item.fold(
-      () async => await _loadTemplate(),
+      () async => _loadTemplate(),
       (item) async => _generateTemplate(item),
     );
     console.info("⚙️ Initialize");

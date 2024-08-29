@@ -14,14 +14,14 @@ import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/paths.util.dart';
 
 class HiveEntryRepository extends BaseEntryRepository with ConsoleMixin {
+  HiveEntryRepository(
+      this.hive, this.paths, this.secureStorage, this.persistanceProvider);
+
   HiveInterface hive;
   Box<Item>? _box;
   HivePersistanceProvider persistanceProvider;
   FlutterSecureStorage secureStorage;
   AppPaths paths;
-
-  HiveEntryRepository(
-      this.hive, this.paths, this.secureStorage, this.persistanceProvider);
 
   @override
   Future<void> init() async {

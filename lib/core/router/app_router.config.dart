@@ -23,16 +23,17 @@ import 'app.router.dart';
 import 'settings/base_route.settings.dart';
 
 class AppRouteConfig {
-  final RouteSettings? settings;
-  final BuildContext context;
-
-  Map<AppRouter, BaseRouteSetting> routes = {};
   AppRouteConfig({
     required this.context,
     this.settings,
   }) {
     _setup();
   }
+
+  final RouteSettings? settings;
+  final BuildContext context;
+
+  Map<AppRouter, BaseRouteSetting> routes = {};
 
   Route<dynamic> generate() {
     AppRouter router = AppRouter.notFound;

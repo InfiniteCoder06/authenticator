@@ -30,21 +30,21 @@ class ItemAvatar extends StatelessWidget {
             Builder(
               builder: (context) {
                 final icon = item.getIcon();
-                return icon.fold(() {
-                  return CircleAvatar(
-                    foregroundColor: Theme.of(context).colorScheme.primary,
-                    backgroundColor:
-                        Theme.of(context).colorScheme.primaryContainer,
-                    child: Text(
-                      item.name[0].toUpperCase(),
-                    ),
-                  );
-                }, (icon) {
-                  return CircleAvatar(
-                    backgroundImage: Image.memory(icon).image,
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                  );
-                });
+                return icon.fold(
+                    () => CircleAvatar(
+                          foregroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primaryContainer,
+                          child: Text(
+                            item.name[0].toUpperCase(),
+                          ),
+                        ),
+                    (icon) => CircleAvatar(
+                          backgroundImage: Image.memory(icon).image,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                        ));
               },
             ),
             AnimatedScale(

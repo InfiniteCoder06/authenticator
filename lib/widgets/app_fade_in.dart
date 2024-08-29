@@ -20,13 +20,11 @@ class AppFadeIn extends StatelessWidget {
       duration: duration,
       tween: IntTween(begin: 0, end: 1),
       child: child,
-      builder: (context, value, child) {
-        return AnimatedOpacity(
-          opacity: value == 1 ? 1.0 : 0.0,
-          duration: ConfigConstant.fadeDuration,
-          child: child,
-        );
-      },
+      builder: (context, value, child) => AnimatedOpacity(
+        opacity: value == 1 ? 1.0 : 0.0,
+        duration: ConfigConstant.fadeDuration,
+        child: child,
+      ),
     );
   }
 }

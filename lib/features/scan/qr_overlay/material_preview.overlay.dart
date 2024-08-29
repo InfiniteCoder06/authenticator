@@ -54,31 +54,27 @@ class MaterialPreviewOverlayState extends State<MaterialPreviewOverlay>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return RepaintBoundary(
-      child: SizedBox.expand(
-        child: widget.animateDetection
-            ? _buildAnimation(context)
-            : CustomPaint(
-                painter: MaterialBarcodeFramePainter(
-                  widget.aspectRatio,
-                  context,
+  Widget build(BuildContext context) => RepaintBoundary(
+        child: SizedBox.expand(
+          child: widget.animateDetection
+              ? _buildAnimation(context)
+              : CustomPaint(
+                  painter: MaterialBarcodeFramePainter(
+                    widget.aspectRatio,
+                    context,
+                  ),
                 ),
-              ),
-      ),
-    );
-  }
-
-  Widget _buildAnimation(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _controller,
-      builder: (context, child) => CustomPaint(
-        painter: MaterialBarcodeFramePainter(widget.aspectRatio, context),
-        foregroundPainter: MaterialBarcodeSensingPainter(
-          inflate: _inflateSequence.value,
-          opacity: _opacitySequence.value,
         ),
-      ),
-    );
-  }
+      );
+
+  Widget _buildAnimation(BuildContext context) => AnimatedBuilder(
+        animation: _controller,
+        builder: (context, child) => CustomPaint(
+          painter: MaterialBarcodeFramePainter(widget.aspectRatio, context),
+          foregroundPainter: MaterialBarcodeSensingPainter(
+            inflate: _inflateSequence.value,
+            opacity: _opacitySequence.value,
+          ),
+        ),
+      );
 }

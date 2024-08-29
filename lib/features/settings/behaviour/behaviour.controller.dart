@@ -18,7 +18,7 @@ class BehaviorController extends _$BehaviorController with ConsoleMixin {
     return BehaviorState.initial();
   }
 
-  void postInit() async {
+  Future<void> postInit() async {
     final storageService = ref.read(hiveStorageProvider);
     final copyOnTap =
         await storageService.get<bool>(kCopyOnTap, defaultValue: true);

@@ -1,11 +1,6 @@
 part of 'behaviour.controller.dart';
 
 class BehaviorState extends Equatable {
-  final bool copyOnTap;
-  final bool searchOnStart;
-  final int fontSize;
-  final int codeGroup;
-
   const BehaviorState({
     required this.copyOnTap,
     required this.searchOnStart,
@@ -15,6 +10,11 @@ class BehaviorState extends Equatable {
 
   factory BehaviorState.initial() => const BehaviorState(
       copyOnTap: true, searchOnStart: false, fontSize: 25, codeGroup: 3);
+
+  final bool copyOnTap;
+  final bool searchOnStart;
+  final int fontSize;
+  final int codeGroup;
 
   @override
   List<Object?> get props => [copyOnTap, searchOnStart, fontSize, codeGroup];

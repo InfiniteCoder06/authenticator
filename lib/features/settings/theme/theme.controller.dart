@@ -21,7 +21,7 @@ class ThemeController extends _$ThemeController with ConsoleMixin {
     return ThemeState.initial();
   }
 
-  void postInit() async {
+  Future<void> postInit() async {
     final storageService = ref.read(hiveStorageProvider);
     final dynamicColor =
         await storageService.get<bool>(kdynamicColor, defaultValue: false);
@@ -40,19 +40,19 @@ class ThemeController extends _$ThemeController with ConsoleMixin {
     console.info("⚙️ Initialize");
   }
 
-  void toggleThemeMode(ThemeMode themeMode) async {
+  Future<void> toggleThemeMode(ThemeMode themeMode) async {
     final storageService = ref.read(hiveStorageProvider);
     await storageService.put<int>(kthemeMode, themeMode.index);
     state = state.copyWith(themeMode: themeMode);
   }
 
-  void setAccent(int index) async {
+  Future<void> setAccent(int index) async {
     final storageService = ref.read(hiveStorageProvider);
     await storageService.put<int>(kthemeAccent, index);
     state = state.copyWith(themeAccent: index);
   }
 
-  void setDynamicColor(bool useDynamicColor) async {
+  Future<void> setDynamicColor(bool useDynamicColor) async {
     final storageService = ref.read(hiveStorageProvider);
     await storageService.put<bool>(kdynamicColor, useDynamicColor);
     state = state.copyWith(dynamicColor: useDynamicColor);

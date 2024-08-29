@@ -66,7 +66,7 @@ class ItemOTP extends HookConsumerWidget {
 
   Color codeColor(BuildContext context, double seconds) {
     ColorScheme colorScheme = Theme.of(context).colorScheme;
-    if ((seconds > 25 && seconds < 30)) {
+    if (seconds > 25 && seconds < 30) {
       return colorScheme.error;
     }
     return colorScheme.tertiary;

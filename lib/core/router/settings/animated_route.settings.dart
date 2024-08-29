@@ -22,21 +22,20 @@ class AnimatedRouteSetting<T> extends BaseRouteSetting<T> {
         return PageRouteBuilder<T>(
           pageBuilder: (context, animation, secondaryAnimation) =>
               route(context),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return SlideTransition(
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.0, 2.4),
+              end: Offset.zero,
+            ).animate(animation),
+            child: SlideTransition(
               position: Tween<Offset>(
-                begin: const Offset(0.0, 2.4),
-                end: Offset.zero,
-              ).animate(animation),
-              child: SlideTransition(
-                position: Tween<Offset>(
-                  begin: Offset.zero,
-                  end: const Offset(0.0, 2.4),
-                ).animate(secondaryAnimation),
-                child: child,
-              ),
-            );
-          },
+                begin: Offset.zero,
+                end: const Offset(0.0, 2.4),
+              ).animate(secondaryAnimation),
+              child: child,
+            ),
+          ),
           settings: RouteSettings(arguments: this, name: settings?.name),
           fullscreenDialog: fullscreenDialog,
         );

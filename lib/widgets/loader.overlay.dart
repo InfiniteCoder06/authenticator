@@ -11,9 +11,8 @@ class LoadingOverlay extends StatelessWidget {
   final ValueNotifier<bool> _isLoadingNotifier;
   final Widget child;
 
-  static LoadingOverlay of(BuildContext context) {
-    return context.findAncestorWidgetOfExactType<LoadingOverlay>()!;
-  }
+  static LoadingOverlay of(BuildContext context) =>
+      context.findAncestorWidgetOfExactType<LoadingOverlay>()!;
 
   void show() {
     _isLoadingNotifier.value = true;
@@ -24,12 +23,10 @@ class LoadingOverlay extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return ValueListenableBuilder<bool>(
-      valueListenable: _isLoadingNotifier,
-      child: child,
-      builder: (context, isLoading, child) {
-        return Stack(
+  Widget build(BuildContext context) => ValueListenableBuilder<bool>(
+        valueListenable: _isLoadingNotifier,
+        child: child,
+        builder: (context, isLoading, child) => Stack(
           children: [
             child!,
             if (isLoading)
@@ -46,8 +43,6 @@ class LoadingOverlay extends StatelessWidget {
                 ),
               ),
           ],
-        );
-      },
-    );
-  }
+        ),
+      );
 }

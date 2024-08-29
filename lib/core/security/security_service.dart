@@ -26,13 +26,13 @@ part './methods/base_lock_service.dart';
 part './helpers/options.dart';
 
 class SecurityService {
-  Future<void> initialize() => lockInfo.initialize();
-
-  final SecurityInformations lockInfo;
-
   SecurityService({
     required this.lockInfo,
   });
+
+  Future<void> initialize() => lockInfo.initialize();
+
+  final SecurityInformations lockInfo;
 
   late final pinCodeService = PinCodeService(lockInfo);
   late final biometricService = BiometricsService(lockInfo);
@@ -87,7 +87,7 @@ class SecurityService {
   }) async {
     switch (type) {
       case LockType.pin:
-        return await pinCodeService.set(PinCodeOptions(
+        return pinCodeService.set(PinCodeOptions(
           context: context,
           object: null,
           nextLockType: LockType.pin,
@@ -95,7 +95,7 @@ class SecurityService {
           next: (authenticated) async => authenticated,
         ));
       case LockType.biometrics:
-        return await biometricService.set(BiometricsOptions(
+        return biometricService.set(BiometricsOptions(
           context: context,
           object: null,
           nextLockType: LockType.biometrics,

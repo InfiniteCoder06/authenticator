@@ -2,8 +2,6 @@
 import 'package:flutter/services.dart';
 
 class ShareService {
-  void Function(String)? onDataReceived;
-
   ShareService() {
     SystemChannels.lifecycle.setMessageHandler((msg) async {
       if (msg?.contains("resumed") ?? false) {
@@ -19,9 +17,10 @@ class ShareService {
     });
   }
 
-  Future<String> getSharedData() async {
-    return await const OptionalMethodChannel('com.praveen.authenticator')
-            .invokeMethod("getSharedData") ??
-        "";
-  }
+  void Function(String)? onDataReceived;
+
+  Future<String> getSharedData() async =>
+      await const OptionalMethodChannel('com.praveen.authenticator')
+          .invokeMethod("getSharedData") ??
+      "";
 }

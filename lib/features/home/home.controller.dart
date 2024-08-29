@@ -81,9 +81,7 @@ List<Item> filteredItems(FilteredItemsRef ref, String searchText) {
 @riverpod
 class SelectedEntries extends _$SelectedEntries {
   @override
-  List<Item> build() {
-    return [];
-  }
+  List<Item> build() => [];
 
   void addSelected(Item item) => state = List.from(state)..add(item);
 

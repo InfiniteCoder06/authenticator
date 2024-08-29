@@ -71,7 +71,7 @@ class AppDialogs {
 
   static Future<void> showErrorDialog(BuildContext context, String errorMessage,
       {String? title}) async {
-    return await showDialog(
+    return showDialog(
       context: context,
       routeSettings: const RouteSettings(name: 'ErrorDialog'),
       builder: (context) {

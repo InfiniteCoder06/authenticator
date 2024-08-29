@@ -12,11 +12,11 @@ import 'package:zxing_lib/multi.dart';
 import 'package:zxing_lib/zxing.dart';
 
 class IsoMessage {
+  IsoMessage(this.byteData, this.width, this.height);
+
   final Uint8List byteData;
   final int width;
   final int height;
-
-  IsoMessage(this.byteData, this.width, this.height);
 }
 
 class QrUtils {
@@ -60,7 +60,7 @@ class QrUtils {
     final red = byte[index] & 0xff;
     final green = (byte[index + 1] << 1) & 0x1fe;
     final blue = byte[index + 2];
-    return ((red + green + blue) ~/ 4);
+    return (red + green + blue) ~/ 4;
   }
 
   Option<List<Result>> decodeImage(IsoMessage message) => Option.tryCatch(() {

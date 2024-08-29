@@ -77,7 +77,7 @@ Future<(ColorScheme?, ColorScheme?)> getAccentColor() async {
       dark = corePalette.toColorScheme(brightness: Brightness.dark);
       return (light, dark);
     }
-  } on PlatformException {}
+  } finally {}
 
   try {
     final Color? accentColor = await DynamicColorPlugin.getAccentColor();
@@ -93,7 +93,7 @@ Future<(ColorScheme?, ColorScheme?)> getAccentColor() async {
       );
       return (light, dark);
     }
-  } on PlatformException {}
+  } finally {}
   return (light, dark);
 }
 

@@ -8,13 +8,6 @@ enum SyncingState {
 }
 
 class AccountState extends Equatable {
-  final int lastSync;
-  final String userId;
-  final bool isSyncRequired;
-  final bool isSyncing;
-  final SyncingState syncingState;
-  final String errorMessage;
-
   const AccountState(
     this.lastSync,
     this.userId,
@@ -26,6 +19,13 @@ class AccountState extends Equatable {
 
   factory AccountState.initial() => const AccountState(
       1139941800000, "Anonymous", false, false, SyncingState.idle, '');
+
+  final int lastSync;
+  final String userId;
+  final bool isSyncRequired;
+  final bool isSyncing;
+  final SyncingState syncingState;
+  final String errorMessage;
 
   @override
   List<Object> get props =>

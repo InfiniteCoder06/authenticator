@@ -1,13 +1,13 @@
 part of '../security_service.dart';
 
 class SecurityInformations with ConsoleMixin {
-  final LocalAuthentication localAuth;
-  final SecurityPersistanceProvider storage;
-
   SecurityInformations({
     required this.localAuth,
     required this.storage,
   });
+
+  final LocalAuthentication localAuth;
+  final SecurityPersistanceProvider storage;
 
   // Flag to indicate if biometrics availability has been checked
   bool _biometricsChecked = false;

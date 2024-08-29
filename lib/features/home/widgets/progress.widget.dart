@@ -99,19 +99,18 @@ class CustomProgressBarState extends State<CustomProgressBar>
   Widget build(BuildContext context) {
     return AnimatedBuilder(
         animation: _goingBack ? _goingBackAnimation! : _animation!,
-        builder: (context, child) {
-          return LinearProgressIndicator(
-            key: widget.key,
-            value: _goingBack ? _goingBackAnimation!.value : _animation!.value,
-            backgroundColor: widget.backgroundColor,
-            borderRadius: ShapeConstant.full,
-            color: widget.color,
-            valueColor: widget.valueColor,
-            minHeight: widget.minHeight,
-            semanticsLabel: widget.semanticsLabel,
-            semanticsValue: widget.semanticsValue,
-          );
-        });
+        builder: (context, child) => LinearProgressIndicator(
+              key: widget.key,
+              value:
+                  _goingBack ? _goingBackAnimation!.value : _animation!.value,
+              backgroundColor: widget.backgroundColor,
+              borderRadius: ShapeConstant.full,
+              color: widget.color,
+              valueColor: widget.valueColor,
+              minHeight: widget.minHeight,
+              semanticsLabel: widget.semanticsLabel,
+              semanticsValue: widget.semanticsValue,
+            ));
   }
 
   @override
@@ -147,7 +146,7 @@ class CustomProgressBarState extends State<CustomProgressBar>
   }
 
   @override
-  dispose() {
+  void dispose() {
     _controller?.dispose(); // you need this
     super.dispose();
   }

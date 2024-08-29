@@ -26,7 +26,6 @@ class AccountSettingsPage extends HookConsumerWidget {
         switch (next.$1) {
           case SyncingState.syncing:
             LoadingOverlay.of(context).show();
-            break;
           case SyncingState.success:
             LoadingOverlay.of(context).hide();
             ScaffoldMessenger.of(context)
@@ -34,11 +33,9 @@ class AccountSettingsPage extends HookConsumerWidget {
               ..showSnackBar(
                 const SnackBar(content: Text("Successfully Synced")),
               );
-            break;
           case SyncingState.error:
             LoadingOverlay.of(context).hide();
             await AppDialogs.showErrorDialog(context, next.$2);
-            break;
           case SyncingState.idle:
             break;
         }

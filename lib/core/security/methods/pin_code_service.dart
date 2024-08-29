@@ -1,8 +1,9 @@
 part of '../security_service.dart';
 
 class PinCodeService extends _BaseLockService<PinCodeOptions> {
-  final SecurityInformations info;
   PinCodeService(this.info);
+
+  final SecurityInformations info;
 
   @override
   Future<bool> unlock(PinCodeOptions option) async {
@@ -66,6 +67,6 @@ class PinCodeService extends _BaseLockService<PinCodeOptions> {
       onCancelled: () => Navigator.of(context).pop(false),
       onUnlocked: () => Navigator.of(context).pop(true),
     ) as bool?;
-    return authenticated == true;
+    return authenticated ?? false;
   }
 }

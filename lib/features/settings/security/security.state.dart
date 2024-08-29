@@ -1,10 +1,6 @@
 part of 'security.controller.dart';
 
 class SecurityState extends Equatable {
-  final bool isEnabled;
-  final bool hasBiometrics;
-  final bool biometrics;
-
   const SecurityState({
     required this.isEnabled,
     required this.hasBiometrics,
@@ -13,6 +9,10 @@ class SecurityState extends Equatable {
 
   factory SecurityState.initial() => const SecurityState(
       isEnabled: true, hasBiometrics: true, biometrics: false);
+
+  final bool isEnabled;
+  final bool hasBiometrics;
+  final bool biometrics;
 
   @override
   List<Object?> get props => [isEnabled, hasBiometrics, biometrics];

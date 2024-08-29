@@ -1,12 +1,6 @@
 part of '../security_service.dart';
 
 abstract class _BaseLockOptions {
-  final BuildContext context;
-  final SecurityObject? object;
-  final Future<bool> Function(bool authenticated) next;
-  final LockType nextLockType;
-  final LockFlowType flowType;
-
   _BaseLockOptions({
     required this.context,
     required this.object,
@@ -14,6 +8,12 @@ abstract class _BaseLockOptions {
     required this.next,
     required this.flowType,
   });
+
+  final BuildContext context;
+  final SecurityObject? object;
+  final Future<bool> Function(bool authenticated) next;
+  final LockType nextLockType;
+  final LockFlowType flowType;
 
   bool get canCancel {
     switch (flowType) {

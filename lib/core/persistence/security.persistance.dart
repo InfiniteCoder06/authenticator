@@ -14,12 +14,12 @@ import 'package:authenticator/core/utils/mixin/console.mixin.dart';
 import 'package:authenticator/core/utils/paths.util.dart';
 
 class SecurityPersistanceProvider extends StorageService with ConsoleMixin {
+  SecurityPersistanceProvider(this.hive, this.paths, this.secureStorage);
+
   HiveInterface hive;
   FlutterSecureStorage secureStorage;
   AppPaths paths;
   Box? _box;
-
-  SecurityPersistanceProvider(this.hive, this.paths, this.secureStorage);
 
   String kLockType = 'lockType';
   String kLockSecret = 'lockSecret';
@@ -75,9 +75,8 @@ class SecurityPersistanceProvider extends StorageService with ConsoleMixin {
   }
 
   @override
-  Future<T> get<T>(String key, {T? defaultValue}) async {
-    return await _box?.get(key, defaultValue: defaultValue) as T;
-  }
+  Future<T> get<T>(String key, {T? defaultValue}) async =>
+      await _box?.get(key, defaultValue: defaultValue) as T;
 
   @override
   Future<void> clear() async {

@@ -25,7 +25,7 @@ class TransferPage extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pageController = usePageController();
-    var page = useValueNotifier(0);
+    final page = useValueNotifier(0);
     return PopScope(
       canPop: true,
       onPopInvokedWithResult: (didPop, result) async {

@@ -62,7 +62,6 @@ class DatabaseUtils with ConsoleMixin {
     return (needsToBeBackup, deletedIds, needsToBeCreated);
   }
 
-  List<T> differenceWithSet<T>(List<T> a, List<T> b) {
-    return a.toSet().difference(b.toSet()).toList();
-  }
+  List<T> differenceWithSet<T>(List<T> a, List<T> b) =>
+      a.toSet().difference(b.toSet()).toList();
 }

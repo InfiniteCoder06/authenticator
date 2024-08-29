@@ -25,9 +25,8 @@ class AppPopButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool forceCloseButton;
 
-  static Widget? wrapper(BuildContext context) {
-    return ModalRoute.of(context)?.canPop == true ? const AppPopButton() : null;
-  }
+  static Widget? wrapper(BuildContext context) =>
+      ModalRoute.of(context)?.canPop ?? false ? const AppPopButton() : null;
 
   static IconData getIconData(BuildContext context) {
     final platform = Theme.of(context).platform;
@@ -87,9 +86,7 @@ class AppPopButton extends StatelessWidget {
 
   void onLongPress(List<Route<dynamic>> history, BuildContext context) {
     void pop(Route<dynamic> til) {
-      Navigator.of(context).popUntil((route) {
-        return route.hashCode == til.hashCode;
-      });
+      Navigator.of(context).popUntil((route) => route.hashCode == til.hashCode);
     }
 
     showPopover(
@@ -132,14 +129,12 @@ class AppPopButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: List.generate(
                 history.length,
-                (index) {
-                  return buildRouteTile(
-                    history,
-                    index,
-                    context,
-                    pop,
-                  );
-                },
+                (index) => buildRouteTile(
+                  history,
+                  index,
+                  context,
+                  pop,
+                ),
               ),
             ),
           ),

@@ -28,13 +28,10 @@ class MaterialBarcodeSensingPainter extends CustomPainter {
         _inflate(cutOut.deflate(sensingPaint.strokeWidth / 2)), sensingPaint);
   }
 
-  RRect _inflate(RRect rect) {
-    return RRect.fromRectAndRadius(
-        rect.outerRect.inflate(inflate * 20), rect.blRadius);
-  }
+  RRect _inflate(RRect rect) => RRect.fromRectAndRadius(
+      rect.outerRect.inflate(inflate * 20), rect.blRadius);
 
   @override
-  bool shouldRepaint(MaterialBarcodeSensingPainter oldDelegate) {
-    return oldDelegate.opacity != opacity || oldDelegate.inflate != inflate;
-  }
+  bool shouldRepaint(MaterialBarcodeSensingPainter oldDelegate) =>
+      oldDelegate.opacity != opacity || oldDelegate.inflate != inflate;
 }
