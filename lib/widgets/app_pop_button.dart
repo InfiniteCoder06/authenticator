@@ -59,28 +59,26 @@ class AppPopButton extends StatelessWidget {
 
     // history.removeAt(0);
 
-    return Center(
-      child: AppIconButton(
-        key: const Key("appBar.back"),
-        icon: IconTheme.merge(
-          data: const IconThemeData(size: ConfigConstant.iconSize2),
-          child: useCloseButton
-              ? const Icon(Icons.close_rounded)
-              : const BackButtonIcon(),
-        ),
-        tooltip: useCloseButton
-            ? tooltip ?? MaterialLocalizations.of(context).closeButtonLabel
-            : MaterialLocalizations.of(context).backButtonTooltip,
-        onLongPress:
-            history.isNotEmpty ? () => onLongPress(history, context) : null,
-        onPressed: () {
-          if (onPressed != null) {
-            onPressed!();
-          } else {
-            Navigator.maybePop(context);
-          }
-        },
+    return AppIconButton(
+      key: const Key("appBar.back"),
+      icon: IconTheme.merge(
+        data: const IconThemeData(size: ConfigConstant.iconSize2),
+        child: useCloseButton
+            ? const Icon(Icons.close_rounded)
+            : const BackButtonIcon(),
       ),
+      tooltip: useCloseButton
+          ? tooltip ?? MaterialLocalizations.of(context).closeButtonLabel
+          : MaterialLocalizations.of(context).backButtonTooltip,
+      onLongPress:
+          history.isNotEmpty ? () => onLongPress(history, context) : null,
+      onPressed: () {
+        if (onPressed != null) {
+          onPressed!();
+        } else {
+          Navigator.maybePop(context);
+        }
+      },
     );
   }
 

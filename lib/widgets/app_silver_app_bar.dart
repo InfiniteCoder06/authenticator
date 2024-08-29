@@ -1,6 +1,9 @@
 // 🐦 Flutter imports:
 import 'package:flutter/material.dart';
 
+// 📦 Package imports:
+import 'package:swipeable_page_route/swipeable_page_route.dart';
+
 // 🌎 Project imports:
 import 'package:authenticator/core/router/app.router.dart';
 import 'package:authenticator/widgets/app_bar_title.dart';
@@ -26,7 +29,27 @@ class AppExpandedAppBar extends StatelessWidget {
     return SliverPersistentHeader(
       pinned: true,
       delegate: LargeCustomHeader(
-        title: fallbackRouter?.title ?? "",
+        title: TweenAnimationBuilder(
+          tween: IntTween(begin: 50, end: 0),
+          duration: Durations.medium1,
+          builder: (context, value, child) {
+            return AnimatedPadding(
+              padding: EdgeInsets.only(left: value.toDouble()),
+              duration: Durations.short2,
+              child: child,
+            );
+          },
+          child: Hero(
+            tag: 'MorphingAppBarTitle',
+            child: Text(
+              fallbackRouter?.title ?? "",
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(letterSpacing: -0.7),
+            ),
+          ),
+        ),
         topSafeAreaPadding: MediaQuery.of(context).padding.top,
         leading: ModalRoute.of(context)?.settings.name == "/"
             ? const SizedBox.shrink()
@@ -42,10 +65,10 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
     required this.leading,
     required this.topSafeAreaPadding,
     required this.height,
-    this.title = '',
+    this.title = const SizedBox.shrink(),
   });
 
-  final String title;
+  final Widget title;
   final double height;
 
   final Widget leading;
@@ -70,12 +93,12 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
       child: Stack(
         children: [
           SizedBox(
-            height: topSafeAreaPadding + height,
-            child: AppBar(
-              automaticallyImplyLeading: false,
+            height: kToolbarHeight,
+            child: MorphingAppBar(
               leading: ModalRoute.of(context)?.settings.name == "/"
                   ? null
                   : const AppPopButton(),
+              title: const Text(''),
             ),
           ),
           Container(
@@ -86,12 +109,7 @@ class LargeCustomHeader extends SliverPersistentHeaderDelegate {
               alignment: Alignment.centerLeft,
               height: kToolbarHeight,
               margin: titleMarginProgress,
-              child: Text(
-                title,
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      letterSpacing: -0.7,
-                    ),
-              ),
+              child: title,
             ),
           ),
         ],
