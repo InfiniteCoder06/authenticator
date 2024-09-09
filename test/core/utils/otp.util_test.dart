@@ -9,26 +9,55 @@ void main() {
   group('Full URI', () {
     const uriString =
         "otpauth://totp/Example:alice@google.com?period=30&secret=JBSWY3DPEHPK3PXP&digits=6&algorithm=sha1&issuer=Example";
-    test('Parse URI', () {
-      final parsedURI = Uri.parse(uriString);
+    const uriStringMulti =
+        "otpauth://totp/Example:alice@google.com?period=30&secret=JBSWY3DPEHPK3PXP&digits=6&algorithm=sha1&issuer=Issuer";
+    group("Parse URI", () {
+      test('Parse URI Single', () {
+        final parsedURI = Uri.parse(uriString);
 
-      final List<String> strings = parsedURI.pathSegments.last.split(":");
+        final List<String> strings = parsedURI.pathSegments.last.split(":");
 
-      expect(parsedURI.scheme, 'otpauth');
-      expect(parsedURI.host, 'totp');
-      expect(strings.first, 'Example');
-      expect(strings.last, 'alice@google.com');
-      expect(parsedURI.queryParameters['issuer'], 'Example');
-      expect(parsedURI.queryParameters['secret'], 'JBSWY3DPEHPK3PXP');
+        expect(parsedURI.scheme, 'otpauth');
+        expect(parsedURI.host, 'totp');
+        expect(strings.first, 'Example');
+        expect(strings.last, 'alice@google.com');
+        expect(parsedURI.queryParameters['issuer'], 'Example');
+        expect(parsedURI.queryParameters['secret'], 'JBSWY3DPEHPK3PXP');
+      });
+
+      test('Parse URI Single', () {
+        final parsedURI = Uri.parse(uriStringMulti);
+
+        final List<String> strings = parsedURI.pathSegments.last.split(":");
+
+        expect(parsedURI.scheme, 'otpauth');
+        expect(parsedURI.host, 'totp');
+        expect(strings.first, 'Example');
+        expect(strings.last, 'alice@google.com');
+        expect(parsedURI.queryParameters['issuer'], 'Issuer');
+        expect(parsedURI.queryParameters['secret'], 'JBSWY3DPEHPK3PXP');
+      });
     });
 
-    test('Get Item', () {
-      final item = OtpUtils.parseURI(Uri.parse(uriString))
-          .getOrElse((l) => Item.initial());
+    group("Get Item", () {
+      test('Get Item Single', () {
+        final item = OtpUtils.parseURI(Uri.parse(uriString))
+            .getOrElse((l) => (Item.initial(), []));
 
-      expect(item.name, 'alice@google.com');
-      expect(item.secret, 'JBSWY3DPEHPK3PXP');
-      expect(item.issuer, 'Example');
+        expect(item.$1.name, 'alice@google.com');
+        expect(item.$1.secret, 'JBSWY3DPEHPK3PXP');
+        expect(item.$1.issuer, 'Example');
+      });
+
+      test('Get Item Multiple', () {
+        final item = OtpUtils.parseURI(Uri.parse(uriStringMulti))
+            .getOrElse((l) => (Item.initial(), []));
+
+        expect(item.$2.length, 2);
+        expect(item.$1.name, 'alice@google.com');
+        expect(item.$1.secret, 'JBSWY3DPEHPK3PXP');
+        expect(item.$2, ['Issuer', 'Example']);
+      });
     });
 
     test('Get URI', () {
@@ -59,11 +88,11 @@ void main() {
 
     test('Get Item', () {
       final item = OtpUtils.parseURI(Uri.parse(uriString))
-          .getOrElse((l) => Item.initial());
+          .getOrElse((l) => (Item.initial(), []));
 
-      expect(item.name, 'alice@google.com');
-      expect(item.secret, 'JBSWY3DPEHPK3PXP');
-      expect(item.issuer, 'Example');
+      expect(item.$1.name, 'alice@google.com');
+      expect(item.$1.secret, 'JBSWY3DPEHPK3PXP');
+      expect(item.$1.issuer, 'Example');
     });
 
     test('Get URI', () {

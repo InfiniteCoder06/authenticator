@@ -90,6 +90,28 @@ class AppDialogs {
     );
   }
 
+  static Future<String> showSelectIssuerDialog(
+      BuildContext context, List<String?> issuers) async {
+    return await showDialog(
+      context: context,
+      barrierDismissible: false,
+      routeSettings: const RouteSettings(name: 'SelectIssuerDialog'),
+      builder: (context) {
+        return SimpleDialog(
+          title: const Text("Select Issuer"),
+          children: issuers
+              .map((issuer) => SimpleDialogOption(
+                    onPressed: () {
+                      Navigator.of(context).pop(issuer);
+                    },
+                    child: Text(issuer ?? ""),
+                  ))
+              .toList(),
+        );
+      },
+    );
+  }
+
   static Future<String> showManualURIDialog(BuildContext context) async {
     var text = '';
     await showDialog(

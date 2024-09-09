@@ -56,11 +56,19 @@ class AppLocalAuthState extends ConsumerState<AppLocalAuth>
   Future<void> _handleSharedData(String sharedData) async {
     if (sharedData.isNotEmpty) {
       final result = OtpUtils.parseURI(Uri.parse(sharedData));
-      result.match(
-          (error) => AppDialogs.showErrorDialog(context, error),
-          (item) => Navigator.of(widget.navKey.currentContext!).pushNamed(
-              AppRouter.details.path,
-              arguments: DetailPageArgs(item: item, isUrl: true)));
+      result.match((error) => AppDialogs.showErrorDialog(context, error),
+          (result) async {
+        var item = result.$1;
+        if (result.$2.length == 2) {
+          final selectedIssuer =
+              await AppDialogs.showSelectIssuerDialog(context, result.$2);
+          item = item.copyWith(issuer: selectedIssuer);
+        }
+        Navigator.of(widget.navKey.currentContext!).pushNamed(
+          AppRouter.details.path,
+          arguments: DetailPageArgs(item: item, isUrl: true),
+        );
+      });
     }
   }
 

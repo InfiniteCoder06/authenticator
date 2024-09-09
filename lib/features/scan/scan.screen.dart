@@ -110,13 +110,25 @@ class _ScanPageState extends State<ScanPage> {
     controller.stop();
     if (barcodes.first.rawValue != null) {
       final result = OtpUtils.parseURI(Uri.parse(barcodes.first.rawValue!));
-      result.match((error) async {
-        await AppDialogs.showErrorDialog(context, error);
-        controller.start();
-      },
-          (item) => Navigator.of(context).pushReplacementNamed(
-              AppRouter.details.path,
-              arguments: DetailPageArgs(item: item, isUrl: true)));
+      result.match(
+        (error) async {
+          await AppDialogs.showErrorDialog(context, error);
+          controller.start();
+        },
+        (result) async {
+          var item = result.$1;
+          if (result.$2.length == 2) {
+            final selectedIssuer =
+                await AppDialogs.showSelectIssuerDialog(context, result.$2);
+            item = item.copyWith(issuer: selectedIssuer);
+          }
+          if (!context.mounted) return;
+          await Navigator.of(context).pushReplacementNamed(
+            AppRouter.details.path,
+            arguments: DetailPageArgs(item: item, isUrl: true),
+          );
+        },
+      );
     } else {
       if (!mounted) return;
       await AppDialogs.showErrorDialog(context, 'Unknown');

@@ -8,7 +8,7 @@ import 'package:authenticator/core/utils/extension/item_x.extension.dart';
 import 'package:authenticator/core/utils/globals.dart';
 
 class OtpUtils {
-  static Either<String, Item> parseURI(Uri uri) {
+  static Either<String, (Item, List<String?>)> parseURI(Uri uri) {
     String name;
     String? issuer;
     String secret;
@@ -29,6 +29,8 @@ class OtpUtils {
     }
 
     final List<String> pathSegments = uri.pathSegments;
+    var issuerSegments = "";
+    var issuerParams = "";
 
     if (pathSegments.last.contains(":")) {
       final List<String> strings = uri.pathSegments.last.split(":");
@@ -36,13 +38,22 @@ class OtpUtils {
         return left("Invalid URI");
       }
       name = strings.elementAt(1);
-      issuer = strings.elementAt(0);
+      issuerSegments = strings.elementAt(0);
+      issuerParams = uri.queryParameters['issuer'] ?? "";
     } else {
-      issuer = uri.queryParameters['issuer'] ?? '';
+      issuerParams = uri.queryParameters['issuer'] ?? "";
       name = uri.pathSegments.last;
     }
 
-    return right(Item.fromUri(name, secret, issuer));
+    if (issuerParams.isNotEmpty &&
+        issuerSegments.isNotEmpty &&
+        issuerParams != issuerSegments) {
+      return right(
+          (Item.fromUri(name, secret, ""), [issuerParams, issuerSegments]));
+    }
+
+    issuer = issuerSegments.isNotEmpty ? issuerSegments : issuerParams;
+    return right((Item.fromUri(name, secret, issuer), [issuer]));
   }
 
   static Uri getURI(Item item) {

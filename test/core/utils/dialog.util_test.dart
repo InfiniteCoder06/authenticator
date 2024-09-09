@@ -279,6 +279,43 @@ void main() {
     });
   });
 
+  testWidgets('showIssuerSelectionDialog', (tester) async {
+    // Build the widget tree
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(builder: (context) {
+            return ElevatedButton(
+              onPressed: () async {
+                // Show the deletion dialog
+                final result = await AppDialogs.showSelectIssuerDialog(
+                  context,
+                  ['Issuer 1', 'Issuer 2'],
+                );
+                // Perform assertions on the result
+                expect(result, 'Issuer 2');
+              },
+              child: const Text('Show Deletion Dialog'),
+            );
+          }),
+        ),
+      ),
+    );
+
+    // Tap the button to show the deletion dialog
+    await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle();
+
+    // Verify the dialog content
+    expect(find.text('Select Issuer'), findsOneWidget);
+    expect(find.text('Issuer 1'), findsOneWidget);
+    expect(find.text('Issuer 2'), findsOneWidget);
+
+    // Dismiss the dialog
+    await tester.tap(find.text('Issuer 2'));
+    await tester.pumpAndSettle();
+  });
+
   group('showManualURIDialog', () {
     testWidgets('Custom Text', (tester) async {
       // Build the widget tree

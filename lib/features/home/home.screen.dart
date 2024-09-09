@@ -203,12 +203,23 @@ class EntryOverviewPage extends HookConsumerWidget {
                 final parseResult =
                     OtpUtils.parseURI(Uri.parse(result.toNullable()!.text));
 
-                parseResult
-                    .fold((text) => AppDialogs.showErrorDialog(context, text),
-                        (item) async {
-                  await Navigator.of(context).pushNamed(AppRouter.details.path,
-                      arguments: DetailPageArgs(item: item, isUrl: true));
-                });
+                parseResult.fold(
+                  (text) => AppDialogs.showErrorDialog(context, text),
+                  (result) async {
+                    var item = result.$1;
+                    if (result.$2.length == 2) {
+                      final selectedIssuer =
+                          await AppDialogs.showSelectIssuerDialog(
+                              context, result.$2);
+                      item = item.copyWith(issuer: selectedIssuer);
+                    }
+                    if (!context.mounted) return;
+                    await Navigator.of(context).pushNamed(
+                      AppRouter.details.path,
+                      arguments: DetailPageArgs(item: item, isUrl: true),
+                    );
+                  },
+                );
               },
               onAddManualPressed: () async {
                 await Navigator.of(context).popAndPushNamed(
